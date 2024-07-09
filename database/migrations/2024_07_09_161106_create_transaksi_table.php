@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('transaction_type');
             $table->string('description');
             $table->date('date_transaction');
-            $table->unsignedInteger('nominal');
+            $table->Integer('nominal');
             $table->timestamps();
         });
     }
