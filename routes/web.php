@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminContoller;
 
 use App\Http\Middleware\AdminMiddleware;
 
@@ -22,3 +23,6 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+
+
+Route::get('/admin/cekSemuaUser', [AdminContoller::class, 'cekSemuaUser']);
