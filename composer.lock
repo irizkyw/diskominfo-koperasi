@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e8c3c14ff33b199b4a0838993eb8423",
+    "content-hash": "2f74cff7db2ac18988e02e6ce6439b90",
     "packages": [
         {
             "name": "brick/math",
@@ -134,6 +134,49 @@
                 }
             ],
             "time": "2024-02-09T16:56:22+00:00"
+        },
+        {
+            "name": "deployer/deployer",
+            "version": "v7.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/deployphp/deployer.git",
+                "reference": "b438dc22545ab2ecc67d79c80c7a79c156de3599"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/deployphp/deployer/zipball/b438dc22545ab2ecc67d79c80c7a79c156de3599",
+                "reference": "b438dc22545ab2ecc67d79c80c7a79c156de3599",
+                "shasum": ""
+            },
+            "bin": [
+                "dep"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anton Medvedev",
+                    "email": "anton@medv.io"
+                }
+            ],
+            "description": "Deployment Tool",
+            "homepage": "https://deployer.org",
+            "support": {
+                "docs": "https://deployer.org/docs",
+                "issues": "https://github.com/deployphp/deployer/issues",
+                "source": "https://github.com/deployphp/deployer"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/antonmedv",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-04-17T20:55:49+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
