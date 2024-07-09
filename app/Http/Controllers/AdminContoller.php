@@ -27,5 +27,19 @@ class AdminContoller extends Controller
     }
 
 
+    public function cekUserByRole($role)
+    {
+        $user = User::where('role', $role)->get();
+        return response()->json($user);
+    }
+
+    public function cekSimpananBulan()
+    {
+        $user = User::find($id);
+
+        
+    }
+
+
 
 }
