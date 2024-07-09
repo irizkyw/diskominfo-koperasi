@@ -59,9 +59,9 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->integer('num_member')->unique();
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->string('name', 64);
+            $table->string('username', 16)->unique();
+            $table->string('password', 255);
             $table->foreignId('role_id')->constrained()->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
