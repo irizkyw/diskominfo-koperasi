@@ -9,7 +9,9 @@ services:
         ports:
             - "8000:80"
         volumes:
-            - .:/var/www/html
+            - .:/var/www/html:delegated
+            - vendor:/var/www/html/vendor
+            - storage:/var/www/html/storage
         environment:
             APP_ENV: local
             APP_DEBUG: "true"
@@ -47,3 +49,5 @@ services:
 
 volumes:
     db_data:
+    vendor:
+    storage:
