@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('transaction_type');
-            $table->string('description');
+            $table->string('description',255);
             $table->date('date_transaction');
             $table->Integer('nominal');
             $table->timestamps();
