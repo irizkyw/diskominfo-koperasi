@@ -25,30 +25,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Route::get('/admin/cekSemuaUser', [AdminContoller::class, 'cekSemuaUser']);
 
 
