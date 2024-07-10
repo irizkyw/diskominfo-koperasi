@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tabungan;
-
+use App\Models\Transaksi;
 class TabunganController extends Controller
 {
     public function index()
@@ -36,6 +36,10 @@ class TabunganController extends Controller
         $transaksi = Tabungan::where('user_id', $id)
                     ->update(['mandatory_savings' => $total]);
 
-        return response()->json($transaksi);
+        $tglUpdate = Tabungan::where('user_id', $id)->first()->updated_at;
+
+        return response()->json(['Berhasil' => $transaksi,
+                                'Total Simpanan' => $total,
+                                'TglUpdate' => $tglUpdate]);
     }
 }
