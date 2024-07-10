@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('group', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('name', 32); // GOLONGAN 1, 2, pensiun, non pensiun
             $table->string('desc', 255); // keterangan golongannya

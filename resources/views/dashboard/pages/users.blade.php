@@ -179,12 +179,13 @@
                   </th>
                   <th class="min-w-125px">Nomor anggota</th>
                   <th class="min-w-125px">Nama Lengkap</th>
-                  <th class="min-w-125px">Status</th>
+                  <th class="min-w-125px">Role</th>
                   <th class="min-w-125px">Daftar Sejak</th>
                   <th class="text-end min-w-70px">Actions</th>
                 </tr>
               </thead>
               <tbody class="fw-semibold text-gray-600">
+                @foreach($users as $data)
                 <tr>
                   <td>
                     <div
@@ -201,20 +202,21 @@
                     <a
                       href="apps/ecommerce/customers/details.html"
                       class="text-gray-800 text-hover-primary mb-1"
-                      >Emma Smith</a
+                      >{{$data->num_member}}</a
                     >
                   </td>
                   <td>
                     <a href="#" class="text-gray-600 text-hover-primary mb-1"
-                      >smith@kpmg.com</a
+                      >{{$data->name}}</a
                     >
                   </td>
                   <td>
                     <!--begin::Badges-->
-                    <div class="badge badge-light-success">Active</div>
+                    {{$data->role->name}}
+                    <!-- <div class="badge badge-light-success">Active</div> -->
                     <!--end::Badges-->
                   </td>
-                  <td>25 Jul 2024, 5:20 pm</td>
+                  <td>{{ $data->created_at->format('d M Y, h:i a') }}</td>
                   <td class="text-end">
                     <a
                       href="#"
@@ -261,6 +263,7 @@
                     <!--end::Menu-->
                   </td>
                 </tr>
+                @endforeach
               </tbody>
               <!--end::Table body-->
             </table>
@@ -380,11 +383,19 @@
                       </div>
                       <!--end::Input group-->
                       <!--begin::Input group-->
+                      <div class="fv-row mb-7">
+                      <label class="fs-6 fw-semibold mb-2">Simpanan Wajib</label>
+                      <input
+                        type="number"
+                        class="form-control form-control-solid"
+                        placeholder="Simpanan Wajib (Opsional)"
+                        name="name"
+                      />
+                      <!--end::Input-->
+                    </div>
+
                     <div class="fv-row mb-7">
-                      <!--begin::Label-->
                       <label class="fs-6 fw-semibold mb-2">Dana Sukarela</label>
-                      <!--end::Label-->
-                      <!--begin::Input-->
                       <input
                         type="number"
                         class="form-control form-control-solid"
