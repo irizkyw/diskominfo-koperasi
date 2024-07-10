@@ -33,12 +33,24 @@ class TransaksiController extends Controller
 
     public function SumTransaksiSimpananBulananByUserId($id)
     {
-        $total = Transaksi::where('user_id', $id)
+        $SimpananWajibLast = Tabungan::where('user_id', $id)->first()->mandatory_savings;
+        $SimpananWajibTemp = Transaksi::where('user_id', $id)
                         ->where('transaction_type', 'SIMPANAN-BULANAN')
                         ->sum('nominal');
-
-        return response()->json(['total_nominal' => $total]);
+        $totalSimpananWajib = $SimpananWajibLast + $SimpananWajibTemp;
+        return response()->json(['SimpananBulanan' => $totalSimpananWajib]);
     }
 
-    
+    public function SumTransaksiSimpananAkhirByUserId($id)
+    {
+        $SimpananWajib = Transaksi::where('user_id', $id)
+                        ->where('transaction_type', 'SIMPANAN-BULANAN')
+                        ->sum('nominal');
+        $SimpananWajib = $SimpananWajib * 0.8; //80% dari total simpanan bulanan || Setelah dikurangi 20%
+
+        $SimpananPokok = Tabungan::where('user_id', $id)->first()->principal_savings;
+        $SimpananSukarela = Tabungan::where('user_id', $id)->first()->voluntary_savings;
+        $SimpananAkhir = $SimpananWajib + $SimpananPokok + $SimpananSukarela; 
+        return response()->json(['SimpananAkhir' => $SimpananAkhir]);
+    }
 }
