@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminContoller;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\TabunganController;
 
 
 Route::get('/', function () {
@@ -32,4 +33,4 @@ Route::get('/admin/transaksi/cekTransaksiAll', [TransaksiController::class, 'cek
 Route::get('/admin/transaksi/cekTransaksiSimpananBulananByUserId/{id}', [TransaksiController::class, 'cekTransaksiSimpananBulananByUserId']);
 Route::get('/admin/transaksi/cekTransaksiSimpananByUserId/{id}', [TransaksiController::class, 'SumTransaksiSimpananBulananByUserId']);
 
-Route::get('/admin/tabungan/updateSimpananBulananUser/{id}', [TransaksiController::class, 'updateSimpananBulananUser']);
+Route::get('/admin/tabungan/updateSimpananBulananUser/{id}', [TabunganController::class, 'updateSimpananBulananUser']);
