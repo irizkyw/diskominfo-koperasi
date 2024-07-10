@@ -19,15 +19,23 @@ class TransaksiController extends Controller
         return response()->json($transaksi);
     }
 
-    public function cekLogTransaksiByUserId($id)
+    public function LogAllTransaksiByUserId($id)
     {
         $transaksi = Transaksi::where('user_id', $id)->get();
         return response()->json($transaksi);
     }
 
-    public function cekTransaksiSimpananBulananByUserId($id)
+    public function LogTransaksiSimpananBulananByUserId($id)
     {
-        $transaksi = Transaksi::where('user_id', $id)->where('transaction_type', 'SIMPANAN-BULANAN')->get();
+        $transaksi = Transaksi::where('user_id', $id)
+                              ->where('transaction_type', 'SIMPANAN-BULANAN')
+                              ->get();
+
+        $transaksi->each(function ($item) {
+            $date = new \DateTime($item->date_transaction);
+            $item->bulan_simpanan = $date->format('F');
+        });
+
         return response()->json($transaksi);
     }
 
