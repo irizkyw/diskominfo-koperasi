@@ -15,15 +15,20 @@ class TabunganController extends Controller
 
     public function cekTabunganAll()
     {
-        $role = Auth::user()->role;
         $tabungan = Tabungan::all();
         return response()->json($tabungan);
     }
 
-    public function cekTabunganByUser()
+    public function cekTabunganByUserAuth()
     {
         $user = Auth::user();
-        $tabungan = Tabungan::all();
+        $tabungan = Tabungan::where('user_id', 2)->first();
+        return response()->json($user);
+    }
+
+    public function cekTabunganByUserId($id)
+    {
+        $tabungan = Tabungan::where('user_id', $id)->first();
         return response()->json($tabungan);
     }
 
