@@ -48,6 +48,21 @@ class TransaksiController extends Controller
                         ->where('transaction_type', 'SIMPANAN-BULANAN')
                         ->sum('nominal'); //Total Simpanan Wajib Bulanan
         $SimpananWajib = $SimpananWajibLast + $SimpananWajib; //Simpanan Wajib hingga saat ini
+        $SimpananWajib = $SimpananWajib * 0.8; //80% dari total simpanan bulanan || Setelah dikurangi 20%
+
+        $SimpananPokok = Tabungan::where('user_id', $id)->first()->principal_savings;
+        $SimpananSukarela = Tabungan::where('user_id', $id)->first()->voluntary_savings;
+        $SimpananAkhir = $SimpananWajib + $SimpananPokok + $SimpananSukarela; 
+        return response()->json(['SimpananAkhir' => $SimpananAkhir]);
+    }
+
+    public function LaporanByUserId($id)
+    {
+        $SimpananWajibLast = Tabungan::where('user_id', $id)->first()->mandatory_savings; //Simpanan Wajib Terakhir
+        $SimpananWajib = Transaksi::where('user_id', $id)
+                        ->where('transaction_type', 'SIMPANAN-BULANAN')
+                        ->sum('nominal'); //Total Simpanan Wajib Bulanan
+        $SimpananWajib = $SimpananWajibLast + $SimpananWajib; //Simpanan Wajib hingga saat ini
         $SimpananWajib80 = $SimpananWajib * 0.8; //80% dari total simpanan bulanan || Setelah dikurangi 20%
 
         $SimpananPokok = Tabungan::where('user_id', $id)->first()->principal_savings;
