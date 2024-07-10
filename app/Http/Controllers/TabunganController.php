@@ -26,4 +26,16 @@ class TabunganController extends Controller
         $tabungan = Tabungan::all();
         return response()->json($tabungan);
     }
+
+    public function updateSimpananBulananUser($id)
+    {
+        $total = Transaksi::where('user_id', $id)
+                        ->where('transaction_type', 'SIMPANAN-BULANAN')
+                        ->sum('nominal');
+
+        $transaksi = Tabungan::where('user_id', $id)
+                    ->update(['mandatory_savings' => $total]);
+
+        return response()->json($transaksi);
+    }
 }

@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use App\Models\Tabungan;
 
 class TransaksiController extends Controller
 {
@@ -24,9 +25,20 @@ class TransaksiController extends Controller
         return response()->json($transaksi);
     }
 
-    public function cekTransaksiSimpananByUserId($id)
+    public function cekTransaksiSimpananBulananByUserId($id)
     {
-        $transaksi = Transaksi::where('user_id', $id)->where('jenis_transaksi', 'SIMPANAN-BULANAN')->get();
+        $transaksi = Transaksi::where('user_id', $id)->where('transaction_type', 'SIMPANAN-BULANAN')->get();
         return response()->json($transaksi);
     }
+
+    public function SumTransaksiSimpananBulananByUserId($id)
+    {
+        $total = Transaksi::where('user_id', $id)
+                        ->where('transaction_type', 'SIMPANAN-BULANAN')
+                        ->sum('nominal');
+
+        return response()->json(['total_nominal' => $total]);
+    }
+
+    
 }
