@@ -34,5 +34,6 @@ Route::get('/admin/transaksi/cekTransaksiAll', [TransaksiController::class, 'cek
 Route::get('/admin/transaksi/cekTransaksiSimpananBulananByUserId/{id}', [TransaksiController::class, 'cekTransaksiSimpananBulananByUserId']);
 Route::get('/admin/transaksi/SumTransaksiSimpananBulananByUserId/{id}', [TransaksiController::class, 'SumTransaksiSimpananBulananByUserId']);
 Route::get('/admin/transaksi/SumTransaksiSimpananAkhirByUserId/{id}', [TransaksiController::class, 'SumTransaksiSimpananAkhirByUserId']);
+Route::get('/admin/transaksi/LaporanByUserId/{id}', [TransaksiController::class, 'LaporanByUserId']);
 
 Route::get('/admin/tabungan/updateSimpananBulananUser/{id}', [TabunganController::class, 'updateSimpananBulananUser']);
