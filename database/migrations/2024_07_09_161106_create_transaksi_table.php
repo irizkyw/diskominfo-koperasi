@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 32);
-            $table->string('desc', 255);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('transaction_type');
+            $table->string('description',255);
+            $table->date('date_transaction');
+            $table->Integer('nominal');
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('transaksi');
     }
 };
