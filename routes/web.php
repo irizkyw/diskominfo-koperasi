@@ -5,9 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminContoller;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\RolesController;
 
 use App\Http\Middleware\AdminMiddleware;
-
 
 Route::get('/', function () {
     return view('landing.home');
@@ -20,9 +21,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::middleware(['auth', AdminMiddleware::class])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+    Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');
 });
 
-
+// temp
 Route::get('/admin/cekSemuaUser', [AdminContoller::class, 'cekSemuaUser']);
