@@ -18,7 +18,8 @@ return new class extends Migration
             $table->unsignedInteger('voluntary_savings'); // simpanan sukarela
             $table->unsignedInteger('mandatory_savings'); // simpanan wajib
             $table->unsignedInteger('installments'); // angsuran
-            $table->timestamps('lastUpdate_principal'); // last update simpanan wajib
+            $table->foreignId('group_id')->constrained()->onDelete('cascade');
+            $table->timestamp('lastUpdate_principal')->nullable(); // last update simpanan wajib
             $table->timestamps();
         });
 

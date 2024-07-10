@@ -4,9 +4,13 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+
 use App\Http\Controllers\AdminContoller;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RolesController;
+
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\TabunganController;
 
 use App\Http\Middleware\AdminMiddleware;
 
