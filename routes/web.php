@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminContoller;
-
+use App\Http\Controllers\TransaksiController;
 use App\Http\Middleware\AdminMiddleware;
 
 
@@ -26,3 +26,6 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
 
 Route::get('/admin/cekSemuaUser', [AdminContoller::class, 'cekSemuaUser']);
+
+
+Route::get('/admin/transaksi/cekTransaksiAll', [TransaksiController::class, 'cekTransaksiAll']);
