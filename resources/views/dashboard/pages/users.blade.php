@@ -233,7 +233,7 @@
                         <a
                           href="apps/customers/view.html"
                           class="menu-link px-3"
-                          >View</a
+                          >Profile</a
                         >
                       </div>
                       <!--end::Menu item-->

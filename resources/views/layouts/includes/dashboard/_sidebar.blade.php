@@ -60,7 +60,7 @@
 													</span>
 													<span class="menu-title">Kelola Posisi</span>
 												</a>
-												<a class="menu-link" href="{{route('users.index')}}">
+												<a class="menu-link" href="{{route('groups.index')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
@@ -70,9 +70,9 @@
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Data Bayar & Pinjam</span>
+													<span class="menu-title"><s>Data Bayar & Pinjam</s></span>
 												</a>
-												<a class="menu-link" href="{{route('users.index')}}">
+												<a class="menu-link" href="{{route('savings.index')}}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>

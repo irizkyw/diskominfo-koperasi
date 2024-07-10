@@ -27,7 +27,7 @@
             <h1
               class="page-heading d-flex flex-column justify-content-center text-gray-900 fw-bold fs-3 m-0"
             >
-              Anggota
+              Golongan
             </h1>
             <!--end::Title-->
             <!--begin::Breadcrumb-->
@@ -45,7 +45,7 @@
               <li class="breadcrumb-item">
                 <span class="bullet bg-gray-500 w-5px h-2px"></span>
               </li>
-              <li class="breadcrumb-item text-muted">Anggota</li>
+              <li class="breadcrumb-item text-muted">Golongan</li>
             </ul>
             <!--end::Breadcrumb-->
           </div>
@@ -95,7 +95,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#kt_modal_add_customer"
                 >
-                  Tambahkan Posisi
+                  Tambahkan Golongan
                 </button>
                 <!--end::Add customer-->
               </div>
@@ -130,7 +130,7 @@
             <!--begin::Table-->
             <table
               class="table align-middle table-row-dashed fs-6 gy-5"
-              id="table_anggota"
+              id="table_golongan"
             >
               <thead>
                 <tr
@@ -144,13 +144,13 @@
                         class="form-check-input"
                         type="checkbox"
                         data-kt-check="true"
-                        data-kt-check-target="#table_anggota .form-check-input"
+                        data-kt-check-target="#table_golongan .form-check-input"
                         value="1"
                       />
                     </div>
                   </th>
-                  <th class="min-w-125px">ID Posisi</th>
-                  <th class="min-w-125px">Nama Posisi</th>
+                  <th class="min-w-125px">ID Golongan</th>
+                  <th class="min-w-125px">Nama Golongan</th>
                   <th class="min-w-125px">DESKRIPSI</th>
                   <th class="text-end min-w-70px">Actions</th>
                 </tr>
@@ -252,7 +252,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header" id="kt_modal_add_customer_header">
                   <!--begin::Modal title-->
-                  <h2 class="fw-bold">Tambahkan Posisi</h2>
+                  <h2 class="fw-bold">Tambahkan Golongan</h2>
                   <!--end::Modal title-->
                   <!--begin::Close-->
                   <div
@@ -280,7 +280,7 @@
                     <!--begin::Input group-->
                     <div class="fv-row mb-7">
                       <!--begin::Label-->
-                      <label class="required fs-6 fw-semibold mb-2">Nama Posisi</label>
+                      <label class="required fs-6 fw-semibold mb-2">Nama Golongan</label>
                       <!--end::Label-->
                       <!--begin::Input-->
                       <input
@@ -412,178 +412,179 @@
 <script src="{{asset('assets/js/custom/utilities/modals/upgrade-plan.js')}}"></script>
 <script src="{{asset('assets/js/custom/utilities/modals/users-search.js')}}"></script>
 <script>
-  var KTCustomersList = (function () {
-      var t,
-          e,
-          o = () => {
-              e.querySelectorAll(
-                  '[data-kt-customer-table-filter="delete_row"]'
-              ).forEach((e) => {
-                  e.addEventListener("click", function (e) {
-                      e.preventDefault();
-                      const o = e.target.closest("tr"),
-                          n = o.querySelectorAll("td")[1].innerText;
-                      Swal.fire({
-                          text: "Are you sure you want to delete " + n + "?",
-                          icon: "warning",
-                          showCancelButton: !0,
-                          buttonsStyling: !1,
-                          confirmButtonText: "Yes, delete!",
-                          cancelButtonText: "No, cancel",
-                          customClass: {
-                              confirmButton: "btn fw-bold btn-danger",
-                              cancelButton:
-                                  "btn fw-bold btn-active-light-primary",
-                          },
-                      }).then(function (e) {
-                          e.value
-                              ? Swal.fire({
-                                    text: "You have deleted " + n + "!.",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn fw-bold btn-primary",
-                                    },
-                                }).then(function () {
-                                    t.row($(o)).remove().draw();
-                                })
-                              : "cancel" === e.dismiss &&
-                                Swal.fire({
-                                    text: n + " was not deleted.",
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn fw-bold btn-primary",
-                                    },
-                                });
-                      });
-                  });
-              });
-          },
-          n = () => {
-              const o = e.querySelectorAll('[type="checkbox"]'),
-                  n = document.querySelector(
-                      '[data-kt-customer-table-select="delete_selected"]'
-                  );
-              o.forEach((t) => {
-                  t.addEventListener("click", function () {
-                      setTimeout(function () {
-                          c();
-                      }, 50);
-                  });
-              }),
-                  n.addEventListener("click", function () {
-                      Swal.fire({
-                          text: "Are you sure you want to delete selected customers?",
-                          icon: "warning",
-                          showCancelButton: !0,
-                          buttonsStyling: !1,
-                          confirmButtonText: "Yes, delete!",
-                          cancelButtonText: "No, cancel",
-                          customClass: {
-                              confirmButton: "btn fw-bold btn-danger",
-                              cancelButton:
-                                  "btn fw-bold btn-active-light-primary",
-                          },
-                      }).then(function (n) {
-                          n.value
-                              ? Swal.fire({
-                                    text: "You have deleted all selected customers!.",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn fw-bold btn-primary",
-                                    },
-                                }).then(function () {
-                                    o.forEach((e) => {
-                                        e.checked &&
-                                            t
-                                                .row($(e.closest("tbody tr")))
-                                                .remove()
-                                                .draw();
-                                    });
-                                    e.querySelectorAll(
-                                        '[type="checkbox"]'
-                                    )[0].checked = !1;
-                                })
-                              : "cancel" === n.dismiss &&
-                                Swal.fire({
-                                    text: "Selected customers was not deleted.",
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn fw-bold btn-primary",
-                                    },
-                                });
-                      });
-                  });
-          };
-      const c = () => {
-          const t = document.querySelector(
-                  '[data-kt-customer-table-toolbar="base"]'
-              ),
-              o = document.querySelector(
-                  '[data-kt-customer-table-toolbar="selected"]'
-              ),
-              n = document.querySelector(
-                  '[data-kt-customer-table-select="selected_count"]'
-              ),
-              c = e.querySelectorAll('tbody [type="checkbox"]');
-          let r = !1,
-              l = 0;
-          c.forEach((t) => {
-              t.checked && ((r = !0), l++);
-          }),
-              r
-                  ? ((n.innerHTML = l),
-                    t.classList.add("d-none"),
-                    o.classList.remove("d-none"))
-                  : (t.classList.remove("d-none"), o.classList.add("d-none"));
-      };
-      return {
-          init: function () {
-              (e = document.querySelector("#table_anggota")) &&
-                  (e.querySelectorAll("tbody tr").forEach((t) => {
-                      const e = t.querySelectorAll("td"),
-                          o = moment(e[5].innerHTML, "DD MMM YYYY, LT").format();
-                      e[5].setAttribute("data-order", o);
-                  }),
-                  (t = $(e).DataTable({
-                      info: !1,
-                      order: [],
-                      columnDefs: [
-                          { orderable: !1, targets: 0 },
-                          { orderable: !1, targets: 4 },
-                      ],
-                  })).on("draw", function () {
-                      n(), o(), c();
-                  }),
-                  n(),
-                  document
-                      .querySelector('[data-kt-customer-table-filter="search"]')
-                      .addEventListener("keyup", function (e) {
-                          t.search(e.target.value).draw();
-                      }),
-                  o(),
-                  (() => {
-                      const e = document.querySelector(
-                          '[data-kt-ecommerce-order-filter="status"]'
-                      );
-                      $(e).on("change", (e) => {
-                          let o = e.target.value;
-                          "all" === o && (o = ""), t.column(3).search(o).draw();
-                      });
-                  })());
-          },
-      };
-  })();
-  KTUtil.onDOMContentLoaded(function () {
-      KTCustomersList.init();
-  });
+  "use strict";
+var KTCustomersList = (function () {
+    var t,
+        e,
+        o = () => {
+            e.querySelectorAll(
+                '[data-kt-customer-table-filter="delete_row"]'
+            ).forEach((e) => {
+                e.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const o = e.target.closest("tr"),
+                        n = o.querySelectorAll("td")[1].innerText;
+                    Swal.fire({
+                        text: "Are you sure you want to delete " + n + "?",
+                        icon: "warning",
+                        showCancelButton: !0,
+                        buttonsStyling: !1,
+                        confirmButtonText: "Yes, delete!",
+                        cancelButtonText: "No, cancel",
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-danger",
+                            cancelButton:
+                                "btn fw-bold btn-active-light-primary",
+                        },
+                    }).then(function (e) {
+                        e.value
+                            ? Swal.fire({
+                                  text: "You have deleted " + n + "!.",
+                                  icon: "success",
+                                  buttonsStyling: !1,
+                                  confirmButtonText: "OK mengerti!",
+                                  customClass: {
+                                      confirmButton: "btn fw-bold btn-primary",
+                                  },
+                              }).then(function () {
+                                  t.row($(o)).remove().draw();
+                              })
+                            : "cancel" === e.dismiss &&
+                              Swal.fire({
+                                  text: n + " was not deleted.",
+                                  icon: "error",
+                                  buttonsStyling: !1,
+                                  confirmButtonText: "OK mengerti!",
+                                  customClass: {
+                                      confirmButton: "btn fw-bold btn-primary",
+                                  },
+                              });
+                    });
+                });
+            });
+        },
+        n = () => {
+            const o = e.querySelectorAll('[type="checkbox"]'),
+                n = document.querySelector(
+                    '[data-kt-customer-table-select="delete_selected"]'
+                );
+            o.forEach((t) => {
+                t.addEventListener("click", function () {
+                    setTimeout(function () {
+                        c();
+                    }, 50);
+                });
+            }),
+                n.addEventListener("click", function () {
+                    Swal.fire({
+                        text: "Are you sure you want to delete selected customers?",
+                        icon: "warning",
+                        showCancelButton: !0,
+                        buttonsStyling: !1,
+                        confirmButtonText: "Yes, delete!",
+                        cancelButtonText: "No, cancel",
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-danger",
+                            cancelButton:
+                                "btn fw-bold btn-active-light-primary",
+                        },
+                    }).then(function (n) {
+                        n.value
+                            ? Swal.fire({
+                                  text: "You have deleted all selected customers!.",
+                                  icon: "success",
+                                  buttonsStyling: !1,
+                                  confirmButtonText: "OK mengerti!",
+                                  customClass: {
+                                      confirmButton: "btn fw-bold btn-primary",
+                                  },
+                              }).then(function () {
+                                  o.forEach((e) => {
+                                      e.checked &&
+                                          t
+                                              .row($(e.closest("tbody tr")))
+                                              .remove()
+                                              .draw();
+                                  });
+                                  e.querySelectorAll(
+                                      '[type="checkbox"]'
+                                  )[0].checked = !1;
+                              })
+                            : "cancel" === n.dismiss &&
+                              Swal.fire({
+                                  text: "Selected customers was not deleted.",
+                                  icon: "error",
+                                  buttonsStyling: !1,
+                                  confirmButtonText: "OK mengerti!",
+                                  customClass: {
+                                      confirmButton: "btn fw-bold btn-primary",
+                                  },
+                              });
+                    });
+                });
+        };
+    const c = () => {
+        const t = document.querySelector(
+                '[data-kt-customer-table-toolbar="base"]'
+            ),
+            o = document.querySelector(
+                '[data-kt-customer-table-toolbar="selected"]'
+            ),
+            n = document.querySelector(
+                '[data-kt-customer-table-select="selected_count"]'
+            ),
+            c = e.querySelectorAll('tbody [type="checkbox"]');
+        let r = !1,
+            l = 0;
+        c.forEach((t) => {
+            t.checked && ((r = !0), l++);
+        }),
+            r
+                ? ((n.innerHTML = l),
+                  t.classList.add("d-none"),
+                  o.classList.remove("d-none"))
+                : (t.classList.remove("d-none"), o.classList.add("d-none"));
+    };
+    return {
+        init: function () {
+            (e = document.querySelector("#table_golongan")) &&
+                (e.querySelectorAll("tbody tr").forEach((t) => {
+                    const e = t.querySelectorAll("td"),
+                        o = moment(e[5].innerHTML, "DD MMM YYYY, LT").format();
+                    e[5].setAttribute("data-order", o);
+                }),
+                (t = $(e).DataTable({
+                    info: !1,
+                    order: [],
+                    columnDefs: [
+                        { orderable: !1, targets: 0 },
+                        { orderable: !1, targets: 4 },
+                    ],
+                })).on("draw", function () {
+                    n(), o(), c();
+                }),
+                n(),
+                document
+                    .querySelector('[data-kt-customer-table-filter="search"]')
+                    .addEventListener("keyup", function (e) {
+                        t.search(e.target.value).draw();
+                    }),
+                o(),
+                (() => {
+                    const e = document.querySelector(
+                        '[data-kt-ecommerce-order-filter="status"]'
+                    );
+                    $(e).on("change", (e) => {
+                        let o = e.target.value;
+                        "all" === o && (o = ""), t.column(3).search(o).draw();
+                    });
+                })());
+        },
+    };
+})();
+KTUtil.onDOMContentLoaded(function () {
+    KTCustomersList.init();
+});
 
 </script>
 @stop

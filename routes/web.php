@@ -25,6 +25,12 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
     Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');
+    Route::get('/groups', function(){
+        return view('dashboard.pages.group');
+    })->name('groups.index');
+    Route::get('/savings', function(){
+        return view('dashboard.pages.savings');
+    })->name('savings.index');
 });
 
 // temp

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('group', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 32); // GOLONGAN 1, 2, dst
+            $table->string('name', 32); // GOLONGAN 1, 2, pensiun, non pensiun
             $table->string('desc', 255); // keterangan golongannya
             $table->Integer('nominal'); // 100k, 150k, dst
             $table->timestamps();

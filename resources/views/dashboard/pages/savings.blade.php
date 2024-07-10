@@ -27,7 +27,7 @@
             <h1
               class="page-heading d-flex flex-column justify-content-center text-gray-900 fw-bold fs-3 m-0"
             >
-              Anggota
+              Data Simpanan
             </h1>
             <!--end::Title-->
             <!--begin::Breadcrumb-->
@@ -45,7 +45,7 @@
               <li class="breadcrumb-item">
                 <span class="bullet bg-gray-500 w-5px h-2px"></span>
               </li>
-              <li class="breadcrumb-item text-muted">Anggota</li>
+              <li class="breadcrumb-item text-muted">Data Simpanan</li>
             </ul>
             <!--end::Breadcrumb-->
           </div>
@@ -75,7 +75,7 @@
                   type="text"
                   data-kt-customer-table-filter="search"
                   class="form-control form-control-solid w-250px ps-13"
-                  placeholder="Cari Posisi"
+                  placeholder="Cari Data"
                 />
               </div>
               <!--end::Search-->
@@ -88,6 +88,34 @@
                 class="d-flex justify-content-end"
                 data-kt-customer-table-toolbar="base"
               >
+                <!--begin::Filter-->
+                <div class="w-150px me-3">
+                  <!--begin::Select2-->
+                  <select
+                    class="form-select form-select-solid"
+                    data-control="select2"
+                    data-hide-search="true"
+                    data-placeholder="Simpanan"
+                    data-kt-ecommerce-order-filter="Simpanan"
+                  >
+                    <option></option>
+                    <option value="all">Semua</option>
+                    <option value="active">Aktif</option>
+                    <option value="locked">Tidak Aktif</option>
+                  </select>
+                  <!--end::Select2-->
+                </div>
+                <!--end::Filter-->
+                <!--begin::Export-->
+                <button
+                  type="button"
+                  class="btn btn-light-primary me-3"
+                  data-bs-toggle="modal"
+                  data-bs-target="#export_modal"
+                >
+                  <i class="ki-outline ki-exit-up fs-2"></i>Export
+                </button>
+                <!--end::Export-->
                 <!--begin::Add customer-->
                 <button
                   type="button"
@@ -95,7 +123,7 @@
                   data-bs-toggle="modal"
                   data-bs-target="#kt_modal_add_customer"
                 >
-                  Tambahkan Posisi
+                  Tambahkan Data
                 </button>
                 <!--end::Add customer-->
               </div>
@@ -130,7 +158,7 @@
             <!--begin::Table-->
             <table
               class="table align-middle table-row-dashed fs-6 gy-5"
-              id="table_anggota"
+              id="table_simpanan"
             >
               <thead>
                 <tr
@@ -144,14 +172,16 @@
                         class="form-check-input"
                         type="checkbox"
                         data-kt-check="true"
-                        data-kt-check-target="#table_anggota .form-check-input"
+                        data-kt-check-target="#table_simpanan .form-check-input"
                         value="1"
                       />
                     </div>
                   </th>
-                  <th class="min-w-125px">ID Posisi</th>
-                  <th class="min-w-125px">Nama Posisi</th>
-                  <th class="min-w-125px">DESKRIPSI</th>
+                  <th class="min-w-125px">Nomor Aggota</th>
+                  <th class="min-w-125px">Tipe Simpanan</th>
+                  <th class="min-w-125px">Nominal</th>
+                  <th class="min-w-125px">Deskripsi</th>
+                  <th class="min-w-125px">Tanggal Transaksi</th>
                   <th class="text-end min-w-70px">Actions</th>
                 </tr>
               </thead>
@@ -185,6 +215,8 @@
                     <div class="badge badge-light-success">Active</div>
                     <!--end::Badges-->
                   </td>
+                  <td>25 Jul 2024, 5:20 pm</td>
+                  <td>25 Jul 2024, 5:20 pm</td>
                   <td class="text-end">
                     <a
                       href="#"
@@ -198,6 +230,15 @@
                       class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
                       data-kt-menu="true"
                     >
+                      <!--begin::Menu item-->
+                      <div class="menu-item px-3">
+                        <a
+                          href="apps/customers/view.html"
+                          class="menu-link px-3"
+                          >Profile</a
+                        >
+                      </div>
+                      <!--end::Menu item-->
                       <!--begin::Menu item-->
                       <div class="menu-item px-3">
                         <a
@@ -252,7 +293,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header" id="kt_modal_add_customer_header">
                   <!--begin::Modal title-->
-                  <h2 class="fw-bold">Tambahkan Posisi</h2>
+                  <h2 class="fw-bold">Tambahkan Data</h2>
                   <!--end::Modal title-->
                   <!--begin::Close-->
                   <div
@@ -277,34 +318,96 @@
                     data-kt-scroll-wrappers="#kt_modal_add_customer_scroll"
                     data-kt-scroll-offset="300px"
                   >
-                    <!--begin::Input group-->
+                  <!--begin::Input group-->
+                    <div class="d-flex flex-column mb-7 fv-row">
+                        <!--begin::Label-->
+                        <label class="fs-6 fw-semibold mb-2">
+                          <span class="required">Nomor simpanan</span>
+                          <span
+                            class="ms-1"
+                            data-bs-toggle="tooltip"
+                            title="Biaya yang harus dibayar setiap bulannya"
+                          >
+                            <i
+                              class="ki-outline ki-information-5 text-gray-500 fs-6"
+                            ></i>
+                          </span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <select
+                          name="roles"
+                          aria-label="Select a Role"
+                          data-control="select2"
+                          data-placeholder="Pilih simpanan"
+                          data-dropdown-parent="#kt_modal_add_customer"
+                          class="form-select form-select-solid fw-bold"
+                        >
+                          <option value="">Pilih Golongan</option>
+                          <option value="1">Golongan I</option>
+                          <option value="2">Golongan II</option>
+                          <option value="3">Golongan III</option>
+                        </select>
+                        <!--end::Input-->
+                      </div>
+                    <!-- endL::input group -->
+
+                    <div class="d-flex flex-column mb-7 fv-row">
+                        <label class="fs-6 fw-semibold mb-2">
+                          <span class="required">Tipe Simpanan</span>
+                          <span
+                            class="ms-1"
+                            data-bs-toggle="tooltip"
+                            title="Biaya yang harus dibayar setiap bulannya"
+                          >
+                            <i
+                              class="ki-outline ki-information-5 text-gray-500 fs-6"
+                            ></i>
+                          </span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <select
+                          name="roles"
+                          aria-label="Select a Role"
+                          data-control="select2"
+                          data-placeholder="Pilih Tipe Simpanan"
+                          data-dropdown-parent="#kt_modal_add_customer"
+                          class="form-select form-select-solid fw-bold"
+                        >
+                          <option value="">Pilih Golongan</option>
+                          <option value="1">Golongan I</option>
+                          <option value="2">Golongan II</option>
+                          <option value="3">Golongan III</option>
+                        </select>
+                    </div>
+
                     <div class="fv-row mb-7">
                       <!--begin::Label-->
-                      <label class="required fs-6 fw-semibold mb-2">Nama Posisi</label>
+                      <label class="required fs-6 fw-semibold mb-2">Nominal</label>
                       <!--end::Label-->
                       <!--begin::Input-->
                       <input
-                        type="text"
+                        type="number"
                         class="form-control form-control-solid"
-                        placeholder="Nama Posisi"
+                        placeholder="Nominal Simpanan"
                         name="name"
                       />
                       <!--end::Input-->
                     </div>
-                    <!--begin::Input group-->
+
                     <div class="fv-row mb-7">
-                      <!--begin::Label-->
-                      <label class="required fs-6 fw-semibold mb-2">Deskripsi</label>
-                      <!--end::Label-->
-                      <!--begin::Input-->
+                      <label class="fs-6 fw-semibold mb-2">Deskripsi</label>
                       <input
                         type="text"
                         class="form-control form-control-solid"
-                        placeholder="Deskripsi Posisi"
-                        name="desc"
+                        placeholder="Deskripsi (Opsional)"
+                        name="name"
                       />
                       <!--end::Input-->
                     </div>
+                    
+                    
                   </div>
                   <!--end::Scroll-->
                 </div>
@@ -343,6 +446,118 @@
           </div>
         </div>
         <!--end::Modal - Customers - Add-->
+        <!--begin::Modal - Adjust Balance-->
+        <div
+          class="modal fade"
+          id="export_modal"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <!--begin::Modal dialog-->
+          <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+              <!--begin::Modal header-->
+              <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2 class="fw-bold">Export simpanan</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div
+                  id="kt_customers_export_close"
+                  class="btn btn-icon btn-sm btn-active-icon-primary"
+                >
+                  <i class="ki-outline ki-cross fs-1"></i>
+                </div>
+                <!--end::Close-->
+              </div>
+              <!--end::Modal header-->
+              <!--begin::Modal body-->
+              <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <!--begin::Form-->
+                <form id="kt_customers_export_form" class="form" action="#">
+
+                  <!--begin::Input group-->
+                  <div class="fv-row mb-10">
+                    <!--begin::Label-->
+                    <label class="fs-5 fw-semibold form-label mb-5"
+                      >Pilih Format Ekspor:</label
+                    >
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <select
+                      data-control="select2"
+                      data-placeholder="Select a format"
+                      data-hide-search="true"
+                      name="format"
+                      class="form-select form-select-solid"
+                    >
+                      <option value="excell">Excel</option>
+                      <option value="pdf">PDF</option>
+                      <option value="cvs">CVS</option>
+                    </select>
+                    <!--end::Input-->
+                  </div>
+                  <!--end::Input group-->
+
+                  <!--begin::Input group-->
+                  <div class="fv-row mb-10">
+                    <!--begin::Label-->
+                    <label class="fs-5 fw-semibold form-label mb-5"
+                      >Pilih Filter Ekspor:</label
+                    >
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <select
+                      data-control="select2"
+                      data-placeholder="Select a format"
+                      data-hide-search="true"
+                      name="format"
+                      class="form-select form-select-solid"
+                    >
+                      <option value="all">Semua</option>
+                      <option value="active">Simpanan Wajib</option>
+                      <option value="locked">Simpanan Pokok</option>
+                      <option value="locked">Simpanan Sukarela</option>
+                    </select>
+                    <!--end::Input-->
+                  </div>
+                  <!--end::Input group-->
+                  <!--begin::Actions-->
+                  <div class="text-center">
+                    <button
+                      type="reset"
+                      id="kt_customers_export_cancel"
+                      class="btn btn-light me-3"
+                    >
+                      Buang
+                    </button>
+                    <button
+                      type="submit"
+                      id="kt_customers_export_submit"
+                      class="btn btn-primary"
+                    >
+                      <span class="indicator-label">Submit</span>
+                      <span class="indicator-progress"
+                        >Please wait...
+                        <span
+                          class="spinner-border spinner-border-sm align-middle ms-2"
+                        ></span
+                      ></span>
+                    </button>
+                  </div>
+                  <!--end::Actions-->
+                </form>
+                <!--end::Form-->
+              </div>
+              <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+          </div>
+          <!--end::Modal dialog-->
+        </div>
+        <!--end::Modal - New Card-->
+        <!--end::Modals-->
       </div>
       <!--end::Content container-->
     </div>
@@ -546,7 +761,7 @@
       };
       return {
           init: function () {
-              (e = document.querySelector("#table_anggota")) &&
+              (e = document.querySelector("#table_simpanan")) &&
                   (e.querySelectorAll("tbody tr").forEach((t) => {
                       const e = t.querySelectorAll("td"),
                           o = moment(e[5].innerHTML, "DD MMM YYYY, LT").format();
@@ -571,7 +786,7 @@
                   o(),
                   (() => {
                       const e = document.querySelector(
-                          '[data-kt-ecommerce-order-filter="status"]'
+                          '[data-kt-ecommerce-order-filter="Simpanan"]'
                       );
                       $(e).on("change", (e) => {
                           let o = e.target.value;
