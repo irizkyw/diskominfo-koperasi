@@ -62,8 +62,8 @@ return new class extends Migration
             $table->string('name', 64);
             $table->string('username', 16)->unique();
             $table->string('password', 255);
+            $table->string('group', 255);
             $table->foreignId('role_id')->constrained()->onDelete('cascade');
-            $table->rememberToken();
             $table->timestamps();
         });
 

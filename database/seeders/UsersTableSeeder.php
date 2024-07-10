@@ -30,10 +30,21 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('Password#321'),
                 'role_id' => $memberRole->id,
             ],
+            [
+                'name' => 'Admin Kodija',
+                'num_member' => 0,
+                'username' => 'Admin@666',
+                'password' => Hash::make('Admin#123'),
+                'role_id' => $adminRole->id,
+            ],
         ];
 
-        foreach ($users as $user) {
-            User::create($user);
+        foreach ($users as $userData) {
+            $user = User::where('username', $userData['username'])->first();
+
+            if (!$user) {
+                User::create($userData);
+            }
         }
     }
 }

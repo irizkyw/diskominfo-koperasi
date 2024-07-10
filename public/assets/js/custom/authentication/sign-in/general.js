@@ -50,7 +50,7 @@ var KTSigninGeneral = (function () {
                                     text: response.data.message,
                                     icon: "success",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "OK mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary",
                                     },
@@ -71,7 +71,7 @@ var KTSigninGeneral = (function () {
                                         "An error occurred, please try again.",
                                     icon: "error",
                                     buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
+                                    confirmButtonText: "OK mengerti!",
                                     customClass: {
                                         confirmButton: "btn btn-primary",
                                     },
@@ -82,7 +82,7 @@ var KTSigninGeneral = (function () {
                             text: "Maaf, sepertinya ada beberapa kesalahan yang anda inputkan, silakan coba lagi.",
                             icon: "error",
                             buttonsStyling: !1,
-                            confirmButtonText: "Ok, got it!",
+                            confirmButtonText: "OK mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                             },
