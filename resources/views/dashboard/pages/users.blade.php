@@ -105,8 +105,8 @@
                   >
                     <option></option>
                     <option value="all">Semua</option>
-                    <option value="active">Aktif</option>
-                    <option value="locked">Tidak Aktif</option>
+                    <option value="Anggota">Anggota</option>
+                    <option value="Tidak Aktif">Tidak Aktif</option>
                   </select>
                   <!--end::Select2-->
                 </div>
@@ -184,8 +184,8 @@
                   </th>
                   <th class="min-w-125px">Nomor anggota</th>
                   <th class="min-w-125px">Nama Lengkap</th>
-                  <th class="min-w-125px">Role</th>
                   <th class="min-w-125px">Status</th>
+                  <th class="min-w-125px">Role</th>
                   <th class="min-w-125px">Daftar Sejak</th>
                   <th class="text-end min-w-70px">Actions</th>
                 </tr>
@@ -216,19 +216,18 @@
                       >{{$data->name}}</a
                     >
                   </td>
-                  <td>
-                    <!--begin::Badges-->
-                    {{$data->role->name}}
-                    <!-- <div class="badge badge-light-success">Active</div> -->
-                    <!--end::Badges-->
-                  </td>
+                  
                   <td>
                     @if($data->status_active)
-                        <div class="badge badge-light-success">Aktif</div>
+                        <div class="badge badge-light-success">Anggota</div>
                     @else
                         <div class="badge badge-light-danger">Tidak Aktif</div>
                     @endif
                 </td>
+                
+                  <td>
+                    {{$data->role->name}}
+                  </td>
 
                   <td>{{ $data->created_at->format('d M Y, h:i a') }}</td>
                   <td class="text-end">
@@ -537,8 +536,8 @@
                       class="form-select form-select-solid"
                     >
                       <option value="all">Semua</option>
-                      <option value="active">Anggota Aktif</option>
-                      <option value="locked">Anggota Non Aktif</option>
+                      <option value="true">Aktif</option>
+                      <option value="false">Anggota Non Aktif</option>
                     </select>
                     <!--end::Input-->
                   </div>
@@ -580,7 +579,22 @@
                           name="payment_type"
                         />
                         <span class="form-check-label text-gray-600 fw-semibold"
-                          >Nama Anggota</span
+                          >Nomor & Nama Anggota</span
+                        >
+                      </label>
+                      <!--end::Radio button-->
+                       <!--begin::Radio button-->
+                      <label
+                        class="form-check form-check-custom form-check-sm form-check-solid mb-3"
+                      >
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value="2"
+                          name="payment_type"
+                        />
+                        <span class="form-check-label text-gray-600 fw-semibold"
+                          >Username</span
                         >
                       </label>
                       <!--end::Radio button-->
@@ -595,7 +609,7 @@
                           name="payment_type"
                         />
                         <span class="form-check-label text-gray-600 fw-semibold"
-                          >Username</span
+                          >Status Aktif</span
                         >
                       </label>
                       <!--end::Radio button-->
@@ -914,8 +928,8 @@
                       class="form-select form-select-solid"
                     >
                       <option value="all">Semua</option>
-                      <option value="active">Anggota Aktif</option>
-                      <option value="locked">Anggota Non Aktif</option>
+                      <option value="Aktif">Anggota Aktif</option>
+                      <option value="Tidak Aktif">Anggota Non Aktif</option>
                     </select>
                     <!--end::Input-->
                   </div>
@@ -1183,26 +1197,26 @@
                                             <a href="apps/ecommerce/customers/details.html" class="text-gray-800 text-hover-primary mb-1">${numMemberFormatted}</a>
                                         </td>
                                         <td>${data.user.name}</td>
-                                        <td>${data.user.role.name}</td>
                                         <td>${statusBadge}</td>
+                                        <td>${data.user.role.name}</td>
                                         <td>${dateFormatted}</td>
                                         <td class="text-end">
-                                            <!-- Actions buttons -->
-                                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
-                                                <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
-                                                <span class="svg-icon svg-icon-2">
-                                                    <i class="fas fa-pen"></i>
-                                                </span>
-                                                <!--end::Svg Icon-->
-                                            </a>
-                                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
-                                                <!--begin::Svg Icon | path: icons/duotone/General/Trash.svg-->
-                                                <span class="svg-icon svg-icon-2">
-                                                    <i class="fas fa-trash"></i>
-                                                </span>
-                                                <!--end::Svg Icon-->
-                                            </a>
-                                        </td>
+                                          <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                              <span class="svg-icon svg-icon-2">
+                                                  <i class="fas fa-pen"></i>
+                                              </span>
+                                          </a>
+                                          <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                              <span class="svg-icon svg-icon-2">
+                                                  <i class="fas fa-trash"></i>
+                                              </span>
+                                          </a>
+                                          <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                              <span class="svg-icon svg-icon-2">
+                                                  <i class="fas fa-user"></i>
+                                              </span>
+                                          </a>
+                                      </td>
                                     `;
                                     tbody.prepend(newRow);
                                 }
@@ -1388,7 +1402,7 @@
 
                                       const tbody = document.querySelector('#table_anggota tbody');
                                       const newRow = document.createElement('tr');
-                                      const statusBadge = data.user.status_active ?  '<div class="badge badge-light-success">Aktif</div>' :  '<div class="badge badge-light-danger">Tidak Aktif</div>';
+                                      const statusBadge = data.user.status_active ?  '<div class="badge badge-light-success">Anggota</div>' :  '<div class="badge badge-light-danger">Tidak Aktif</div>';
                                       newRow.innerHTML = `
                                           <td>
                                               <div class="form-check form-check-sm form-check-custom form-check-solid">
