@@ -109,10 +109,17 @@ class UsersController extends Controller
         return response()->json($user);
     }
 
-    public function deleteUser($id)
+    public function deleteUser($num_member)
     {
-        $user = User::find($id);
+        $user = User::where('num_member', $num_member)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
         $user->delete();
-        return response()->json($user);
+
+        return response()->json(['message' => 'User deleted successfully.']);
     }
+
 }

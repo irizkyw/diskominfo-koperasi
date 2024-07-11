@@ -30,6 +30,7 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
     Route::get('/users/generate', [UsersController::class, 'getNewMemberNumber'])->name('users.generate_number');
     Route::post('/users/create', [UsersController::class, 'createUser'])->name('users.create');
+    Route::delete('/users/destory/{id}', [UsersController::class, 'deleteUser'])->name('users.destroy');
 
     Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');
     Route::get('/groups', function(){
