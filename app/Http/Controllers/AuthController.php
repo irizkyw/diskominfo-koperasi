@@ -12,7 +12,6 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->intended('/dashboard');
         }
-
         return view('landing.sign_in');
     }
 
@@ -25,17 +24,26 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            $request->session()->regenerate();
-            return response()->json([
-                'message' => 'You have successfully logged in!',
-                'redirect' => '/dashboard',
-            ], 200);
+            if (Auth::user()->status_active) {
+                $request->session()->regenerate();
+
+                return response()->json([
+                    'message' => 'You have successfully logged in!',
+                    'redirect' => '/dashboard',
+                ], 200);
+            } else {
+                Auth::logout();
+                return response()->json([
+                    'error' => 'Akun Anda tidak aktif. Silakan hubungi administrator.',
+                ], 422);
+            }
         } else {
             return response()->json([
                 'error' => 'Username atau password yang anda masukan salah!'
             ], 422);
         }
     }
+
 
     public function logout(Request $request)
     {

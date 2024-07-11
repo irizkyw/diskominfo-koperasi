@@ -55,49 +55,50 @@ class UsersController extends Controller
     }         
 
     public function createUser(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'name' => 'required|string|max:255',
-        'num_member' => 'required|string|max:255',
-        'roles' => 'required'
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'num_member' => 'required|string|max:255',
+            'roles' => 'required'
+        ]);
 
-    if ($validator->fails()) {
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $generateUniqueUsername = function ($name) {
+            do {
+                $words = explode(' ', $name);
+                $selectedWord = $words[array_rand($words)];
+                $randomPart = Str::random(4);
+                $username = ucfirst(Str::slug($selectedWord, '')) . '#' . strtoupper($randomPart);
+                $username = substr($username, 0, 16);
+                $userExists = User::where('username', $username)->exists();
+            } while ($userExists);
+
+            return $username;
+        };
+
+        $username = $generateUniqueUsername($request->name);
+
+        $user = User::create([
+            'name' => $request->name,
+            'num_member' => $request->num_member,
+            'username' => $username,
+            'password' => Hash::make($username . '#' . $request->num_member),
+            'role_id' => $request->roles,
+            'status_active' => true
+        ]);
+
+        $user = $user->load('role');
+
         return response()->json([
-            'errors' => $validator->errors(),
-        ], 422);
+            'message' => 'Data telah ditambahakan',
+            'user' => $user
+        ], 200);
     }
-
-    $generateUniqueUsername = function ($name) {
-        do {
-            $words = explode(' ', $name);
-            $selectedWord = $words[array_rand($words)];
-            $randomPart = Str::random(4);
-            $username = ucfirst(Str::slug($selectedWord, '')) . '#' . strtoupper($randomPart);
-            $username = substr($username, 0, 16);
-            $userExists = User::where('username', $username)->exists();
-        } while ($userExists);
-
-        return $username;
-    };
-
-    $username = $generateUniqueUsername($request->name);
-
-    $user = User::create([
-        'name' => $request->name,
-        'num_member' => $request->num_member,
-        'username' => $username,
-        'password' => Hash::make($username . '#' . $request->num_member),
-        'role_id' => $request->roles, // Adjust the field name to match the form
-    ]);
-
-    $user = $user->load('role');
-
-    return response()->json([
-        'message' => 'Pembuatan akun berhasil',
-        'user' => $user
-    ], 200);
-}
 
 
 

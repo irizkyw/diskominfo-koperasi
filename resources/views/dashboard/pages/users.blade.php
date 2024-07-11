@@ -222,7 +222,14 @@
                     <!-- <div class="badge badge-light-success">Active</div> -->
                     <!--end::Badges-->
                   </td>
-                  <td><div class="badge badge-light-success">Aktif</div></td>
+                  <td>
+                    @if($data->status_active)
+                        <div class="badge badge-light-success">Aktif</div>
+                    @else
+                        <div class="badge badge-light-danger">Tidak Aktif</div>
+                    @endif
+                </td>
+
                   <td>{{ $data->created_at->format('d M Y, h:i a') }}</td>
                   <td class="text-end">
                     <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
@@ -1158,6 +1165,14 @@
 
                                     const tbody = document.querySelector('#table_anggota tbody');
                                     const newRow = document.createElement('tr');
+                                    const numMemberFormatted = String(data.user.num_member).padStart(3, '0')
+                                    const statusBadge = data.user.status_active ? 
+                                        '<div class="badge badge-light-success">Aktif</div>' : 
+                                        '<div class="badge badge-light-danger">Tidak Aktif</div>';
+
+                                    const date = new Date(data.user.created_at);
+                                    const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
+                                    const dateFormatted = new Intl.DateTimeFormat('en-US', options).format(date);
                                     newRow.innerHTML = `
                                         <td>
                                             <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -1165,11 +1180,12 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <a href="apps/ecommerce/customers/details.html" class="text-gray-800 text-hover-primary mb-1">${data.user.num_member}</a>
+                                            <a href="apps/ecommerce/customers/details.html" class="text-gray-800 text-hover-primary mb-1">${numMemberFormatted}</a>
                                         </td>
                                         <td>${data.user.name}</td>
                                         <td>${data.user.role.name}</td>
-                                        <td>${data.user.created_at}</td>
+                                        <td>${statusBadge}</td>
+                                        <td>${dateFormatted}</td>
                                         <td class="text-end">
                                             <!-- Actions buttons -->
                                             <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
@@ -1372,6 +1388,7 @@
 
                                       const tbody = document.querySelector('#table_anggota tbody');
                                       const newRow = document.createElement('tr');
+                                      const statusBadge = data.user.status_active ?  '<div class="badge badge-light-success">Aktif</div>' :  '<div class="badge badge-light-danger">Tidak Aktif</div>';
                                       newRow.innerHTML = `
                                           <td>
                                               <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -1383,6 +1400,7 @@
                                           </td>
                                           <td>${data.user.name}</td>
                                           <td>${data.user.role ? data.user.role.name : '-'}</td>
+                                           <td>${statusBadge}</td>
                                           <td>${new Date(data.user.created_at).toLocaleDateString()}</td>
                                           <td class="text-end">
                                               <!-- Actions buttons -->
