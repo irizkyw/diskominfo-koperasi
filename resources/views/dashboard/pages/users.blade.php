@@ -1,10 +1,15 @@
-@extends('layouts.dashboard.master') @section('styles')
+@extends('layouts.dashboard.master') 
+@section('styles')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <link
   href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}"
   rel="stylesheet"
   type="text/css"
 />
-@endsection @section('content')
+@endsection 
+
+@section('content')
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
   <!--begin::Content wrapper-->
   <div class="d-flex flex-column flex-column-fluid">
@@ -121,7 +126,7 @@
                   type="button"
                   class="btn btn-primary"
                   data-bs-toggle="modal"
-                  data-bs-target="#kt_modal_add_customer"
+                  data-bs-target="#kt_modal_add_users"
                 >
                   Tambahkan Anggota
                 </button>
@@ -180,6 +185,7 @@
                   <th class="min-w-125px">Nomor anggota</th>
                   <th class="min-w-125px">Nama Lengkap</th>
                   <th class="min-w-125px">Role</th>
+                  <th class="min-w-125px">Status</th>
                   <th class="min-w-125px">Daftar Sejak</th>
                   <th class="text-end min-w-70px">Actions</th>
                 </tr>
@@ -202,7 +208,7 @@
                     <a
                       href="apps/ecommerce/customers/details.html"
                       class="text-gray-800 text-hover-primary mb-1"
-                      >{{$data->num_member}}</a
+                      >{{ str_pad($data->num_member, 3, '0', STR_PAD_LEFT) }}</a
                     >
                   </td>
                   <td>
@@ -216,52 +222,26 @@
                     <!-- <div class="badge badge-light-success">Active</div> -->
                     <!--end::Badges-->
                   </td>
+                  <td><div class="badge badge-light-success">Aktif</div></td>
                   <td>{{ $data->created_at->format('d M Y, h:i a') }}</td>
                   <td class="text-end">
-                    <a
-                      href="#"
-                      class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary"
-                      data-kt-menu-trigger="click"
-                      data-kt-menu-placement="bottom-end"
-                      >Actions <i class="ki-outline ki-down fs-5 ms-1"></i
-                    ></a>
-                    <!--begin::Menu-->
-                    <div
-                      class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                      data-kt-menu="true"
-                    >
-                      <!--begin::Menu item-->
-                      <div class="menu-item px-3">
-                        <a
-                          href="apps/customers/view.html"
-                          class="menu-link px-3"
-                          >Profile</a
-                        >
-                      </div>
-                      <!--end::Menu item-->
-                      <!--begin::Menu item-->
-                      <div class="menu-item px-3">
-                        <a
-                          href="#"
-                          class="menu-link px-3"
-                          data-kt-customer-table-filter="edit_row"
-                          >Edit</a
-                        >
-                      </div>
-                      <!--end::Menu item-->
-                      <!--begin::Menu item-->
-                      <div class="menu-item px-3">
-                        <a
-                          href="#"
-                          class="menu-link px-3"
-                          data-kt-customer-table-filter="delete_row"
-                          >Delete</a
-                        >
-                      </div>
-                      <!--end::Menu item-->
-                    </div>
-                    <!--end::Menu-->
-                  </td>
+                    <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                        <span class="svg-icon svg-icon-2">
+                            <i class="fas fa-pen"></i>
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                        <span class="svg-icon svg-icon-2">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                        <span class="svg-icon svg-icon-2">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </a>
+                </td>
+
                 </tr>
                 @endforeach
               </tbody>
@@ -272,11 +252,12 @@
           <!--end::Card body-->
         </div>
         <!--end::Card-->
-        <!--begin::Modals-->
-        <!--begin::Modal - Customers - Add-->
+
+
+        <!--begin::Modals Create-->
         <div
           class="modal fade"
-          id="kt_modal_add_customer"
+          id="kt_modal_add_users"
           tabindex="-1"
           aria-hidden="true"
         >
@@ -287,18 +268,19 @@
               <!--begin::Form-->
               <form
                 class="form"
-                action="#"
-                id="kt_modal_add_customer_form"
-                data-kt-redirect="apps/customers/list.html"
+                action="{{route('users.create')}}"
+                id="kt_modal_add_users_form"
+                data-kt-redirect="{{route('users.index')}}"
               >
+              @csrf
                 <!--begin::Modal header-->
-                <div class="modal-header" id="kt_modal_add_customer_header">
+                <div class="modal-header" id="kt_modal_add_users_header">
                   <!--begin::Modal title-->
                   <h2 class="fw-bold">Tambahkan Anggota</h2>
                   <!--end::Modal title-->
                   <!--begin::Close-->
                   <div
-                    id="kt_modal_add_customer_close"
+                    id="kt_modal_add_users_close"
                     class="btn btn-icon btn-sm btn-active-icon-primary"
                   >
                     <i class="ki-outline ki-cross fs-1"></i>
@@ -311,12 +293,12 @@
                   <!--begin::Scroll-->
                   <div
                     class="scroll-y me-n7 pe-7"
-                    id="kt_modal_add_customer_scroll"
+                    id="kt_modal_add_users_scroll"
                     data-kt-scroll="true"
                     data-kt-scroll-activate="{default: false, lg: true}"
                     data-kt-scroll-max-height="auto"
-                    data-kt-scroll-dependencies="#kt_modal_add_customer_header"
-                    data-kt-scroll-wrappers="#kt_modal_add_customer_scroll"
+                    data-kt-scroll-dependencies="#kt_modal_add_users_header"
+                    data-kt-scroll-wrappers="#kt_modal_add_users_scroll"
                     data-kt-scroll-offset="300px"
                   >
                   <!--begin::Input group-->
@@ -330,6 +312,7 @@
                           class="form-control form-control-solid"
                           placeholder="Nomor Anggota"
                           name="num_member"
+                          id="num_member"
                           disabled
                         />
                         <!--end::Input-->
@@ -338,7 +321,7 @@
                     <!--begin::Input group-->
                     <div class="fv-row mb-7">
                       <!--begin::Label-->
-                      <label class="required fs-6 fw-semibold mb-2">Name</label>
+                      <label class="required fs-6 fw-semibold mb-2">Nama Lengkap</label>
                       <!--end::Label-->
                       <!--begin::Input-->
                       <input
@@ -367,17 +350,17 @@
                         <!--end::Label-->
                         <!--begin::Input-->
                         <select
-                          name="roles"
-                          aria-label="Select a Role"
+                          name="group"
+                          aria-label="Pilih Golongan"
                           data-control="select2"
-                          data-placeholder="Pilih Posisi"
-                          data-dropdown-parent="#kt_modal_add_customer"
+                          data-placeholder="Pilih Golongan"
+                          data-dropdown-parent="#kt_modal_add_users"
                           class="form-select form-select-solid fw-bold"
                         >
                           <option value="">Pilih Golongan</option>
-                          <option value="1">Golongan I</option>
-                          <option value="2">Golongan II</option>
-                          <option value="3">Golongan III</option>
+                          @foreach($groups as $data)
+                          <option value="{{$data->id}}">{{$data->name}}</option>
+                          @endforeach
                         </select>
                         <!--end::Input-->
                       </div>
@@ -388,19 +371,19 @@
                       <input
                         type="number"
                         class="form-control form-control-solid"
-                        placeholder="Simpanan Wajib (Opsional)"
-                        name="name"
+                        placeholder="Simpanan Wajib Pertama kali daftar (Opsional)"
+                        name="mandatory_savings"
                       />
                       <!--end::Input-->
                     </div>
 
                     <div class="fv-row mb-7">
-                      <label class="fs-6 fw-semibold mb-2">Dana Sukarela</label>
+                      <label class="fs-6 fw-semibold mb-2">Simpanan Sukarela</label>
                       <input
                         type="number"
                         class="form-control form-control-solid"
-                        placeholder="Dana Sukarela (Opsional)"
-                        name="name"
+                        placeholder="Simpanan Sukarela (Opsional)"
+                        name="voluntary_savings"
                       />
                       <!--end::Input-->
                     </div>
@@ -427,12 +410,13 @@
                           aria-label="Select a Role"
                           data-control="select2"
                           data-placeholder="Pilih Posisi"
-                          data-dropdown-parent="#kt_modal_add_customer"
+                          data-dropdown-parent="#kt_modal_add_users"
                           class="form-select form-select-solid fw-bold"
                         >
                           <option value="">Pilih Posisi</option>
-                          <option value="Member">Anggota</option>
-                          <option value="Administrator">Administrator</option>
+                          @foreach($roles as $data)
+                          <option value="{{$data->id}}">{{$data->name}}</option>
+                          @endforeach
                         </select>
                         <!--end::Input-->
                       </div>
@@ -446,7 +430,7 @@
                   <!--begin::Button-->
                   <button
                     type="reset"
-                    id="kt_modal_add_customer_cancel"
+                    id="kt_modal_add_users_cancel"
                     class="btn btn-light me-3"
                   >
                     Buang
@@ -455,7 +439,7 @@
                   <!--begin::Button-->
                   <button
                     type="submit"
-                    id="kt_modal_add_customer_submit"
+                    id="kt_modal_add_users_submit"
                     class="btn btn-primary"
                   >
                     <span class="indicator-label">Submit</span>
@@ -645,8 +629,384 @@
           </div>
           <!--end::Modal dialog-->
         </div>
-        <!--end::Modal - New Card-->
-        <!--end::Modals-->
+        <!--end::Modals Create-->
+
+        <!--begin::Modals Edit-->
+        <div
+          class="modal fade"
+          id="kt_modal_edit_users"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <!--begin::Modal dialog-->
+          <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+              <!--begin::Form-->
+              <form
+                class="form"
+                action="{{route('users.create')}}"
+                id="kt_modal_edit_users_form"
+                data-kt-redirect="{{route('users.index')}}"
+              >
+              @csrf
+                <!--begin::Modal header-->
+                <div class="modal-header" id="kt_modal_edit_users_header">
+                  <!--begin::Modal title-->
+                  <h2 class="fw-bold">Merubah Data Anggota</h2>
+                  <!--end::Modal title-->
+                  <!--begin::Close-->
+                  <div
+                    id="kt_modal_edit_users_close"
+                    class="btn btn-icon btn-sm btn-active-icon-primary"
+                  >
+                    <i class="ki-outline ki-cross fs-1"></i>
+                  </div>
+                  <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-10 px-lg-17">
+                  <!--begin::Scroll-->
+                  <div
+                    class="scroll-y me-n7 pe-7"
+                    id="kt_modal_edit_users_scroll"
+                    data-kt-scroll="true"
+                    data-kt-scroll-activate="{default: false, lg: true}"
+                    data-kt-scroll-max-height="auto"
+                    data-kt-scroll-dependencies="#kt_modal_edit_users_header"
+                    data-kt-scroll-wrappers="#kt_modal_edit_users_scroll"
+                    data-kt-scroll-offset="300px"
+                  >
+                  <!--begin::Input group-->
+                    <div class="fv-row mb-7">
+                        <!--begin::Label-->
+                        <label class="required fs-6 fw-semibold mb-2">Nomor anggota</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input
+                          type="text"
+                          class="form-control form-control-solid"
+                          placeholder="Nomor Anggota"
+                          name="num_member"
+                          id="num_member"
+                          disabled
+                        />
+                        <!--end::Input-->
+                    </div>
+                    <!-- endL::input group -->
+                    <!--begin::Input group-->
+                    <div class="fv-row mb-7">
+                      <!--begin::Label-->
+                      <label class="required fs-6 fw-semibold mb-2">Nama Lengkap</label>
+                      <!--end::Label-->
+                      <!--begin::Input-->
+                      <input
+                        type="text"
+                        class="form-control form-control-solid"
+                        placeholder="Nama Anggota"
+                        name="name"
+                      />
+                      <!--end::Input-->
+                    </div>
+                      <!--begin::Input group-->
+                      <div class="d-flex flex-column mb-7 fv-row">
+                        <!--begin::Label-->
+                        <label class="fs-6 fw-semibold mb-2">
+                          <span class="required">Golongan</span>
+                          <span
+                            class="ms-1"
+                            data-bs-toggle="tooltip"
+                            title="Biaya yang harus dibayar setiap bulannya"
+                          >
+                            <i
+                              class="ki-outline ki-information-5 text-gray-500 fs-6"
+                            ></i>
+                          </span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <select
+                          name="group"
+                          aria-label="Pilih Golongan"
+                          data-control="select2"
+                          data-placeholder="Pilih Golongan"
+                          data-dropdown-parent="#kt_modal_edit_users"
+                          class="form-select form-select-solid fw-bold"
+                        >
+                          <option value="">Pilih Golongan</option>
+                          @foreach($groups as $data)
+                          <option value="{{$data->id}}">{{$data->name}}</option>
+                          @endforeach
+                        </select>
+                        <!--end::Input-->
+                      </div>
+                      <!--end::Input group-->
+                      <!--begin::Input group-->
+                      <div class="fv-row mb-7">
+                      <label class="fs-6 fw-semibold mb-2">Simpanan Wajib</label>
+                      <input
+                        type="number"
+                        class="form-control form-control-solid"
+                        placeholder="Simpanan Wajib Pertama kali daftar (Opsional)"
+                        name="mandatory_savings"
+                      />
+                      <!--end::Input-->
+                    </div>
+
+                    <div class="fv-row mb-7">
+                      <label class="fs-6 fw-semibold mb-2">Simpanan Sukarela</label>
+                      <input
+                        type="number"
+                        class="form-control form-control-solid"
+                        placeholder="Simpanan Sukarela (Opsional)"
+                        name="voluntary_savings"
+                      />
+                      <!--end::Input-->
+                    </div>
+                      <!--begin::Input group-->
+                      <!--begin::Input group-->
+                      <div class="d-flex flex-column mb-7 fv-row">
+                        <!--begin::Label-->
+                        <label class="fs-6 fw-semibold mb-2">
+                          <span class="required">Posisi</span>
+                          <span
+                            class="ms-1"
+                            data-bs-toggle="tooltip"
+                            title="Akses akun"
+                          >
+                            <i
+                              class="ki-outline ki-information-5 text-gray-500 fs-6"
+                            ></i>
+                          </span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <select
+                          name="roles"
+                          aria-label="Select a Role"
+                          data-control="select2"
+                          data-placeholder="Pilih Posisi"
+                          data-dropdown-parent="#kt_modal_edit_users"
+                          class="form-select form-select-solid fw-bold"
+                        >
+                          <option value="">Pilih Posisi</option>
+                          @foreach($roles as $data)
+                          <option value="{{$data->id}}">{{$data->name}}</option>
+                          @endforeach
+                        </select>
+                        <!--end::Input-->
+                      </div>
+                      <!--end::Input group-->
+                  </div>
+                  <!--end::Scroll-->
+                </div>
+                <!--end::Modal body-->
+                <!--begin::Modal footer-->
+                <div class="modal-footer flex-center">
+                  <!--begin::Button-->
+                  <button
+                    type="reset"
+                    id="kt_modal_edit_users_cancel"
+                    class="btn btn-light me-3"
+                  >
+                    Buang
+                  </button>
+                  <!--end::Button-->
+                  <!--begin::Button-->
+                  <button
+                    type="submit"
+                    id="kt_modal_edit_users_submit"
+                    class="btn btn-primary"
+                  >
+                    <span class="indicator-label">Submit</span>
+                    <span class="indicator-progress"
+                      >Please wait...
+                      <span
+                        class="spinner-border spinner-border-sm align-middle ms-2"
+                      ></span
+                    ></span>
+                  </button>
+                  <!--end::Button-->
+                </div>
+                <!--end::Modal footer-->
+              </form>
+              <!--end::Form-->
+            </div>
+          </div>
+        </div>
+        <!--end::Modal - Customers - Add-->
+        <!--begin::Modal - Adjust Balance-->
+        <div
+          class="modal fade"
+          id="kt_customers_export_modal"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <!--begin::Modal dialog-->
+          <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+              <!--begin::Modal header-->
+              <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2 class="fw-bold">Export Anggota</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div
+                  id="kt_customers_export_close"
+                  class="btn btn-icon btn-sm btn-active-icon-primary"
+                >
+                  <i class="ki-outline ki-cross fs-1"></i>
+                </div>
+                <!--end::Close-->
+              </div>
+              <!--end::Modal header-->
+              <!--begin::Modal body-->
+              <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <!--begin::Form-->
+                <form id="kt_customers_export_form" class="form" action="#">
+
+                  <!--begin::Input group-->
+                  <div class="fv-row mb-10">
+                    <!--begin::Label-->
+                    <label class="fs-5 fw-semibold form-label mb-5"
+                      >Pilih Format Ekspor:</label
+                    >
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <select
+                      data-control="select2"
+                      data-placeholder="Select a format"
+                      data-hide-search="true"
+                      name="format"
+                      class="form-select form-select-solid"
+                    >
+                      <option value="excell">Excel</option>
+                      <option value="pdf">PDF</option>
+                      <option value="cvs">CVS</option>
+                      <option value="zip">ZIP</option>
+                    </select>
+                    <!--end::Input-->
+                  </div>
+                  <!--end::Input group-->
+
+                  <!--begin::Input group-->
+                  <div class="fv-row mb-10">
+                    <!--begin::Label-->
+                    <label class="fs-5 fw-semibold form-label mb-5"
+                      >Pilih Filter Ekspor:</label
+                    >
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <select
+                      data-control="select2"
+                      data-placeholder="Select a format"
+                      data-hide-search="true"
+                      name="format"
+                      class="form-select form-select-solid"
+                    >
+                      <option value="all">Semua</option>
+                      <option value="active">Anggota Aktif</option>
+                      <option value="locked">Anggota Non Aktif</option>
+                    </select>
+                    <!--end::Input-->
+                  </div>
+                  <!--end::Input group-->
+
+                  <!--begin::Row-->
+                  <div class="row fv-row mb-15">
+                    <!--begin::Label-->
+                    <label class="fs-5 fw-semibold form-label mb-5"
+                      >Daftar Informasi:</label
+                    >
+                    <!--end::Label-->
+                    <!--begin::Radio group-->
+                    <div class="d-flex flex-column">
+                      <!--begin::Radio button-->
+                      <label
+                        class="form-check form-check-custom form-check-sm form-check-solid mb-3"
+                      >
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value="1"
+                          checked="checked"
+                          name="payment_type"
+                        />
+                        <span class="form-check-label text-gray-600 fw-semibold"
+                          >Semua</span
+                        >
+                      </label>
+                      <!--end::Radio button-->
+                       <!--begin::Radio button-->
+                      <label
+                        class="form-check form-check-custom form-check-sm form-check-solid mb-3"
+                      >
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value="3"
+                          name="payment_type"
+                        />
+                        <span class="form-check-label text-gray-600 fw-semibold"
+                          >Nama Anggota</span
+                        >
+                      </label>
+                      <!--end::Radio button-->
+                      <!--begin::Radio button-->
+                      <label
+                        class="form-check form-check-custom form-check-sm form-check-solid mb-3"
+                      >
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value="2"
+                          name="payment_type"
+                        />
+                        <span class="form-check-label text-gray-600 fw-semibold"
+                          >Username</span
+                        >
+                      </label>
+                      <!--end::Radio button-->
+                    </div>
+                    <!--end::Input group-->
+                  </div>
+                  <!--end::Row-->
+                  <!--begin::Actions-->
+                  <div class="text-center">
+                    <button
+                      type="reset"
+                      id="kt_customers_export_cancel"
+                      class="btn btn-light me-3"
+                    >
+                      Buang
+                    </button>
+                    <button
+                      type="submit"
+                      id="kt_customers_export_submit"
+                      class="btn btn-primary"
+                    >
+                      <span class="indicator-label">Submit</span>
+                      <span class="indicator-progress"
+                        >Please wait...
+                        <span
+                          class="spinner-border spinner-border-sm align-middle ms-2"
+                        ></span
+                      ></span>
+                    </button>
+                  </div>
+                  <!--end::Actions-->
+                </form>
+                <!--end::Form-->
+              </div>
+              <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+          </div>
+          <!--end::Modal dialog-->
+        </div>
+        <!--end::Modals Create-->
       </div>
       <!--end::Content container-->
     </div>
@@ -708,7 +1068,435 @@
 @section('scripts')
 <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
 <script src="{{asset('assets/js/custom/apps/ecommerce/customers/listing/listing.js')}}"></script>
-<script src="{{asset('assets/js/custom/apps/ecommerce/customers/listing/add.js')}}"></script>
+<!-- <script src="{{asset('assets/js/custom/apps/ecommerce/customers/listing/add.js')}}"></script> -->
+
+<!-- ADD USER -->
+<script>
+  var KTModalCustomersAdd = (function () {
+      var t, e, o, n, r, i;
+      return {
+          init: function () {
+              (i = new bootstrap.Modal(document.querySelector("#kt_modal_add_users"))),
+              (r = document.querySelector("#kt_modal_add_users_form")),
+              (t = r.querySelector("#kt_modal_add_users_submit")),
+              (e = r.querySelector("#kt_modal_add_users_cancel")),
+              (o = r.querySelector("#kt_modal_add_users_close")),
+              (n = FormValidation.formValidation(r, {
+                  fields: {
+                      name: {
+                          validators: {
+                              notEmpty: {
+                                  message: "Nama Anggota is required",
+                              },
+                          },
+                      },
+                      num_member: {
+                          validators: {
+                              notEmpty: {
+                                  message: "Nomor Anggota is required",
+                              },
+                          },
+                      },
+                      roles: {
+                          validators: {
+                              notEmpty: {
+                                  message: "Posisi Anggota is required",
+                              },
+                          },
+                      },
+                  },
+                  plugins: {
+                      trigger: new FormValidation.plugins.Trigger(),
+                      bootstrap: new FormValidation.plugins.Bootstrap5({
+                          rowSelector: ".fv-row",
+                          eleInvalidClass: "",
+                          eleValidClass: "",
+                      }),
+                  },
+              })),
+              $(r.querySelector('[name="country"]')).on("change", function () {
+                  n.revalidateField("country");
+              }),
+              t.addEventListener("click", function (e) {
+                  e.preventDefault();
+                  n && n.validate().then(function (e) {
+                      console.log("validated!");
+                      if ("Valid" == e) {
+                          t.setAttribute("data-kt-indicator", "on");
+                          t.disabled = !0;
+
+                          // Enable num_member input
+                          document.getElementById('num_member').disabled = false;
+
+                          // Collect form data
+                          var formData = new FormData(r);
+
+                          fetch(r.action, {
+                              method: 'POST',
+                              headers: {
+                                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                              },
+                              body: formData
+                          })
+                          .then(response => response.json())
+                          .then(data => {
+                            console.log(data);
+                              t.removeAttribute("data-kt-indicator");
+                              Swal.fire({
+                                  text: data.message,
+                                  icon: "success",
+                                  buttonsStyling: !1,
+                                  confirmButtonText: "OK mengerti!",
+                                  customClass: {
+                                      confirmButton: "btn btn-primary",
+                                  },
+                              }).then(function (e) {
+                                  if (e.isConfirmed) {
+                                    r.reset();
+                                    i.hide();
+                                    t.disabled = !1;
+
+                                    const tbody = document.querySelector('#table_anggota tbody');
+                                    const newRow = document.createElement('tr');
+                                    newRow.innerHTML = `
+                                        <td>
+                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="checkbox" value="1">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="apps/ecommerce/customers/details.html" class="text-gray-800 text-hover-primary mb-1">${data.user.num_member}</a>
+                                        </td>
+                                        <td>${data.user.name}</td>
+                                        <td>${data.user.role.name}</td>
+                                        <td>${data.user.created_at}</td>
+                                        <td class="text-end">
+                                            <!-- Actions buttons -->
+                                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
+                                                <span class="svg-icon svg-icon-2">
+                                                    <i class="fas fa-pen"></i>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </a>
+                                            <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                                <!--begin::Svg Icon | path: icons/duotone/General/Trash.svg-->
+                                                <span class="svg-icon svg-icon-2">
+                                                    <i class="fas fa-trash"></i>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </a>
+                                        </td>
+                                    `;
+                                    tbody.prepend(newRow);
+                                }
+
+                              });
+                          })
+                          .catch(error => {
+                              Swal.fire({
+                                  text: "Sorry, looks like there are some errors detected, please try again.",
+                                  icon: "error",
+                                  buttonsStyling: !1,
+                                  confirmButtonText: "OK mengerti!",
+                                  customClass: {
+                                      confirmButton: "btn btn-primary",
+                                  },
+                              });
+                              t.disabled = !1;
+                          });
+                      } else {
+                          Swal.fire({
+                              text: "Sorry, looks like there are some errors detected, please try again.",
+                              icon: "error",
+                              buttonsStyling: !1,
+                              confirmButtonText: "OK mengerti!",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                              },
+                          });
+                      }
+                  });
+              }),
+              e.addEventListener("click", function (t) {
+                  t.preventDefault(),
+                  Swal.fire({
+                      text: "Apakah Anda yakin ingin membatalkan?",
+                      icon: "warning",
+                      showCancelButton: !0,
+                      buttonsStyling: !1,
+                      confirmButtonText: "Ya, Batalkan!",
+                      cancelButtonText: "Tidak",
+                      customClass: {
+                          confirmButton: "btn btn-primary",
+                          cancelButton: "btn btn-active-light",
+                      },
+                  }).then(function (t) {
+                      t.value
+                          ? (r.reset(), i.hide())
+                          : "cancel" === t.dismiss &&
+                          Swal.fire({
+                              text: "Your form has not been cancelled!.",
+                              icon: "error",
+                              buttonsStyling: !1,
+                              confirmButtonText: "OK mengerti!",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                              },
+                          });
+                  });
+              }),
+              o.addEventListener("click", function (t) {
+                  t.preventDefault(),
+                  Swal.fire({
+                      text: "Apakah Anda yakin ingin membatalkan?",
+                      icon: "warning",
+                      showCancelButton: !0,
+                      buttonsStyling: !1,
+                      confirmButtonText: "Ya, Batalkan!",
+                      cancelButtonText: "Tidak",
+                      customClass: {
+                          confirmButton: "btn btn-primary",
+                          cancelButton: "btn btn-active-light",
+                      },
+                  }).then(function (t) {
+                      t.value
+                          ? (r.reset(), i.hide())
+                          : "cancel" === t.dismiss &&
+                          Swal.fire({
+                              text: "Your form has not been cancelled!.",
+                              icon: "error",
+                              buttonsStyling: !1,
+                              confirmButtonText: "OK mengerti!",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                              },
+                          });
+                  });
+              });
+          },
+      };
+  })();
+  KTUtil.onDOMContentLoaded(function () {
+      KTModalCustomersAdd.init();
+  });
+
+</script>
+<!-- END ADD USER -->
+
+<!-- EDIT USER -->
+<script>
+  var KTModalCustomersEdit = (function () {
+      var t, e, o, n, r, i;
+      return {
+          init: function () {
+              (i = new bootstrap.Modal(document.querySelector("#kt_modal_edit_users"))),
+              (r = document.querySelector("#kt_modal_edit_users_form")),
+              (t = r.querySelector("#kt_modal_edit_users_submit")),
+              (e = r.querySelector("#kt_modal_edit_users_cancel")),
+              (o = r.querySelector("#kt_modal_edit_users_close")),
+              (n = FormValidation.formValidation(r, {
+                  fields: {
+                      name: {
+                          validators: {
+                              notEmpty: {
+                                  message: "Nama Anggota is required",
+                              },
+                          },
+                      },
+                      num_member: {
+                          validators: {
+                              notEmpty: {
+                                  message: "Nomor Anggota is required",
+                              },
+                          },
+                      },
+                      roles: {
+                          validators: {
+                              notEmpty: {
+                                  message: "Posisi Anggota is required",
+                              },
+                          },
+                      },
+                  },
+                  plugins: {
+                      trigger: new FormValidation.plugins.Trigger(),
+                      bootstrap: new FormValidation.plugins.Bootstrap5({
+                          rowSelector: ".fv-row",
+                          eleInvalidClass: "",
+                          eleValidClass: "",
+                      }),
+                  },
+              })),
+              $(r.querySelector('[name="country"]')).on("change", function () {
+                  n.revalidateField("country");
+              }),
+              t.addEventListener("click", function (e) {
+                  e.preventDefault();
+                  n && n.validate().then(function (e) {
+                      console.log("validated!");
+                      if ("Valid" == e) {
+                          t.setAttribute("data-kt-indicator", "on");
+                          t.disabled = !0;
+
+                          // Enable num_member input
+                          document.getElementById('num_member').disabled = false;
+
+                          // Collect form data
+                          var formData = new FormData(r);
+
+                          fetch(r.action, {
+                              method: 'POST',
+                              headers: {
+                                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                              },
+                              body: formData
+                          })
+                          .then(response => response.json())
+                          .then(data => {
+                              console.log(data);
+                              t.removeAttribute("data-kt-indicator");
+                              Swal.fire({
+                                  text: data.message,
+                                  icon: "success",
+                                  buttonsStyling: !1,
+                                  confirmButtonText: "OK mengerti!",
+                                  customClass: {
+                                      confirmButton: "btn btn-primary",
+                                  },
+                              }).then(function (e) {
+                                  if (e.isConfirmed) {
+                                      r.reset();
+                                      i.hide();
+                                      t.disabled = !1;
+
+                                      const tbody = document.querySelector('#table_anggota tbody');
+                                      const newRow = document.createElement('tr');
+                                      newRow.innerHTML = `
+                                          <td>
+                                              <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                  <input class="form-check-input" type="checkbox" value="1">
+                                              </div>
+                                          </td>
+                                          <td>
+                                              <a href="apps/ecommerce/customers/details.html" class="text-gray-800 text-hover-primary mb-1">${data.user.num_member}</a>
+                                          </td>
+                                          <td>${data.user.name}</td>
+                                          <td>${data.user.role ? data.user.role.name : '-'}</td>
+                                          <td>${new Date(data.user.created_at).toLocaleDateString()}</td>
+                                          <td class="text-end">
+                                              <!-- Actions buttons -->
+                                              <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                                                  <!--begin::Svg Icon | path: icons/duotone/Communication/Write.svg-->
+                                                  <span class="svg-icon svg-icon-2">
+                                                      <i class="fas fa-pen"></i>
+                                                  </span>
+                                                  <!--end::Svg Icon-->
+                                              </a>
+                                              <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                                                  <!--begin::Svg Icon | path: icons/duotone/General/Trash.svg-->
+                                                  <span class="svg-icon svg-icon-2">
+                                                      <i class="fas fa-trash"></i>
+                                                  </span>
+                                                  <!--end::Svg Icon-->
+                                              </a>
+                                          </td>
+                                      `;
+                                      // Insert the new row at the beginning of the tbody
+                                      tbody.insertBefore(newRow, tbody.firstChild);
+                                  }
+                              });
+                          })
+                          .catch(error => {
+                              Swal.fire({
+                                  text: "Sorry, looks like there are some errors detected, please try again.",
+                                  icon: "error",
+                                  buttonsStyling: !1,
+                                  confirmButtonText: "OK mengerti!",
+                                  customClass: {
+                                      confirmButton: "btn btn-primary",
+                                  },
+                              });
+                              t.disabled = !1;
+                          });
+                      } else {
+                          Swal.fire({
+                              text: "Sorry, looks like there are some errors detected, please try again.",
+                              icon: "error",
+                              buttonsStyling: !1,
+                              confirmButtonText: "OK mengerti!",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                              },
+                          });
+                      }
+                  });
+              }),
+              e.addEventListener("click", function (t) {
+                  t.preventDefault(),
+                  Swal.fire({
+                      text: "Apakah Anda yakin ingin membatalkan?",
+                      icon: "warning",
+                      showCancelButton: !0,
+                      buttonsStyling: !1,
+                      confirmButtonText: "Ya, Batalkan!",
+                      cancelButtonText: "Tidak",
+                      customClass: {
+                          confirmButton: "btn btn-primary",
+                          cancelButton: "btn btn-active-light",
+                      },
+                  }).then(function (t) {
+                      t.value
+                          ? (r.reset(), i.hide())
+                          : "cancel" === t.dismiss &&
+                          Swal.fire({
+                              text: "Your form has not been cancelled!.",
+                              icon: "error",
+                              buttonsStyling: !1,
+                              confirmButtonText: "OK mengerti!",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                              },
+                          });
+                  });
+              }),
+              o.addEventListener("click", function (t) {
+                  t.preventDefault(),
+                  Swal.fire({
+                      text: "Apakah Anda yakin ingin membatalkan?",
+                      icon: "warning",
+                      showCancelButton: !0,
+                      buttonsStyling: !1,
+                      confirmButtonText: "Ya, Batalkan!",
+                      cancelButtonText: "Tidak",
+                      customClass: {
+                          confirmButton: "btn btn-primary",
+                          cancelButton: "btn btn-active-light",
+                      },
+                  }).then(function (t) {
+                      t.value
+                          ? (r.reset(), i.hide())
+                          : "cancel" === t.dismiss &&
+                          Swal.fire({
+                              text: "Your form has not been cancelled!.",
+                              icon: "error",
+                              buttonsStyling: !1,
+                              confirmButtonText: "OK mengerti!",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                              },
+                          });
+                  });
+              });
+          },
+      };
+  })();
+  KTUtil.onDOMContentLoaded(function () {
+      KTModalCustomersEdit.init();
+  });
+
+</script>
+<!-- END EDIT USER -->
 <script src="{{asset('assets/js/custom/apps/ecommerce/customers/listing/export.js')}}"></script>
 <script src="{{asset('assets/js/widgets.bundle.js')}}"></script>
 <script src="{{asset('assets/js/custom/widgets.js')}}"></script>
@@ -716,4 +1504,17 @@
 <script src="{{asset('assets/js/custom/utilities/modals/create-campaign.js')}}"></script>
 <script src="{{asset('assets/js/custom/utilities/modals/upgrade-plan.js')}}"></script>
 <script src="{{asset('assets/js/custom/utilities/modals/users-search.js')}}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var modal = document.getElementById('kt_modal_add_users');
+        modal.addEventListener('show.bs.modal', function () {
+            fetch("{{route('users.generate_number')}}")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('num_member').value = data.newNumber;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
 @stop

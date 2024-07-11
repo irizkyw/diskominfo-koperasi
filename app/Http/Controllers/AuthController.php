@@ -37,35 +37,6 @@ class AuthController extends Controller
         }
     }
 
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'role' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $num_member = User::max('num_member') + 1;
-        $username = $request->name . '@' . $num_member;
-
-        $user = User::create([
-            'name' => $request->name,
-            'num_member' => $num_member,
-            'username' => $username,
-            'password' => Hash::make($username . '@' .$num_member),
-            'role_id' => $request->role_id,
-        ]);
-
-        return response()->json([
-            'message' => 'Pembuatan akun berhasil',
-            'redirect' => '/dashboard',
-        ], 200);
-    }
-
-
     public function logout(Request $request)
     {
         Auth::logout();
