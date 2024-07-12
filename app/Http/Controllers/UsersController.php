@@ -46,7 +46,9 @@ class UsersController extends Controller
                 return $row->created_at->format('d M Y, h:i a');
             })
             ->addColumn('actions', function($row) {
-                return '<a href="#"
+                return '
+                <div class="d-flex justify-content-end">
+                <a href="#"
                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-edit"
                     data-id="'. $row->num_member .'">
                     <span class="svg-icon svg-icon-2">
@@ -65,7 +67,8 @@ class UsersController extends Controller
                     <span class="svg-icon svg-icon-2">
                         <i class="fas fa-user"></i>
                     </span>
-                </a>';
+                </a>
+            </div>';
             })
             ->rawColumns(['status', 'actions'])
             ->make(true);
@@ -173,7 +176,7 @@ class UsersController extends Controller
         ];
 
         if (!empty($request->password))
-            $data['password'] = $request->password;
+            $data['password'] = Hash::make($request->password);
 
         $user->update($data);
         return response()->json($user);
