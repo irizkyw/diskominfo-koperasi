@@ -40,7 +40,7 @@ services:
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin_container
         ports:
-            - "8888:80"
+            - "8000:80"
         environment:
             PMA_ARBITRARY: 1
             MYSQL_ROOT_PASSWORD: root
