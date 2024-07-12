@@ -165,12 +165,12 @@ class UsersController extends Controller
     public function updateUser(Request $request, $id)
     {
         $user = User::where('num_member', $id)->first();
-        $data = $request->only(
-            'name',
-            'username',
-            'role_id',
-            'status_active',
-        );
+        $data = [
+            'name' => $request->name,
+            'username' => $request->username,
+            'role_id' => $request->roles,
+            'status_active' => $request->status,
+        ];
 
         if (!empty($request->password))
             $data['password'] = $request->password;

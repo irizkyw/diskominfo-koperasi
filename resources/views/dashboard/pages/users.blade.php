@@ -126,7 +126,7 @@
                                         <th class="min-w-125px">Status</th>
                                         <th class="min-w-125px">Role</th>
                                         <th class="min-w-125px">Daftar Sejak</th>
-                                        <th class="text-end min-w-70px">Actions</th>
+                                        <th class="text-center min-w-70px">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="fw-semibold text-gray-600">
@@ -422,8 +422,8 @@
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                <form class="form" action="{{ route('users.update', ':id') }}" id="kt_modal_edit_users_form"
-                                    data-kt-redirect="{{ route('users.index') }}">
+                                <form class="form" action="{{ route('users.update', ':id') }}"
+                                    id="kt_modal_edit_users_form" data-kt-redirect="{{ route('users.index') }}">
                                     @csrf
                                     <!--begin::Modal header-->
                                     <div class="modal-header" id="kt_modal_edit_users_header">
@@ -766,14 +766,34 @@
     <script>
         const datatable = $("#table_anggota").DataTable({
             ajax: "{{ route('users.datatable') }}",
-            columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                {data: 'num_member', name: 'num_member'},
-                {data: 'name', name: 'name'},
-                {data: 'status', name: 'status'},
-                {data: 'role', name: 'role'},
-                {data: 'created_at', name: 'created_at'},
-                {data: 'actions', name: 'actions'},
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex'
+                },
+                {
+                    data: 'num_member',
+                    name: 'num_member'
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'role',
+                    name: 'role'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
+                {
+                    data: 'actions',
+                    name: 'actions'
+                },
             ]
         })
 
@@ -866,14 +886,17 @@
                 type: "GET",
                 url: "{{ route('users.detail', ':id') }}".replace(':id', id),
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content')
                 },
-                success: function (response) {
+                success: function(response) {
                     $("#kt_modal_edit_users").find("[name='num_member']").val(response.num_member)
                     $("#kt_modal_edit_users").find("[name='name']").val(response.name)
                     $("#kt_modal_edit_users").find("[name='username']").val(response.username)
-                    $("#kt_modal_edit_users").find("[name='roles']").val(response.role_id).trigger('change')
-                    $("#kt_modal_edit_users").find("[name='status']").val(response.status_active).trigger('change')
+                    $("#kt_modal_edit_users").find("[name='roles']").val(response.role_id).trigger(
+                        'change')
+                    $("#kt_modal_edit_users").find("[name='status']").val(response.status_active)
+                        .trigger('change')
 
                     $("#kt_modal_edit_users").modal("show")
                 }
@@ -967,6 +990,7 @@
                                                 if (e.isConfirmed) {
                                                     r.reset();
                                                     i.hide();
+                                                    t.disabled = !1;
                                                     datatable.ajax.reload()
                                                 }
 
@@ -1107,55 +1131,99 @@
                         },
                     })),
                     $(r.querySelector('[name="country"]')).on("change", function() {
-                        n.revalidateField("country");
-                    }),
-                    t.addEventListener("click", function(e) {
-                        e.preventDefault();
-                        n && n.validate().then(function(e) {
-                            console.log("validated!");
-                            if ("Valid" == e) {
-                                t.setAttribute("data-kt-indicator", "on");
-                                t.disabled = !0;
+                            n.revalidateField("country");
+                        }),
+                        t.addEventListener("click", function(e) {
+                            e.preventDefault();
+                            n && n.validate().then(function(e) {
+                                console.log("validated!");
+                                if ("Valid" == e) {
+                                    t.setAttribute("data-kt-indicator", "on");
+                                    t.disabled = !0;
 
-                                id = $("#kt_modal_edit_users_form").find('[name="num_member"]').val()
-                                url = $("#kt_modal_edit_users_form").attr('action')
-                                $("#kt_modal_edit_users_form").attr('action', url.replace(":id", id))
+                                    id = $("#kt_modal_edit_users_form").find('[name="num_member"]')
+                                        .val()
+                                    url = $("#kt_modal_edit_users_form").attr('action')
+                                    $("#kt_modal_edit_users_form").attr('action', url.replace(":id",
+                                        id))
 
-                                // Collect form data
-                                var formData = new FormData(r);
+                                    // Collect form data
+                                    var formData = new FormData(r);
 
-                                fetch(r.action, {
-                                        method: 'POST',
-                                        headers: {
-                                            'X-CSRF-TOKEN': document.querySelector(
-                                                'meta[name="csrf-token"]').getAttribute(
-                                                'content')
-                                        },
-                                        body: formData
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        console.log(data);
-                                        t.removeAttribute("data-kt-indicator");
-                                        Swal.fire({
-                                            text: data.message,
-                                            icon: "success",
-                                            buttonsStyling: !1,
-                                            confirmButtonText: "OK mengerti!",
-                                            customClass: {
-                                                confirmButton: "btn btn-primary",
+                                    fetch(r.action, {
+                                            method: 'POST',
+                                            headers: {
+                                                'X-CSRF-TOKEN': document.querySelector(
+                                                    'meta[name="csrf-token"]').getAttribute(
+                                                    'content')
                                             },
-                                        }).then(function(e) {
-                                            if (e.isConfirmed) {
-                                                r.reset();
-                                                i.hide();
-                                                datatable.ajax.reload()
-                                            }
+                                            body: formData
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            console.log(data);
+                                            t.removeAttribute("data-kt-indicator");
+                                            Swal.fire({
+                                                text: data.message,
+                                                icon: "success",
+                                                buttonsStyling: !1,
+                                                confirmButtonText: "OK mengerti!",
+                                                customClass: {
+                                                    confirmButton: "btn btn-primary",
+                                                },
+                                            }).then(function(e) {
+                                                if (e.isConfirmed) {
+                                                    r.reset();
+                                                    i.hide();
+                                                    t.disabled = !1;
+                                                    datatable.ajax.reload()
+                                                }
+                                            });
+                                        })
+                                        .catch(error => {
+                                            Swal.fire({
+                                                text: "Sorry, looks like there are some errors detected, please try again.",
+                                                icon: "error",
+                                                buttonsStyling: !1,
+                                                confirmButtonText: "OK mengerti!",
+                                                customClass: {
+                                                    confirmButton: "btn btn-primary",
+                                                },
+                                            });
+                                            t.disabled = !1;
                                         });
-                                    })
-                                    .catch(error => {
+                                } else {
+                                    Swal.fire({
+                                        text: "Sorry, looks like there are some errors detected, please try again.",
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "OK mengerti!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary",
+                                        },
+                                    });
+                                }
+                            });
+                        }),
+                        e.addEventListener("click", function(t) {
+                            t.preventDefault(),
+                                Swal.fire({
+                                    text: "Apakah Anda yakin ingin membatalkan?",
+                                    icon: "warning",
+                                    showCancelButton: !0,
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ya, Batalkan!",
+                                    cancelButtonText: "Tidak",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary",
+                                        cancelButton: "btn btn-active-light",
+                                    },
+                                }).then(function(t) {
+                                    t.value ?
+                                        (r.reset(), i.hide()) :
+                                        "cancel" === t.dismiss &&
                                         Swal.fire({
-                                            text: "Sorry, looks like there are some errors detected, please try again.",
+                                            text: "Your form has not been cancelled!.",
                                             icon: "error",
                                             buttonsStyling: !1,
                                             confirmButtonText: "OK mengerti!",
@@ -1163,77 +1231,36 @@
                                                 confirmButton: "btn btn-primary",
                                             },
                                         });
-                                        t.disabled = !1;
-                                    });
-                            } else {
+                                });
+                        }),
+                        o.addEventListener("click", function(t) {
+                            t.preventDefault(),
                                 Swal.fire({
-                                    text: "Sorry, looks like there are some errors detected, please try again.",
-                                    icon: "error",
+                                    text: "Apakah Anda yakin ingin membatalkan?",
+                                    icon: "warning",
+                                    showCancelButton: !0,
                                     buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
+                                    confirmButtonText: "Ya, Batalkan!",
+                                    cancelButtonText: "Tidak",
                                     customClass: {
                                         confirmButton: "btn btn-primary",
+                                        cancelButton: "btn btn-active-light",
                                     },
+                                }).then(function(t) {
+                                    t.value ?
+                                        (r.reset(), i.hide()) :
+                                        "cancel" === t.dismiss &&
+                                        Swal.fire({
+                                            text: "Your form has not been cancelled!.",
+                                            icon: "error",
+                                            buttonsStyling: !1,
+                                            confirmButtonText: "OK mengerti!",
+                                            customClass: {
+                                                confirmButton: "btn btn-primary",
+                                            },
+                                        });
                                 });
-                            }
                         });
-                    }),
-                    e.addEventListener("click", function(t) {
-                        t.preventDefault(),
-                            Swal.fire({
-                                text: "Apakah Anda yakin ingin membatalkan?",
-                                icon: "warning",
-                                showCancelButton: !0,
-                                buttonsStyling: !1,
-                                confirmButtonText: "Ya, Batalkan!",
-                                cancelButtonText: "Tidak",
-                                customClass: {
-                                    confirmButton: "btn btn-primary",
-                                    cancelButton: "btn btn-active-light",
-                                },
-                            }).then(function(t) {
-                                t.value ?
-                                    (r.reset(), i.hide()) :
-                                    "cancel" === t.dismiss &&
-                                    Swal.fire({
-                                        text: "Your form has not been cancelled!.",
-                                        icon: "error",
-                                        buttonsStyling: !1,
-                                        confirmButtonText: "OK mengerti!",
-                                        customClass: {
-                                            confirmButton: "btn btn-primary",
-                                        },
-                                    });
-                            });
-                    }),
-                    o.addEventListener("click", function(t) {
-                        t.preventDefault(),
-                            Swal.fire({
-                                text: "Apakah Anda yakin ingin membatalkan?",
-                                icon: "warning",
-                                showCancelButton: !0,
-                                buttonsStyling: !1,
-                                confirmButtonText: "Ya, Batalkan!",
-                                cancelButtonText: "Tidak",
-                                customClass: {
-                                    confirmButton: "btn btn-primary",
-                                    cancelButton: "btn btn-active-light",
-                                },
-                            }).then(function(t) {
-                                t.value ?
-                                    (r.reset(), i.hide()) :
-                                    "cancel" === t.dismiss &&
-                                    Swal.fire({
-                                        text: "Your form has not been cancelled!.",
-                                        icon: "error",
-                                        buttonsStyling: !1,
-                                        confirmButtonText: "OK mengerti!",
-                                        customClass: {
-                                            confirmButton: "btn btn-primary",
-                                        },
-                                    });
-                            });
-                    });
                 },
             };
         })();
@@ -1242,18 +1269,18 @@
         });
     </script>
     <!-- END EDIT USER -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var modal_add = document.getElementById('kt_modal_add_users');
-        modal_add.addEventListener('show.bs.modal', function () {
-            fetch("{{route('users.generate_number')}}")
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('num_member').value = data.newNumber;
-                })
-                .catch(error => console.error('Error:', error));
-        });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal_add = document.getElementById('kt_modal_add_users');
+            modal_add.addEventListener('show.bs.modal', function() {
+                fetch("{{ route('users.generate_number') }}")
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('num_member').value = data.newNumber;
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
 
-    });
-</script>
+        });
+    </script>
 @stop
