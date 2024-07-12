@@ -75,7 +75,7 @@
                   type="text"
                   data-kt-customer-table-filter="search"
                   class="form-control form-control-solid w-250px ps-13"
-                  placeholder="Cari Posisi"
+                  placeholder="Cari Role"
                 />
               </div>
               <!--end::Search-->
@@ -93,9 +93,9 @@
                   type="button"
                   class="btn btn-primary"
                   data-bs-toggle="modal"
-                  data-bs-target="#kt_modal_add_customer"
+                  data-bs-target="#kt_modal_add_role"
                 >
-                  Tambahkan Posisi
+                  Tambahkan Role
                 </button>
                 <!--end::Add customer-->
               </div>
@@ -136,92 +136,38 @@
                 <tr
                   class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0"
                 >
-                  <th class="w-10px pe-2">
-                    <div
-                      class="form-check form-check-sm form-check-custom form-check-solid me-3"
-                    >
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        data-kt-check="true"
-                        data-kt-check-target="#table_anggota .form-check-input"
-                        value="1"
-                      />
-                    </div>
-                  </th>
-                  <th class="min-w-125px">ID Posisi</th>
-                  <th class="min-w-125px">Nama Posisi</th>
+                  <th class="min-w-125px">ID Role</th>
+                  <th class="min-w-125px">Nama Role</th>
                   <th class="min-w-125px">DESKRIPSI</th>
                   <th class="text-end min-w-70px">Actions</th>
                 </tr>
               </thead>
               <tbody class="fw-semibold text-gray-600">
+                @foreach($roles as $data)
                 <tr>
                   <td>
-                    <div
-                      class="form-check form-check-sm form-check-custom form-check-solid"
-                    >
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value="1"
-                      />
-                    </div>
+                      {{$data->id}}
                   </td>
                   <td>
-                    <a
-                      href="apps/ecommerce/customers/details.html"
-                      class="text-gray-800 text-hover-primary mb-1"
-                      >Emma Smith</a
-                    >
+                      {{$data->name}}
                   </td>
                   <td>
-                    <a href="#" class="text-gray-600 text-hover-primary mb-1"
-                      >smith@kpmg.com</a
-                    >
-                  </td>
-                  <td>
-                    <!--begin::Badges-->
-                    <div class="badge badge-light-success">Active</div>
-                    <!--end::Badges-->
+                      {{$data->desc}}
                   </td>
                   <td class="text-end">
-                    <a
-                      href="#"
-                      class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary"
-                      data-kt-menu-trigger="click"
-                      data-kt-menu-placement="bottom-end"
-                      >Actions <i class="ki-outline ki-down fs-5 ms-1"></i
-                    ></a>
-                    <!--begin::Menu-->
-                    <div
-                      class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                      data-kt-menu="true"
-                    >
-                      <!--begin::Menu item-->
-                      <div class="menu-item px-3">
-                        <a
-                          href="#"
-                          class="menu-link px-3"
-                          data-kt-customer-table-filter="edit_row"
-                          >Edit</a
-                        >
-                      </div>
-                      <!--end::Menu item-->
-                      <!--begin::Menu item-->
-                      <div class="menu-item px-3">
-                        <a
-                          href="#"
-                          class="menu-link px-3"
-                          data-kt-customer-table-filter="delete_row"
-                          >Delete</a
-                        >
-                      </div>
-                      <!--end::Menu item-->
-                    </div>
-                    <!--end::Menu-->
+                    <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#kt_modal_edit_role">
+                        <span class="svg-icon svg-icon-2">
+                            <i class="fas fa-pen"></i>
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" data-kt-customer-table-filter="delete_row">
+                        <span class="svg-icon svg-icon-2">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                    </a>
                   </td>
                 </tr>
+                @endforeach
               </tbody>
               <!--end::Table body-->
             </table>
@@ -231,10 +177,10 @@
         </div>
         <!--end::Card-->
         <!--begin::Modals-->
-        <!--begin::Modal - Customers - Add-->
+        <!--begin::Modal - Add-->
         <div
           class="modal fade"
-          id="kt_modal_add_customer"
+          id="kt_modal_add_role"
           tabindex="-1"
           aria-hidden="true"
         >
@@ -245,18 +191,19 @@
               <!--begin::Form-->
               <form
                 class="form"
-                action="#"
-                id="kt_modal_add_customer_form"
-                data-kt-redirect="apps/customers/list.html"
+                action="{{route('roles.create')}}"
+                id="kt_modal_add_role_form"
+                data-kt-redirect="{{route('roles.index')}}"
               >
+              @csrf
                 <!--begin::Modal header-->
-                <div class="modal-header" id="kt_modal_add_customer_header">
+                <div class="modal-header" id="kt_modal_add_role_header">
                   <!--begin::Modal title-->
-                  <h2 class="fw-bold">Tambahkan Posisi</h2>
+                  <h2 class="fw-bold">Tambahkan Role</h2>
                   <!--end::Modal title-->
                   <!--begin::Close-->
                   <div
-                    id="kt_modal_add_customer_close"
+                    id="kt_modal_add_role_close"
                     class="btn btn-icon btn-sm btn-active-icon-primary"
                   >
                     <i class="ki-outline ki-cross fs-1"></i>
@@ -269,24 +216,24 @@
                   <!--begin::Scroll-->
                   <div
                     class="scroll-y me-n7 pe-7"
-                    id="kt_modal_add_customer_scroll"
+                    id="kt_modal_add_role_scroll"
                     data-kt-scroll="true"
                     data-kt-scroll-activate="{default: false, lg: true}"
                     data-kt-scroll-max-height="auto"
-                    data-kt-scroll-dependencies="#kt_modal_add_customer_header"
-                    data-kt-scroll-wrappers="#kt_modal_add_customer_scroll"
+                    data-kt-scroll-dependencies="#kt_modal_add_role_header"
+                    data-kt-scroll-wrappers="#kt_modal_add_role_scroll"
                     data-kt-scroll-offset="300px"
                   >
                     <!--begin::Input group-->
                     <div class="fv-row mb-7">
                       <!--begin::Label-->
-                      <label class="required fs-6 fw-semibold mb-2">Nama Posisi</label>
+                      <label class="required fs-6 fw-semibold mb-2">Nama Role</label>
                       <!--end::Label-->
                       <!--begin::Input-->
                       <input
                         type="text"
                         class="form-control form-control-solid"
-                        placeholder="Nama Posisi"
+                        placeholder="Nama Role"
                         name="name"
                       />
                       <!--end::Input-->
@@ -294,13 +241,13 @@
                     <!--begin::Input group-->
                     <div class="fv-row mb-7">
                       <!--begin::Label-->
-                      <label class="required fs-6 fw-semibold mb-2">Deskripsi</label>
+                      <label class="fs-6 fw-semibold mb-2">Deskripsi</label>
                       <!--end::Label-->
                       <!--begin::Input-->
                       <input
                         type="text"
                         class="form-control form-control-solid"
-                        placeholder="Deskripsi Posisi"
+                        placeholder="Deskripsi Role"
                         name="desc"
                       />
                       <!--end::Input-->
@@ -314,7 +261,7 @@
                   <!--begin::Button-->
                   <button
                     type="reset"
-                    id="kt_modal_add_customer_cancel"
+                    id="kt_modal_add_role_cancel"
                     class="btn btn-light me-3"
                   >
                     Buang
@@ -323,7 +270,7 @@
                   <!--begin::Button-->
                   <button
                     type="submit"
-                    id="kt_modal_add_customer_submit"
+                    id="kt_modal_add_role_submit"
                     class="btn btn-primary"
                   >
                     <span class="indicator-label">Submit</span>
@@ -342,248 +289,658 @@
             </div>
           </div>
         </div>
-        <!--end::Modal - Customers - Add-->
+        <!--end::Modal - Add-->
+
+        <!--begin::Modal - edit-->
+        <div
+          class="modal fade"
+          id="kt_modal_edit_role"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <!--begin::Modal dialog-->
+          <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+              <!--begin::Form-->
+              <form
+                class="form"
+                action="{{route('roles.create')}}"
+                id="kt_modal_edit_role_form"
+                data-kt-redirect="{{route('roles.index')}}"
+              >
+              @csrf
+                <!--begin::Modal header-->
+                <div class="modal-header" id="kt_modal_edit_role_header">
+                  <!--begin::Modal title-->
+                  <h2 class="fw-bold">Merubah Role</h2>
+                  <!--end::Modal title-->
+                  <!--begin::Close-->
+                  <div
+                    id="kt_modal_edit_role_close"
+                    class="btn btn-icon btn-sm btn-active-icon-primary"
+                  >
+                    <i class="ki-outline ki-cross fs-1"></i>
+                  </div>
+                  <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body py-10 px-lg-17">
+                  <!--begin::Scroll-->
+                  <div
+                    class="scroll-y me-n7 pe-7"
+                    id="kt_modal_edit_role_scroll"
+                    data-kt-scroll="true"
+                    data-kt-scroll-activate="{default: false, lg: true}"
+                    data-kt-scroll-max-height="auto"
+                    data-kt-scroll-dependencies="#kt_modal_edit_role_header"
+                    data-kt-scroll-wrappers="#kt_modal_edit_role_scroll"
+                    data-kt-scroll-offset="300px"
+                  >
+                    <!--begin::Input group-->
+                    <div class="fv-row mb-7">
+                      <!--begin::Label-->
+                      <label class="required fs-6 fw-semibold mb-2">Nama Role</label>
+                      <!--end::Label-->
+                      <!--begin::Input-->
+                      <input
+                        type="text"
+                        class="form-control form-control-solid"
+                        name="id"
+                      />
+                      <input
+                        type="text"
+                        class="form-control form-control-solid"
+                        placeholder="Nama Role"
+                        name="name"
+                      />
+                      <!--end::Input-->
+                    </div>
+                    <!--begin::Input group-->
+                    <div class="fv-row mb-7">
+                      <!--begin::Label-->
+                      <label class="fs-6 fw-semibold mb-2">Deskripsi</label>
+                      <!--end::Label-->
+                      <!--begin::Input-->
+                      <input
+                        type="text"
+                        class="form-control form-control-solid"
+                        placeholder="Deskripsi Role"
+                        name="desc"
+                      />
+                      <!--end::Input-->
+                    </div>
+                  </div>
+                  <!--end::Scroll-->
+                </div>
+                <!--end::Modal body-->
+                <!--begin::Modal footer-->
+                <div class="modal-footer flex-center">
+                  <!--begin::Button-->
+                  <button
+                    type="reset"
+                    id="kt_modal_edit_role_cancel"
+                    class="btn btn-light me-3"
+                  >
+                    Buang
+                  </button>
+                  <!--end::Button-->
+                  <!--begin::Button-->
+                  <button
+                    type="submit"
+                    id="kt_modal_edit_role_submit"
+                    class="btn btn-primary"
+                  >
+                    <span class="indicator-label">Submit</span>
+                    <span class="indicator-progress"
+                      >Please wait...
+                      <span
+                        class="spinner-border spinner-border-sm align-middle ms-2"
+                      ></span
+                    ></span>
+                  </button>
+                  <!--end::Button-->
+                </div>
+                <!--end::Modal footer-->
+              </form>
+              <!--end::Form-->
+            </div>
+          </div>
+        </div>
+        <!-- end::modal edit -->
       </div>
       <!--end::Content container-->
     </div>
     <!--end::Content-->
   </div>
   <!--end::Content wrapper-->
-  <!--begin::Footer-->
-  <div id="kt_app_footer" class="app-footer">
-    <!--begin::Footer container-->
-    <div
-      class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3"
-    >
-      <!--begin::Copyright-->
-      <div class="text-gray-900 order-2 order-md-1">
-        <span class="text-muted fw-semibold me-1">2024&copy;</span>
-        <a
-          href="https://keenthemes.com"
-          target="_blank"
-          class="text-gray-800 text-hover-primary"
-          >Keenthemes</a
-        >
-      </div>
-      <!--end::Copyright-->
-      <!--begin::Menu-->
-      <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-        <li class="menu-item">
-          <a
-            href="https://keenthemes.com"
-            target="_blank"
-            class="menu-link px-2"
-            >About</a
-          >
-        </li>
-        <li class="menu-item">
-          <a
-            href="https://devs.keenthemes.com"
-            target="_blank"
-            class="menu-link px-2"
-            >Support</a
-          >
-        </li>
-        <li class="menu-item">
-          <a
-            href="https://1.envato.market/EA4JP"
-            target="_blank"
-            class="menu-link px-2"
-            >Purchase</a
-          >
-        </li>
-      </ul>
-      <!--end::Menu-->
-    </div>
-    <!--end::Footer container-->
-  </div>
-  <!--end::Footer-->
 </div>
 @endsection 
 
 @section('scripts')
 <script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
-<script src="{{asset('assets/js/custom/apps/ecommerce/customers/listing/add.js')}}"></script>
-<script src="{{asset('assets/js/custom/apps/ecommerce/customers/listing/export.js')}}"></script>
+<script>
+  var KTModalRolesAdd = (function () {
+      var t, e, o, n, r, i;
+      return {
+          init: function () {
+              (i = new bootstrap.Modal(
+                  document.querySelector("#kt_modal_add_role")
+              )),
+                  (r = document.querySelector("#kt_modal_add_role_form")),
+                  (t = r.querySelector("#kt_modal_add_role_submit")),
+                  (e = r.querySelector("#kt_modal_add_role_cancel")),
+                  (o = r.querySelector("#kt_modal_add_role_close")),
+                  (n = FormValidation.formValidation(r, {
+                      fields: {
+                          name: {
+                              validators: {
+                                  notEmpty: {
+                                      message: "Nama Role tidak boleh kosong",
+                                  },
+                              },
+                          },
+                      },
+                      plugins: {
+                          trigger: new FormValidation.plugins.Trigger(),
+                          bootstrap: new FormValidation.plugins.Bootstrap5({
+                              rowSelector: ".fv-row",
+                              eleInvalidClass: "",
+                              eleValidClass: "",
+                          }),
+                      },
+                  })),
+                  $(r.querySelector('[name="country"]')).on(
+                      "change",
+                      function () {
+                          n.revalidateField("country");
+                      }
+                  ),
+                  t.addEventListener("click", function (e) {
+                      e.preventDefault(),
+                          n &&
+                              n.validate().then(function (e) {
+                                  console.log("validated!"),
+                                      "Valid" == e
+                                          ? (t.setAttribute(
+                                                "data-kt-indicator",
+                                                "on"
+                                            ),
+                                            (t.disabled = !0),
+                                            $.ajax({
+                                                url: "{{route('roles.create')}}",
+                                                type: "POST",
+                                                headers: {
+                                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                },
+                                                data: $(r).serialize(),
+                                                success: function (response) {
+                                                    t.removeAttribute(
+                                                        "data-kt-indicator"
+                                                    ),
+                                                        Swal.fire({
+                                                            text: "Form has been successfully submitted!",
+                                                            icon: "success",
+                                                            buttonsStyling: !1,
+                                                            confirmButtonText:
+                                                                "OK mengerti!",
+                                                            customClass: {
+                                                                confirmButton:
+                                                                    "btn btn-primary",
+                                                            },
+                                                        }).then(function (e) {
+                                                            e.isConfirmed &&
+                                                                (i.hide(),
+                                                                (t.disabled = !1),
+                                                                (window.location =
+                                                                    r.getAttribute(
+                                                                        "data-kt-redirect"
+                                                                    )));
+                                                        });
+                                                },
+                                                error: function (xhr) {
+                                                    t.removeAttribute(
+                                                        "data-kt-indicator"
+                                                    ),
+                                                        Swal.fire({
+                                                            text: "Sorry, looks like there are some errors detected, please try again.",
+                                                            icon: "error",
+                                                            buttonsStyling: !1,
+                                                            confirmButtonText:
+                                                                "OK mengerti!",
+                                                            customClass: {
+                                                                confirmButton:
+                                                                    "btn btn-primary",
+                                                            },
+                                                        });
+                                                },
+                                            }))
+                                          : Swal.fire({
+                                                text: "Sorry, looks like there are some errors detected, please try again.",
+                                                icon: "error",
+                                                buttonsStyling: !1,
+                                                confirmButtonText: "OK mengerti!",
+                                                customClass: {
+                                                    confirmButton:
+                                                        "btn btn-primary",
+                                                },
+                                            });
+                              });
+                  }),
+                  e.addEventListener("click", function (t) {
+                      t.preventDefault(),
+                          Swal.fire({
+                              text: "Apakah Anda yakin ingin membatalkan?",
+                              icon: "warning",
+                              showCancelButton: !0,
+                              buttonsStyling: !1,
+                              confirmButtonText: "Ya, Batalkan!",
+                              cancelButtonText: "Tidak",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                                  cancelButton: "btn btn-active-light",
+                              },
+                          }).then(function (t) {
+                              t.value
+                                  ? (r.reset(), i.hide())
+                                  : "cancel" === t.dismiss &&
+                                    Swal.fire({
+                                        text: "Your form has not been cancelled!.",
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "OK mengerti!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary",
+                                        },
+                                    });
+                          });
+                  }),
+                  o.addEventListener("click", function (t) {
+                      t.preventDefault(),
+                          Swal.fire({
+                              text: "Apakah Anda yakin ingin membatalkan?",
+                              icon: "warning",
+                              showCancelButton: !0,
+                              buttonsStyling: !1,
+                              confirmButtonText: "Ya, Batalkan!",
+                              cancelButtonText: "Tidak",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                                  cancelButton: "btn btn-active-light",
+                              },
+                          }).then(function (t) {
+                              t.value
+                                  ? (r.reset(), i.hide())
+                                  : "cancel" === t.dismiss &&
+                                    Swal.fire({
+                                        text: "Your form has not been cancelled!.",
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "OK mengerti!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary",
+                                        },
+                                    });
+                          });
+                  });
+          },
+      };
+  })();
+  KTUtil.onDOMContentLoaded(function () {
+      KTModalRolesAdd.init();
+  });
+</script>
+
+<script>
+  var KTModalRolesEdit = (function () {
+      var t, e, o, n, r, i;
+      return {
+          init: function () {
+              (i = new bootstrap.Modal(
+                  document.querySelector("#kt_modal_edit_role")
+              )),
+                  (r = document.querySelector("#kt_modal_edit_role_form")),
+                  (t = r.querySelector("#kt_modal_edit_role_submit")),
+                  (e = r.querySelector("#kt_modal_edit_role_cancel")),
+                  (o = r.querySelector("#kt_modal_edit_role_close")),
+                  (n = FormValidation.formValidation(r, {
+                      fields: {
+                          name: {
+                              validators: {
+                                  notEmpty: {
+                                      message: "Nama Role tidak boleh kosong",
+                                  },
+                              },
+                          },
+                      },
+                      plugins: {
+                          trigger: new FormValidation.plugins.Trigger(),
+                          bootstrap: new FormValidation.plugins.Bootstrap5({
+                              rowSelector: ".fv-row",
+                              eleInvalidClass: "",
+                              eleValidClass: "",
+                          }),
+                      },
+                  })),
+                  $(r.querySelector('[name="country"]')).on(
+                      "change",
+                      function () {
+                          n.revalidateField("country");
+                      }
+                  ),
+                  t.addEventListener("click", function (e) {
+                      e.preventDefault(),
+                          n &&
+                              n.validate().then(function (e) {
+                                  console.log("validated!"),
+                                      "Valid" == e
+                                          ? (t.setAttribute(
+                                                "data-kt-indicator",
+                                                "on"
+                                            ),
+                                            (t.disabled = !0),
+                                            $.ajax({
+                                                url: "{{route('roles.create')}}",
+                                                type: "POST",
+                                                headers: {
+                                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                },
+                                                data: $(r).serialize(),
+                                                success: function (response) {
+                                                    t.removeAttribute(
+                                                        "data-kt-indicator"
+                                                    ),
+                                                        Swal.fire({
+                                                            text: "Form has been successfully submitted!",
+                                                            icon: "success",
+                                                            buttonsStyling: !1,
+                                                            confirmButtonText:
+                                                                "OK mengerti!",
+                                                            customClass: {
+                                                                confirmButton:
+                                                                    "btn btn-primary",
+                                                            },
+                                                        }).then(function (e) {
+                                                            e.isConfirmed &&
+                                                                (i.hide(),
+                                                                (t.disabled = !1),
+                                                                (window.location =
+                                                                    r.getAttribute(
+                                                                        "data-kt-redirect"
+                                                                    )));
+                                                        });
+                                                },
+                                                error: function (xhr) {
+                                                    t.removeAttribute(
+                                                        "data-kt-indicator"
+                                                    ),
+                                                        Swal.fire({
+                                                            text: "Sorry, looks like there are some errors detected, please try again.",
+                                                            icon: "error",
+                                                            buttonsStyling: !1,
+                                                            confirmButtonText:
+                                                                "OK mengerti!",
+                                                            customClass: {
+                                                                confirmButton:
+                                                                    "btn btn-primary",
+                                                            },
+                                                        });
+                                                },
+                                            }))
+                                          : Swal.fire({
+                                                text: "Sorry, looks like there are some errors detected, please try again.",
+                                                icon: "error",
+                                                buttonsStyling: !1,
+                                                confirmButtonText: "OK mengerti!",
+                                                customClass: {
+                                                    confirmButton:
+                                                        "btn btn-primary",
+                                                },
+                                            });
+                              });
+                  }),
+                  e.addEventListener("click", function (t) {
+                      t.preventDefault(),
+                          Swal.fire({
+                              text: "Apakah Anda yakin ingin membatalkan?",
+                              icon: "warning",
+                              showCancelButton: !0,
+                              buttonsStyling: !1,
+                              confirmButtonText: "Ya, Batalkan!",
+                              cancelButtonText: "Tidak",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                                  cancelButton: "btn btn-active-light",
+                              },
+                          }).then(function (t) {
+                              t.value
+                                  ? (r.reset(), i.hide())
+                                  : "cancel" === t.dismiss &&
+                                    Swal.fire({
+                                        text: "Your form has not been cancelled!.",
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "OK mengerti!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary",
+                                        },
+                                    });
+                          });
+                  }),
+                  o.addEventListener("click", function (t) {
+                      t.preventDefault(),
+                          Swal.fire({
+                              text: "Apakah Anda yakin ingin membatalkan?",
+                              icon: "warning",
+                              showCancelButton: !0,
+                              buttonsStyling: !1,
+                              confirmButtonText: "Ya, Batalkan!",
+                              cancelButtonText: "Tidak",
+                              customClass: {
+                                  confirmButton: "btn btn-primary",
+                                  cancelButton: "btn btn-active-light",
+                              },
+                          }).then(function (t) {
+                              t.value
+                                  ? (r.reset(), i.hide())
+                                  : "cancel" === t.dismiss &&
+                                    Swal.fire({
+                                        text: "Your form has not been cancelled!.",
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "OK mengerti!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary",
+                                        },
+                                    });
+                          });
+                  });
+          },
+      };
+  })();
+  KTUtil.onDOMContentLoaded(function () {
+      KTModalRolesEdit.init();
+  });
+</script>
+
 <script src="{{asset('assets/js/widgets.bundle.js')}}"></script>
 <script src="{{asset('assets/js/custom/widgets.js')}}"></script>
 <script src="{{asset('assets/js/custom/apps/chat/chat.js')}}"></script>
 <script src="{{asset('assets/js/custom/utilities/modals/create-campaign.js')}}"></script>
 <script src="{{asset('assets/js/custom/utilities/modals/upgrade-plan.js')}}"></script>
 <script src="{{asset('assets/js/custom/utilities/modals/users-search.js')}}"></script>
-<script>
-  var KTCustomersList = (function () {
-      var t,
-          e,
-          o = () => {
-              e.querySelectorAll(
-                  '[data-kt-customer-table-filter="delete_row"]'
-              ).forEach((e) => {
-                  e.addEventListener("click", function (e) {
-                      e.preventDefault();
-                      const o = e.target.closest("tr"),
-                          n = o.querySelectorAll("td")[1].innerText;
-                      Swal.fire({
-                          text: "Are you sure you want to delete " + n + "?",
-                          icon: "warning",
-                          showCancelButton: !0,
-                          buttonsStyling: !1,
-                          confirmButtonText: "Yes, delete!",
-                          cancelButtonText: "No, cancel",
-                          customClass: {
-                              confirmButton: "btn fw-bold btn-danger",
-                              cancelButton:
-                                  "btn fw-bold btn-active-light-primary",
-                          },
-                      }).then(function (e) {
-                          e.value
-                              ? Swal.fire({
-                                    text: "You have deleted " + n + "!.",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn fw-bold btn-primary",
-                                    },
-                                }).then(function () {
-                                    t.row($(o)).remove().draw();
-                                })
-                              : "cancel" === e.dismiss &&
-                                Swal.fire({
-                                    text: n + " was not deleted.",
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn fw-bold btn-primary",
-                                    },
-                                });
-                      });
-                  });
-              });
-          },
-          n = () => {
-              const o = e.querySelectorAll('[type="checkbox"]'),
-                  n = document.querySelector(
-                      '[data-kt-customer-table-select="delete_selected"]'
-                  );
-              o.forEach((t) => {
-                  t.addEventListener("click", function () {
-                      setTimeout(function () {
-                          c();
-                      }, 50);
-                  });
-              }),
-                  n.addEventListener("click", function () {
-                      Swal.fire({
-                          text: "Are you sure you want to delete selected customers?",
-                          icon: "warning",
-                          showCancelButton: !0,
-                          buttonsStyling: !1,
-                          confirmButtonText: "Yes, delete!",
-                          cancelButtonText: "No, cancel",
-                          customClass: {
-                              confirmButton: "btn fw-bold btn-danger",
-                              cancelButton:
-                                  "btn fw-bold btn-active-light-primary",
-                          },
-                      }).then(function (n) {
-                          n.value
-                              ? Swal.fire({
-                                    text: "You have deleted all selected customers!.",
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn fw-bold btn-primary",
-                                    },
-                                }).then(function () {
-                                    o.forEach((e) => {
-                                        e.checked &&
-                                            t
-                                                .row($(e.closest("tbody tr")))
-                                                .remove()
-                                                .draw();
-                                    });
-                                    e.querySelectorAll(
-                                        '[type="checkbox"]'
-                                    )[0].checked = !1;
-                                })
-                              : "cancel" === n.dismiss &&
-                                Swal.fire({
-                                    text: "Selected customers was not deleted.",
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn fw-bold btn-primary",
-                                    },
-                                });
-                      });
-                  });
-          };
-      const c = () => {
-          const t = document.querySelector(
-                  '[data-kt-customer-table-toolbar="base"]'
-              ),
-              o = document.querySelector(
-                  '[data-kt-customer-table-toolbar="selected"]'
-              ),
-              n = document.querySelector(
-                  '[data-kt-customer-table-select="selected_count"]'
-              ),
-              c = e.querySelectorAll('tbody [type="checkbox"]');
-          let r = !1,
-              l = 0;
-          c.forEach((t) => {
-              t.checked && ((r = !0), l++);
-          }),
-              r
-                  ? ((n.innerHTML = l),
-                    t.classList.add("d-none"),
-                    o.classList.remove("d-none"))
-                  : (t.classList.remove("d-none"), o.classList.add("d-none"));
-      };
-      return {
-          init: function () {
-              (e = document.querySelector("#table_anggota")) &&
-                  (e.querySelectorAll("tbody tr").forEach((t) => {
-                      const e = t.querySelectorAll("td"),
-                          o = moment(e[5].innerHTML, "DD MMM YYYY, LT").format();
-                      e[5].setAttribute("data-order", o);
-                  }),
-                  (t = $(e).DataTable({
-                      info: !1,
-                      order: [],
-                      columnDefs: [
-                          { orderable: !1, targets: 0 },
-                          { orderable: !1, targets: 4 },
-                      ],
-                  })).on("draw", function () {
-                      n(), o(), c();
-                  }),
-                  n(),
-                  document
-                      .querySelector('[data-kt-customer-table-filter="search"]')
-                      .addEventListener("keyup", function (e) {
-                          t.search(e.target.value).draw();
-                      }),
-                  o(),
-                  (() => {
-                      const e = document.querySelector(
-                          '[data-kt-ecommerce-order-filter="status"]'
-                      );
-                      $(e).on("change", (e) => {
-                          let o = e.target.value;
-                          "all" === o && (o = ""), t.column(3).search(o).draw();
-                      });
-                  })());
-          },
-      };
-  })();
-  KTUtil.onDOMContentLoaded(function () {
-      KTCustomersList.init();
-  });
 
+<script>
+    var KTRolesList = (function () {
+        var dataTableInstance,
+            tableElement;
+
+        var setupDeleteRowHandler = () => {
+            tableElement.querySelectorAll('[data-kt-customer-table-filter="delete_row"]').forEach((deleteButton) => {
+                deleteButton.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const rowElement = event.target.closest("tr"),
+                          roleName = rowElement.querySelectorAll("td")[1].innerText;
+                    Swal.fire({
+                        text: "Are you sure you want to delete " + roleName + "?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        buttonsStyling: false,
+                        confirmButtonText: "Yes, delete!",
+                        cancelButtonText: "No, cancel",
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-danger",
+                            cancelButton: "btn fw-bold btn-active-light-primary",
+                        },
+                    }).then(function (result) {
+                        if (result.value) {
+                            Swal.fire({
+                                text: "You have deleted " + roleName + "!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK, got it!",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            }).then(function () {
+                                dataTableInstance.row($(rowElement)).remove().draw();
+                            });
+                        } else if (result.dismiss === "cancel") {
+                            Swal.fire({
+                                text: roleName + " was not deleted.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK, got it!",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            });
+                        }
+                    });
+                });
+            });
+        };
+
+        var setupDeleteSelectedRowsHandler = () => {
+            const checkboxes = tableElement.querySelectorAll('[type="checkbox"]'),
+                  deleteSelectedButton = document.querySelector('[data-kt-customer-table-select="delete_selected"]');
+
+            checkboxes.forEach((checkbox) => {
+                checkbox.addEventListener("click", function () {
+                    setTimeout(updateSelectedToolbar, 50);
+                });
+            });
+
+            deleteSelectedButton.addEventListener("click", function () {
+                Swal.fire({
+                    text: "Are you sure you want to delete selected customers?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    buttonsStyling: false,
+                    confirmButtonText: "Yes, delete!",
+                    cancelButtonText: "No, cancel",
+                    customClass: {
+                        confirmButton: "btn fw-bold btn-danger",
+                        cancelButton: "btn fw-bold btn-active-light-primary",
+                    },
+                }).then(function (result) {
+                    if (result.value) {
+                        Swal.fire({
+                            text: "You have deleted all selected customers!",
+                            icon: "success",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK, got it!",
+                            customClass: {
+                                confirmButton: "btn fw-bold btn-primary",
+                            },
+                        }).then(function () {
+                            checkboxes.forEach((checkbox) => {
+                                if (checkbox.checked) {
+                                    dataTableInstance.row($(checkbox.closest("tbody tr"))).remove().draw();
+                                }
+                            });
+                            tableElement.querySelectorAll('[type="checkbox"]')[0].checked = false;
+                        });
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire({
+                            text: "Selected customers were not deleted.",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "OK, got it!",
+                            customClass: {
+                                confirmButton: "btn fw-bold btn-primary",
+                            },
+                        });
+                    }
+                });
+            });
+        };
+
+        var updateSelectedToolbar = () => {
+            const baseToolbar = document.querySelector('[data-kt-customer-table-toolbar="base"]'),
+                  selectedToolbar = document.querySelector('[data-kt-customer-table-toolbar="selected"]'),
+                  selectedCount = document.querySelector('[data-kt-customer-table-select="selected_count"]'),
+                  checkboxes = tableElement.querySelectorAll('tbody [type="checkbox"]');
+            
+            let anySelected = false, selectedCountValue = 0;
+            checkboxes.forEach((checkbox) => {
+                if (checkbox.checked) {
+                    anySelected = true;
+                    selectedCountValue++;
+                }
+            });
+
+            if (anySelected) {
+                selectedCount.innerHTML = selectedCountValue;
+                baseToolbar.classList.add("d-none");
+                selectedToolbar.classList.remove("d-none");
+            } else {
+                baseToolbar.classList.remove("d-none");
+                selectedToolbar.classList.add("d-none");
+            }
+        };
+
+        return {
+            init: function () {
+                tableElement = document.querySelector("#table_anggota");
+                if (tableElement) {
+                    dataTableInstance = $(tableElement).DataTable({
+                        info: false,
+                        order: [],
+                        columnDefs: [
+                            { orderable: false, targets: 0 },
+                            { orderable: false, targets: 3 },
+                        ],
+                    }).on("draw", function () {
+                        setupDeleteSelectedRowsHandler();
+                        setupDeleteRowHandler();
+                        updateSelectedToolbar();
+                    });
+
+                    setupDeleteSelectedRowsHandler();
+                    document.querySelector('[data-kt-customer-table-filter="search"]').addEventListener("keyup", function (event) {
+                        dataTableInstance.search(event.target.value).draw();
+                    });
+                    setupDeleteRowHandler();
+
+                    // Status Filter
+                    const statusFilter = document.querySelector('[data-kt-ecommerce-order-filter="status"]');
+                    $(statusFilter).on("change", (event) => {
+                        let statusValue = event.target.value;
+                        if (statusValue === "all") {
+                            statusValue = "";
+                        }
+                        dataTableInstance.column(3).search(statusValue).draw();
+                    });
+                }
+            },
+        };
+    })();
+
+    KTUtil.onDOMContentLoaded(function () {
+        KTRolesList.init();
+    });
 </script>
+
 @stop

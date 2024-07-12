@@ -26,17 +26,7 @@ class RolesController extends Controller
 
         Role::create($request->all());
 
-        return redirect()->route('dashboard.pages.roles')->with('success', 'Role created successfully.');
-    }
-
-    public function show(Role $role)
-    {
-        return view('roles.show', compact('role'));
-    }
-
-    public function edit(Role $role)
-    {
-        return view('roles.edit', compact('role'));
+        return redirect()->route('roles.index')->with('success', 'Role created successfully.');
     }
 
     public function update(Request $request, Role $role)
@@ -48,13 +38,13 @@ class RolesController extends Controller
 
         $role->update($request->all());
 
-        return redirect()->route('dashboard.pages.roles')->with('success', 'Role updated successfully.');
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully.');
     }
 
     public function destroy(Role $role)
     {
         $role->delete();
 
-        return redirect()->route('dashboard.pages.roles')->with('success', 'Role deleted successfully.');
+        return redirect()->route('roles.index')->with('success', 'Role deleted successfully.');
     }
 }

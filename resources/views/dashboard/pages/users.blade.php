@@ -170,17 +170,7 @@
                   class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0"
                 >
                   <th class="w-10px pe-2">
-                    <div
-                      class="form-check form-check-sm form-check-custom form-check-solid me-3"
-                    >
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        data-kt-check="true"
-                        data-kt-check-target="#table_anggota .form-check-input"
-                        value="1"
-                      />
-                    </div>
+                    No
                   </th>
                   <th class="min-w-125px">Nomor anggota</th>
                   <th class="min-w-125px">Nama Lengkap</th>
@@ -194,27 +184,13 @@
                 @foreach($users as $data)
                 <tr>
                   <td>
-                    <div
-                      class="form-check form-check-sm form-check-custom form-check-solid"
-                    >
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value="1"
-                      />
-                    </div>
+                    {{$loop->iteration}}
                   </td>
                   <td>
-                    <a
-                      href="apps/ecommerce/customers/details.html"
-                      class="text-gray-800 text-hover-primary mb-1"
-                      >{{ str_pad($data->num_member, 3, '0', STR_PAD_LEFT) }}</a
-                    >
+                    {{ str_pad($data->num_member, 3, '0', STR_PAD_LEFT) }}
                   </td>
                   <td>
-                    <a href="#" class="text-gray-600 text-hover-primary mb-1"
-                      >{{$data->name}}</a
-                    >
+                    {{$data->name}}
                   </td>
                   
                   <td>
@@ -231,7 +207,7 @@
 
                   <td>{{ $data->created_at->format('d M Y, h:i a') }}</td>
                   <td class="text-end">
-                    <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1">
+                    <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1" data-bs-toggle="modal" data-bs-target="#kt_modal_edit_users">
                         <span class="svg-icon svg-icon-2">
                             <i class="fas fa-pen"></i>
                         </span>
@@ -379,6 +355,7 @@
                         class="form-control form-control-solid"
                         placeholder="Simpanan Wajib Pertama kali daftar (Opsional)"
                         name="mandatory_savings"
+                        min="0"
                       />
                       <!--end::Input-->
                     </div>
@@ -390,6 +367,7 @@
                         class="form-control form-control-solid"
                         placeholder="Simpanan Sukarela (Opsional)"
                         name="voluntary_savings"
+                        min="0"
                       />
                       <!--end::Input-->
                     </div>
@@ -514,7 +492,6 @@
                       <option value="excell">Excel</option>
                       <option value="pdf">PDF</option>
                       <option value="cvs">CVS</option>
-                      <option value="zip">ZIP</option>
                     </select>
                     <!--end::Input-->
                   </div>
@@ -716,7 +693,7 @@
                         <!--end::Input-->
                     </div>
                     <!-- endL::input group -->
-                    <!--begin::Input group-->
+                     <!--begin::Input group-->
                     <div class="fv-row mb-7">
                       <!--begin::Label-->
                       <label class="required fs-6 fw-semibold mb-2">Nama Lengkap</label>
@@ -727,9 +704,40 @@
                         class="form-control form-control-solid"
                         placeholder="Nama Anggota"
                         name="name"
+                        id="name"
                       />
                       <!--end::Input-->
                     </div>
+                     <!--begin::Input group-->
+                    <div class="fv-row mb-7">
+                      <!--begin::Label-->
+                      <label class="required fs-6 fw-semibold mb-2">Username</label>
+                      <!--end::Label-->
+                      <!--begin::Input-->
+                      <input
+                        type="text"
+                        class="form-control form-control-solid"
+                        placeholder="Username Anggota"
+                        name="username"
+                        id="username"
+                      />
+                    </div>
+                      <!--end::Input-->
+                      <!--begin::Input group-->
+                    <div class="fv-row mb-7">
+                      <!--begin::Label-->
+                      <label class="fs-6 fw-semibold mb-2">Password baru</label>
+                      <!--end::Label-->
+                      <!--begin::Input-->
+                      <input
+                        type="text"
+                        class="form-control form-control-solid"
+                        placeholder="Password baru (Opsional)"
+                        name="password"
+                        id="password"
+                      />
+                  </div>
+                      <!--end::Input-->
                       <!--begin::Input group-->
                       <div class="d-flex flex-column mb-7 fv-row">
                         <!--begin::Label-->
@@ -754,6 +762,7 @@
                           data-placeholder="Pilih Golongan"
                           data-dropdown-parent="#kt_modal_edit_users"
                           class="form-select form-select-solid fw-bold"
+                          id="group"
                         >
                           <option value="">Pilih Golongan</option>
                           @foreach($groups as $data)
@@ -771,6 +780,7 @@
                         class="form-control form-control-solid"
                         placeholder="Simpanan Wajib Pertama kali daftar (Opsional)"
                         name="mandatory_savings"
+                        id="mandatory_savings"
                       />
                       <!--end::Input-->
                     </div>
@@ -782,6 +792,7 @@
                         class="form-control form-control-solid"
                         placeholder="Simpanan Sukarela (Opsional)"
                         name="voluntary_savings"
+                        id="voluntary_savings"
                       />
                       <!--end::Input-->
                     </div>
@@ -810,6 +821,7 @@
                           data-placeholder="Pilih Posisi"
                           data-dropdown-parent="#kt_modal_edit_users"
                           class="form-select form-select-solid fw-bold"
+                          id="roles"
                         >
                           <option value="">Pilih Posisi</option>
                           @foreach($roles as $data)
@@ -906,7 +918,6 @@
                       <option value="excell">Excel</option>
                       <option value="pdf">PDF</option>
                       <option value="cvs">CVS</option>
-                      <option value="zip">ZIP</option>
                     </select>
                     <!--end::Input-->
                   </div>
@@ -1159,6 +1170,9 @@
 
                   });
               });
+
+
+
           },
           n = () => {
               const o = e.querySelectorAll('[type="checkbox"]'),
@@ -1219,29 +1233,17 @@
                                 });
                       });
                   });
+          },
+          
+          edit = () => {
+            e.querySelectorAll('[data-bs-target="#kt_modal_edit_users"]').forEach((e) => {
+               e.addEventListener("click", function (e) {
+                 e.preventDefault();
+                 console.log(e);
+               });
+            });
           };
-      const c = () => {
-          const t = document.querySelector(
-                  '[data-kt-customer-table-toolbar="base"]'
-              ),
-              o = document.querySelector(
-                  '[data-kt-customer-table-toolbar="selected"]'
-              ),
-              n = document.querySelector(
-                  '[data-kt-customer-table-select="selected_count"]'
-              ),
-              c = e.querySelectorAll('tbody [type="checkbox"]');
-          let r = !1,
-              l = 0;
-          c.forEach((t) => {
-              t.checked && ((r = !0), l++);
-          }),
-              r
-                  ? ((n.innerHTML = l),
-                    t.classList.add("d-none"),
-                    o.classList.remove("d-none"))
-                  : (t.classList.remove("d-none"), o.classList.add("d-none"));
-      };
+          
       return {
           init: function () {
               (e = document.querySelector("#table_anggota")) &&
@@ -1254,11 +1256,10 @@
                       info: !1,
                       order: [],
                       columnDefs: [
-                          { orderable: !1, targets: 0 },
                           { orderable: !1, targets: 6 },
                       ],
                   })).on("draw", function () {
-                      n(), o(), c();
+                      n(), o(), edit();
                   }),
                   n(),
                   document
@@ -1287,7 +1288,7 @@
 
 <!-- ADD USER -->
 <script>
-  var KTModalCustomersAdd = (function () {
+  var KTModalMemberAdd = (function () {
       var t, e, o, n, r, i;
       return {
           init: function () {
@@ -1375,18 +1376,13 @@
                                     const newRow = document.createElement('tr');
                                     const numMemberFormatted = String(data.user.num_member).padStart(3, '0')
                                     const statusBadge = data.user.status_active ? 
-                                        '<div class="badge badge-light-success">Aktif</div>' : 
+                                        '<div class="badge badge-light-success">Anggota</div>' : 
                                         '<div class="badge badge-light-danger">Tidak Aktif</div>';
 
                                     const date = new Date(data.user.created_at);
                                     const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
                                     const dateFormatted = new Intl.DateTimeFormat('en-US', options).format(date);
                                     newRow.innerHTML = `
-                                        <td>
-                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="1">
-                                            </div>
-                                        </td>
                                         <td>
                                             <a href="apps/ecommerce/customers/details.html" class="text-gray-800 text-hover-primary mb-1">${numMemberFormatted}</a>
                                         </td>
@@ -1502,7 +1498,7 @@
       };
   })();
   KTUtil.onDOMContentLoaded(function () {
-      KTModalCustomersAdd.init();
+      KTModalMemberAdd.init();
   });
 
 </script>
@@ -1732,14 +1728,35 @@
 <script src="{{asset('assets/js/custom/utilities/modals/users-search.js')}}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var modal = document.getElementById('kt_modal_add_users');
-        modal.addEventListener('show.bs.modal', function () {
+        var modal_add = document.getElementById('kt_modal_add_users');
+        modal_add.addEventListener('show.bs.modal', function () {
             fetch("{{route('users.generate_number')}}")
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('num_member').value = data.newNumber;
                 })
                 .catch(error => console.error('Error:', error));
+        });
+
+        var modal_edit = document.getElementById('kt_modal_edit_users');
+        modal_edit.addEventListener('show.bs.modal', function () {
+          fetch("{{ route('users.detail', ['num_member' => ':num_member']) }}".replace(':num_member', num_member))
+        .then(response => response.json())
+        .then(data => {
+            var tdElement = document.querySelectorAll('td.dt-type-numeric')[1];
+            if (tdElement) {
+                document.getElementsByName('num_member')[1].value = tdElement.textContent.trim();
+
+            } else {
+                document.getElementsByName('num_member')[1].value = 'ERROR';
+            }
+
+            document.getElementById('name').value = data.name;
+            document.getElementById('username').value = data.username;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
         });
     });
 </script>

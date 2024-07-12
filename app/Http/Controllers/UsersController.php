@@ -36,6 +36,17 @@ class UsersController extends Controller
         return response()->json($user);
     }
 
+    public function cekUserByNumMember($num_member)
+    {
+        $user = User::where('num_member', $num_member)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
+        return response()->json($user);
+    }
+
     public function cekUserBynum_member($num_member)
     {
         $user = User::where('num_member', $num_member)->first();
@@ -87,7 +98,7 @@ class UsersController extends Controller
             'name' => $request->name,
             'num_member' => $request->num_member,
             'username' => $username,
-            'password' => Hash::make($username . '#' . $request->num_member),
+            'password' => Hash::make($username),
             'role_id' => $request->roles,
             'status_active' => true
         ]);
