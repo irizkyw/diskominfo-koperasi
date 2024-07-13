@@ -24,7 +24,9 @@ Route::post('/authentication/authenticated', [AuthController::class, 'login'])->
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+Route::get('/users/datatable', [UsersController::class, 'datatable'])->name('users.datatable');
 
+Route::get('/roles/datatable', [RolesController::class, 'datatable'])->name('roles.datatable');
 Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
@@ -42,7 +44,7 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::delete('/roles/destroy/{id}', [RolesController::class, 'destroy'])->name('roles.destroy');
     Route::get('/roles/detail/{id}', [RolesController::class, 'findById'])->name('roles.findById');
 
-
+    
 
 
     Route::get('/groups', function(){
