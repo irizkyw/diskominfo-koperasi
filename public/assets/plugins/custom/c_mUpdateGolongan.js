@@ -1,73 +1,72 @@
-var KTModalgolonganEdit = (function() {
+var KTModalgolonganEdit = (function () {
     var t, e, o, n, r, i;
     return {
-        init: function() {
+        init: function () {
             (i = new bootstrap.Modal(document.querySelector("#kt_modal_edit_golongan"))),
-            (r = document.querySelector("#kt_modal_edit_golongan_form")),
-            (t = r.querySelector("#kt_modal_edit_golongan_submit")),
-            (e = r.querySelector("#kt_modal_edit_golongan_cancel")),
-            (o = r.querySelector("#kt_modal_edit_golongan_close")),
-            (n = FormValidation.formValidation(r, {
-                fields: {
-                    nama_golongan: {
-                        validators: {
-                            notEmpty: {
-                                message: "Nama Golongan Diperlukan",
+                (r = document.querySelector("#kt_modal_edit_golongan_form")),
+                (t = r.querySelector("#kt_modal_edit_golongan_submit")),
+                (e = r.querySelector("#kt_modal_edit_golongan_cancel")),
+                (o = r.querySelector("#kt_modal_edit_golongan_close")),
+                (n = FormValidation.formValidation(r, {
+                    fields: {
+                        nama_golongan: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Nama Golongan Diperlukan",
+                                },
+                            },
+                        },
+                        desc: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Deskripsi Diperlukan",
+                                },
+                            },
+                        },
+                        simp_pokok: {
+                            validators: {
+                                notEmpty: {
+                                    message: "Simpanan Pokok Diperlukan",
+                                },
                             },
                         },
                     },
-                    desc: {
-                        validators: {
-                            notEmpty: {
-                                message: "Deskripsi Diperlukan",
-                            },
-                        },
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger(),
+                        bootstrap: new FormValidation.plugins.Bootstrap5({
+                            rowSelector: ".fv-row",
+                            eleInvalidClass: "",
+                            eleValidClass: "",
+                        }),
                     },
-                    simp_pokok: {
-                        validators: {
-                            notEmpty: {
-                                message: "Simpanan Pokok Diperlukan",
-                            },
-                        },
-                    },
-                },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    bootstrap: new FormValidation.plugins.Bootstrap5({
-                        rowSelector: ".fv-row",
-                        eleInvalidClass: "",
-                        eleValidClass: "",
-                    }),
-                },
-            })),
-                t.addEventListener("click", function(e) {
+                })),
+                t.addEventListener("click", function (e) {
                     e.preventDefault();
-                    n && n.validate().then(function(e) {
+                    n && n.validate().then(function (e) {
                         console.log("validated!");
                         if ("Valid" == e) {
                             t.setAttribute("data-kt-indicator", "on");
                             t.disabled = !0;
 
-                            var id = $("#kt_modal_edit_golongan_form").find('[name="id"]')
-                                .val()
-                            console.log(id)
-                            var url = $("#kt_modal_edit_golongan_form").attr('action');
-                            $("#kt_modal_edit_golongan_form").attr('action', url.replace(":id",
-                                id))
-                                
+                            var idField = $("#kt_modal_edit_golongan_form").find('[name="id"]');
+                            idField.prop('disabled', false);
 
-                            // Collect form data
+                            var id = idField.val();
+                            var form = $("#kt_modal_edit_golongan_form");
+                            var originalUrl = form.attr('data-original-action');
+                            var url = originalUrl.replace(":id", id);
+                            form.attr('action', url);
                             var formData = new FormData(r);
 
                             fetch(r.action, {
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': document.querySelector(
-                                            'meta[name="csrf-token"]').getAttribute(
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').getAttribute(
                                             'content')
-                                    },
-                                    body: formData
-                                })
+                                },
+                                body: formData
+                            })
                                 .then(response => response.json())
                                 .then(data => {
                                     console.log(data);
@@ -80,7 +79,7 @@ var KTModalgolonganEdit = (function() {
                                         customClass: {
                                             confirmButton: "btn btn-primary",
                                         },
-                                    }).then(function(e) {
+                                    }).then(function (e) {
                                         if (e.isConfirmed) {
                                             r.reset();
                                             i.hide();
@@ -114,7 +113,7 @@ var KTModalgolonganEdit = (function() {
                         }
                     });
                 }),
-                e.addEventListener("click", function(t) {
+                e.addEventListener("click", function (t) {
                     t.preventDefault(),
                         Swal.fire({
                             text: "Apakah Anda yakin ingin membatalkan?",
@@ -127,7 +126,7 @@ var KTModalgolonganEdit = (function() {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light",
                             },
-                        }).then(function(t) {
+                        }).then(function (t) {
                             t.value ?
                                 (r.reset(), i.hide()) :
                                 "cancel" === t.dismiss &&
@@ -142,7 +141,7 @@ var KTModalgolonganEdit = (function() {
                                 });
                         });
                 }),
-                o.addEventListener("click", function(t) {
+                o.addEventListener("click", function (t) {
                     t.preventDefault(),
                         Swal.fire({
                             text: "Apakah Anda yakin ingin membatalkan?",
@@ -155,7 +154,7 @@ var KTModalgolonganEdit = (function() {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light",
                             },
-                        }).then(function(t) {
+                        }).then(function (t) {
                             t.value ?
                                 (r.reset(), i.hide()) :
                                 "cancel" === t.dismiss &&
@@ -173,6 +172,6 @@ var KTModalgolonganEdit = (function() {
         },
     };
 })();
-KTUtil.onDOMContentLoaded(function() {
+KTUtil.onDOMContentLoaded(function () {
     KTModalgolonganEdit.init();
 });
