@@ -238,8 +238,9 @@
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
+                                
                                 <form class="form" action="{{ route('transaksi.update', ':id') }}"
-                                    id="kt_modal_edit_transaksi_form" data-kt-redirect="{{ route('transaksi.index') }}">
+                                    id="kt_modal_edit_transaksi_form"  data-kt-redirect="{{ route('transaksi.index') }}">
                                     @csrf
                                     <div class="modal-header" id="kt_modal_edit_transaksi_header">
                                         <h2 class="fw-bold">Merubah Data Transaksi</h2>
@@ -258,27 +259,27 @@
                                             <div class="fv-row mb-7">
                                                 <label class="required fs-6 fw-semibold mb-2">Nama Anggota</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="ID Role" name="id" id="id"  />
+                                                    placeholder="ID Role" name="user_id" id="user_id"  />
                                             </div>
                                             <div class="fv-row mb-7">
                                                 <label class="required fs-6 fw-semibold mb-2">Jenis Transaksi</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nama Role" name="name" id="group" />
+                                                    placeholder="Nama Role" name="transaction_type" id="transaction_type" />
                                             </div>
                                             <div class="fv-row mb-7">
                                                 <label class="required fs-6 fw-semibold mb-2">Deskripsi (opsional)</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Deskripsi" name="desc" id="desc" />
+                                                    placeholder="Deskripsi" name="description" id="description" />
                                             </div>
                                             <div class="fv-row mb-7">
                                                 <label class="required fs-6 fw-semibold mb-2">Tanggal Transaksi</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Tanggal Transaksi" name="desc" id="desc" />
+                                                    placeholder="Tanggal Transaksi" name="date_transaction" id="date_transaction" />
                                             </div>
                                             <div class="fv-row mb-7">
                                                 <label class="required fs-6 fw-semibold mb-2">Nominal</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nominal" name="desc" id="desc" />
+                                                    placeholder="Nominal" name="nominal" id="nominal" />
                                             </div>
                                         </div>
                                     </div>
@@ -459,12 +460,30 @@
                         'content')
                 },
                 success: function(response) {
+                    // Mengisi nilai-nilai form di modal edit transaksi
                     $("#kt_modal_edit_transaksi").find("[name='id']").val(response.id)
-                    $("#kt_modal_edit_transaksi").find("[name='name']").val(response.name)
-                    $("#kt_modal_edit_transaksi").find("[name='desc']").val(response.desc)
+                    $("#kt_modal_edit_transaksi").find("[name='user_id']").val(response.user_id)
+                    $("#kt_modal_edit_transaksi").find("[name='transaction_type']").val(response.transaction_type)
+                    $("#kt_modal_edit_transaksi").find("[name='description']").val(response.description)
+                    $("#kt_modal_edit_transaksi").find("[name='date_transaction']").val(response.date_transaction)
+                    $("#kt_modal_edit_transaksi").find("[name='nominal']").val(response.nominal)
+                    
+                    // Menampilkan modal edit transaksi
                     $("#kt_modal_edit_transaksi").modal("show")
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        text: "Gagal memuat data transaksi.",
+                        icon: "error",
+                        buttonsStyling: !1,
+                        confirmButtonText: "OK mengerti!",
+                        customClass: {
+                            confirmButton: "btn btn-primary",
+                        },
+                    });
                 }
             });
-        })
+        });
     </script>
 @stop

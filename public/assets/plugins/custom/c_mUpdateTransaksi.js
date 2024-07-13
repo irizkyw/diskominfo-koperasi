@@ -1,13 +1,15 @@
 var KTModalTransaksiEdit = (function() {
-    var t, e, o, n, r, i;
+    var modal, form, submitBtn, cancelBtn, closeBtn;
+
     return {
         init: function() {
-            (i = new bootstrap.Modal(document.querySelector("#kt_modal_edit_transaksi"))),
-            (r = document.querySelector("#kt_modal_edit_transaksi_form")),
-            (t = r.querySelector("#kt_modal_edit_transaksi_submit")),
-            (e = r.querySelector("#kt_modal_edit_transaksi_cancel")),
-            (o = r.querySelector("#kt_modal_edit_transaksi_close")),
-            (n = FormValidation.formValidation(r, {
+            modal = new bootstrap.Modal(document.querySelector("#kt_modal_edit_transaksi"));
+            form = document.querySelector("#kt_modal_edit_transaksi_form");
+            submitBtn = form.querySelector("#kt_modal_edit_transaksi_submit");
+            cancelBtn = form.querySelector("#kt_modal_edit_transaksi_cancel");
+            closeBtn = form.querySelector("#kt_modal_edit_transaksi_close");
+
+            var validator = FormValidation.formValidation(form, {
                 fields: {
                     user_id: {
                         validators: {
@@ -56,67 +58,64 @@ var KTModalTransaksiEdit = (function() {
                         eleValidClass: "",
                     }),
                 },
-            })),
-            t.addEventListener("click", function(e) {
-                e.preventDefault();
-                n && n.validate().then(function(e) {
-                    console.log("validated!");
-                    if ("Valid" == e) {
-                        t.setAttribute("data-kt-indicator", "on");
-                        t.disabled = !0;
+            });
 
-                        id = $("#kt_modal_edit_transaksi_form").find('[name="id"]').val()
-                        url = $("#kt_modal_edit_transaksi_form").attr('action')
-                        $("#kt_modal_edit_transaksi_form").attr('action', url.replace(":id", id))
+            submitBtn.addEventListener("click", function(event) {
+                event.preventDefault();
+                validator.validate().then(function(status) {
+                    if (status === "Valid") {
+                        submitBtn.setAttribute("data-kt-indicator", "on");
+                        submitBtn.disabled = true;
 
-                        // Collect form data
-                        var formData = new FormData(r);
+                        var id = form.querySelector('[name="id"]').value;
+                    var url = form.getAttribute('action').replace(":id", id);
 
-                        fetch(r.action, {
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: formData
+                    })
+
+                        .then(response => response.json())
+                        .then(data => {
+                            submitBtn.removeAttribute("data-kt-indicator");
+                            Swal.fire({
+                                text: data.message,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary",
                                 },
-                                body: formData
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log(data);
-                                t.removeAttribute("data-kt-indicator");
-                                Swal.fire({
-                                    text: data.message,
-                                    icon: "success",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary",
-                                    },
-                                }).then(function(e) {
-                                    if (e.isConfirmed) {
-                                        r.reset();
-                                        i.hide();
-                                        t.disabled = !1;
-                                        datatable.ajax.reload()
-                                    }
-                                });
-                            })
-                            .catch(error => {
-                                Swal.fire({
-                                    text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "OK mengerti!",
-                                    customClass: {
-                                        confirmButton: "btn btn-primary",
-                                    },
-                                });
-                                t.disabled = !1;
+                            }).then(function(result) {
+                                if (result.isConfirmed) {
+                                    form.reset();
+                                    modal.hide();
+                                    submitBtn.disabled = false;
+                                    // Assuming you have a function to reload data
+                                    // e.g., datatable.ajax.reload();
+                                }
                             });
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                text: "Maaf, terjadi kesalahan. Silakan coba lagi.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK mengerti!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary",
+                                },
+                            });
+                            submitBtn.disabled = false;
+                        });
                     } else {
                         Swal.fire({
-                            text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
+                            text: "Maaf, ada kesalahan dalam formulir. Silakan periksa kembali.",
                             icon: "error",
-                            buttonsStyling: !1,
+                            buttonsStyling: false,
                             confirmButtonText: "OK mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary",
@@ -124,66 +123,73 @@ var KTModalTransaksiEdit = (function() {
                         });
                     }
                 });
-            }),
-            e.addEventListener("click", function(t) {
-                t.preventDefault(),
+            });
+
+            cancelBtn.addEventListener("click", function(event) {
+                event.preventDefault();
                 Swal.fire({
                     text: "Apakah Anda yakin ingin membatalkan?",
                     icon: "warning",
-                    showCancelButton: !0,
-                    buttonsStyling: !1,
+                    showCancelButton: true,
+                    buttonsStyling: false,
                     confirmButtonText: "Ya, Batalkan!",
                     cancelButtonText: "Tidak",
                     customClass: {
                         confirmButton: "btn btn-primary",
                         cancelButton: "btn btn-active-light",
                     },
-                }).then(function(t) {
-                    t.value ?
-                        (r.reset(), i.hide()) :
-                        "cancel" === t.dismiss &&
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        form.reset();
+                        modal.hide();
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
                         Swal.fire({
-                            text: "Your form has not been cancelled!.",
+                            text: "Formulir tidak dibatalkan.",
                             icon: "error",
-                            buttonsStyling: !1,
+                            buttonsStyling: false,
                             confirmButtonText: "OK mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                             },
                         });
+                    }
                 });
-            }),
-            o.addEventListener("click", function(t) {
-                t.preventDefault(),
+            });
+
+            closeBtn.addEventListener("click", function(event) {
+                event.preventDefault();
                 Swal.fire({
                     text: "Apakah Anda yakin ingin membatalkan?",
                     icon: "warning",
-                    showCancelButton: !0,
-                    buttonsStyling: !1,
+                    showCancelButton: true,
+                    buttonsStyling: false,
                     confirmButtonText: "Ya, Batalkan!",
                     cancelButtonText: "Tidak",
                     customClass: {
                         confirmButton: "btn btn-primary",
                         cancelButton: "btn btn-active-light",
                     },
-                }).then(function(t) {
-                    t.value ?
-                        (r.reset(), i.hide()) :
-                        "cancel" === t.dismiss &&
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        form.reset();
+                        modal.hide();
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
                         Swal.fire({
-                            text: "Your form has not been cancelled!.",
+                            text: "Formulir tidak dibatalkan.",
                             icon: "error",
-                            buttonsStyling: !1,
+                            buttonsStyling: false,
                             confirmButtonText: "OK mengerti!",
                             customClass: {
                                 confirmButton: "btn btn-primary",
                             },
                         });
+                    }
                 });
             });
         },
     };
 })();
+
 KTUtil.onDOMContentLoaded(function() {
     KTModalTransaksiEdit.init();
 });

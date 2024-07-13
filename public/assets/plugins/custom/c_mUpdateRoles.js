@@ -43,6 +43,7 @@
 
                                     id = $("#kt_modal_edit_roles_form").find('[name="id"]')
                                         .val()
+                                    console.log(id)
                                     url = $("#kt_modal_edit_roles_form").attr('action')
                                     $("#kt_modal_edit_roles_form").attr('action', url.replace(":id",
                                         id))

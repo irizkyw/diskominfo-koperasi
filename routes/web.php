@@ -54,7 +54,7 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::post('/savings/create', [TransaksiController::class, 'createTransaksi'])->name('transaksi.create');
     Route::post('/savings/update/{id}', [TransaksiController::class, 'updateTransaksi'])->name('transaksi.update');
     Route::delete('/savings/destroy/{id}', [TransaksiController::class, 'deleteTransksi'])->name('transaksi.destroy');
-    Route::get('/savings/detail/{id}', [TransaksiController::class, 'findById'])->name('transaksi.findById');
+    Route::get('/savings/detail/{id}', [TransaksiController::class, 'transaksiById'])->name('transaksi.findById');
     // Route::get('/savings', function(){
     //     return view('dashboard.pages.savings');
     // })->name('savings.index');
