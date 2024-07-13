@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Tabungan extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['user_id','principal_savings','voluntary_savings','mandatory_savings','installments']
+    protected $table = 'tabungan';
+    protected $fillable = ['user_id','principal_savings','voluntary_savings','mandatory_savings','installments'];
 }

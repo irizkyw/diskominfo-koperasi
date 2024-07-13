@@ -12,7 +12,6 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->intended('/dashboard');
         }
-
         return view('landing.sign_in');
     }
 
@@ -25,44 +24,24 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            $request->session()->regenerate();
-            return response()->json([
-                'message' => 'You have successfully logged in!',
-                'redirect' => '/dashboard',
-            ], 200);
+            if (Auth::user()->status_active) {
+                $request->session()->regenerate();
+
+                return response()->json([
+                    'message' => 'You have successfully logged in!',
+                    'redirect' => '/dashboard',
+                ], 200);
+            } else {
+                Auth::logout();
+                return response()->json([
+                    'error' => 'Akun Anda tidak aktif. Silakan hubungi administrator.',
+                ], 422);
+            }
         } else {
             return response()->json([
                 'error' => 'Username atau password yang anda masukan salah!'
             ], 422);
         }
-    }
-
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'role' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $num_member = User::max('num_member') + 1;
-        $username = $request->name . '@' . $num_member;
-
-        $user = User::create([
-            'name' => $request->name,
-            'num_member' => $num_member,
-            'username' => $username,
-            'password' => Hash::make($username . '@' .$num_member),
-            'role_id' => $request->role_id,
-        ]);
-
-        return response()->json([
-            'message' => 'Pembuatan akun berhasil',
-            'redirect' => '/dashboard',
-        ], 200);
     }
 
 
