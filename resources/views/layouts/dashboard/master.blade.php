@@ -11,9 +11,15 @@
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
-<body id="kt_app_body" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true"
-    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-push-header="true"
-    data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true"
+<body id="kt_app_body"
+    @if (Auth::user()->role->name !== 'Administrator') data-kt-app-sidebar-enabled="true"
+    data-kt-app-sidebar-enabled="false"
+    @else
+    data-kt-app-sidebar-fixed="true"
+    data-kt-app-sidebar-push-header="true"
+    data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true" @endif
+    data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-toolbar-enabled="true"
     class="app-default">
     <script>
         var defaultThemeMode = "light";
@@ -38,36 +44,39 @@
         <!--begin::Page-->
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             <!--begin::Header-->
-            <div id="kt_app_header" class="app-header d-flex d-lg-none border-bottom">
-                <!--begin::Header container-->
-                <div class="app-container container-fluid d-flex flex-stack" id="kt_app_header_container">
-                    <!--begin::Sidebar toggle-->
-                    <button class="btn btn-icon btn-sm btn-active-color-primary ms-n2"
-                        id="kt_app_sidebar_mobile_toggle">
-                        <i class="ki-outline ki-abstract-14 fs-2"></i>
-                    </button>
-                    <!--end::Sidebar toggle-->
-                    <!--begin::Logo-->
-                    <a href="index.html">
-                        <img alt="Logo" src="assets/media/logos/demo59.svg" class="h-30px theme-light-show" />
-                        <img alt="Logo" src="assets/media/logos/demo59-dark.svg" class="h-30px theme-dark-show" />
-                    </a>
-                    <!--end::Logo-->
-                    <!--begin::Sidebar panel toggle-->
-                    <button class="btn btn-icon btn-sm btn-active-color-primary me-n2" id="kt_app_aside_mobile_toggle">
-                        <i class="ki-outline ki-menu fs-2"></i>
-                    </button>
-                    <!--end::Sidebar panel toggle-->
+            @if (Auth::user()->role->name !== 'Member')
+                <div id="kt_app_header" class="app-header d-flex d-lg-none border-bottom">
+                    <!--begin::Header container-->
+                    <div class="app-container container-fluid d-flex flex-stack" id="kt_app_header_container">
+                        <!--begin::Sidebar toggle-->
+                        <button class="btn btn-icon btn-sm btn-active-color-primary ms-n2"
+                            id="kt_app_sidebar_mobile_toggle">
+                            <i class="ki-outline ki-abstract-14 fs-2"></i>
+                        </button>
+                        <!--end::Sidebar toggle-->
+                        <!--begin::Logo-->
+                        <a href="{{ route('dashboard') }}">
+                            <h1>KODIJA</h1>
+                        </a>
+                        <!--end::Logo-->
+                        <!--begin::Sidebar panel toggle-->
+                        <button class="btn btn-icon btn-sm btn-active-color-primary me-n2"
+                            id="kt_app_aside_mobile_toggle">
+                            <i class="ki-outline ki-menu fs-2"></i>
+                        </button>
+                        <!--end::Sidebar panel toggle-->
+                    </div>
+                    <!--end::Header container-->
                 </div>
-                <!--end::Header container-->
-            </div>
+            @endif
             <!--end::Header-->
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
                 <!--begin::Sidebar-->
-                @include('layouts.includes.dashboard._sidebar')
-                <!--end::Sidebar-->
-
+                @if (Auth::user()->role->name !== 'Member')
+                    @include('layouts.includes.dashboard._sidebar')
+                    <!--end::Sidebar-->
+                @endif
                 <!--begin::Main-->
                 @yield('content')
                 <!--end:::Main-->

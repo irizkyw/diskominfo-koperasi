@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Group;
+use App\Models\Golongan;
 use Yajra\DataTables\DataTables;
 
 class UsersController extends Controller
@@ -19,9 +19,9 @@ class UsersController extends Controller
         $users = User::orderBy('created_at', 'desc')->get();
         $users = User::latest()->get();
         $roles = Role::all();
-        $groups = Group::all();
+        $golongan = Golongan::all();
 
-        return view('dashboard.pages.users', compact('users','roles','groups'));
+        return view('dashboard.pages.users', compact('users','roles','golongan'));
     }
 
     public function datatable()
@@ -131,20 +131,20 @@ class UsersController extends Controller
             ], 422);
         }
 
-        $generateUniqueUsername = function ($name) {
-            do {
-                $words = explode(' ', $name);
-                $selectedWord = $words[array_rand($words)];
-                $randomPart = Str::random(4);
-                $username = ucfirst(Str::slug($selectedWord, '')) . '#' . strtoupper($randomPart);
-                $username = substr($username, 0, 16);
-                $userExists = User::where('username', $username)->exists();
-            } while ($userExists);
+        $generateUniqueUsername = function ($name, $num_member) {
+        do {
+            $words = explode(' ', $name);
+            $firstName = strtolower($words[0]);
+            $username = $firstName.str_pad($num_member, 3, '0', STR_PAD_LEFT);
+            $userExists = User::where('username', $username)->exists();
+        } while ($userExists);
 
-            return $username;
-        };
+        return $username;
+    };
 
-        $username = $generateUniqueUsername($request->name);
+    $username = $generateUniqueUsername($request->name, $request->num_member);
+
+
 
         $user = User::create([
             'name' => $request->name,
