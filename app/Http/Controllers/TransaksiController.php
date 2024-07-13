@@ -6,14 +6,19 @@ use Illuminate\Http\Request;
 use App\Models\Tabungan;
 use Yajra\DataTables\DataTables;
 use App\Models\User;
-
+use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 class TransaksiController extends Controller
 {
     //
     public function index()
     {
         $transaksi = Transaksi::all();
-        return view('dashboard.pages.savings', compact('transaksi'));
+        $users = User::all();
+        $roles = Role::all();
+
+        return view('dashboard.pages.transaksi', compact('transaksi', 'users', 'roles'));
     }
 
     public function datatable()
@@ -64,6 +69,85 @@ class TransaksiController extends Controller
         ->rawColumns(['status', 'actions'])
         ->make(true);
     }
+
+    public function createTransaksi(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'transaction_type' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'date_transaction' => 'required|date',
+            'nominal' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $transaksi = Transaksi::create([
+            'user_id' => $request->user_id,
+            'transaction_type' => $request->transaction_type,
+            'description' => $request->description,
+            'date_transaction' => $request->date_transaction,
+            'nominal' => $request->nominal,
+        ]);
+
+        return response()->json([
+            'message' => 'Transaksi telah ditambahkan',
+            'transaksi' => $transaksi
+        ], 200);
+    }
+
+    public function updateTransaksi(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'transaction_type' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'date_transaction' => 'required|date',
+            'nominal' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $transaksi = Transaksi::find($id);
+
+        if (!$transaksi) {
+            return response()->json(['message' => 'Transaksi not found'], 404);
+        }
+
+        $data = [
+            'user_id' => $request->user_id,
+            'transaction_type' => $request->transaction_type,
+            'description' => $request->description,
+            'date_transaction' => $request->date_transaction,
+            'nominal' => $request->nominal,
+        ];
+
+        $transaksi->update($data);
+
+        return response()->json($transaksi);
+    }
+
+    public function transaksiById($id)
+    {
+        $transaksi = Transaksi::find($id);
+
+        if (!$transaksi) {
+            return response()->json(['message' => 'Transaksi not found'], 404);
+        }
+
+        return response()->json($transaksi);
+    }
+
+
+    
     public function cekTransaksiAll()
     {
         $transaksi = Transaksi::all();

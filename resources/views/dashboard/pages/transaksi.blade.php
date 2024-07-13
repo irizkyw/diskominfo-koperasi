@@ -63,7 +63,7 @@
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_add_roles">
+                                        data-bs-target="#kt_modal_add_transaksi">
                                         Tambahkan Transaksi
                                     </button>
                                 </div>
@@ -73,7 +73,7 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
                             <!--begin::Table-->
-                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="table_roles">
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="table_transaksi">
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                         <th class="w-10px pe-2">
@@ -100,22 +100,22 @@
 
 
                     <!--begin::Modals Create-->
-                    <div class="modal fade" id="kt_modal_add_roles" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="kt_modal_add_transaksi" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-lg">
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                <form class="form" action="{{ route('roles.create') }}" id="kt_modal_add_roles_form"
-                                    data-kt-redirect="{{ route('roles.index') }}">
+                                <form class="form" action="{{ route('transaksi.create') }}" method="post" id="kt_modal_add_transaksi_form"
+                                    data-kt-redirect="{{ route('transaksi.index') }}">
                                     @csrf
                                     <!--begin::Modal header-->
-                                    <div class="modal-header" id="kt_modal_add_roles_header">
+                                    <div class="modal-header" id="kt_modal_add_transaksi_header">
                                         <!--begin::Modal title-->
                                         <h2 class="fw-bold">Tambahkan Role</h2>
                                         <!--end::Modal title-->
                                         <!--begin::Close-->
-                                        <div id="kt_modal_add_roles_close"
+                                        <div id="kt_modal_add_transaksi_close"
                                             class="btn btn-icon btn-sm btn-active-icon-primary">
                                             <i class="ki-outline ki-cross fs-1"></i>
                                         </div>
@@ -125,21 +125,34 @@
                                     <!--begin::Modal body-->
                                     <div class="modal-body py-10 px-lg-17">
                                         <!--begin::Scroll-->
-                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_add_roles_scroll"
+                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_add_transaksi_scroll"
                                             data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}"
                                             data-kt-scroll-max-height="auto"
-                                            data-kt-scroll-dependencies="#kt_modal_add_roles_header"
-                                            data-kt-scroll-wrappers="#kt_modal_add_roles_scroll"
+                                            data-kt-scroll-dependencies="#kt_modal_add_transaksi_header"
+                                            data-kt-scroll-wrappers="#kt_modal_add_transaksi_scroll"
                                             data-kt-scroll-offset="300px">
+                                            
+
                                             <!--begin::Input group-->
-                                            <div class="fv-row mb-7">
+                                            <div class="d-flex flex-column mb-7 fv-row">
                                                 <!--begin::Label-->
-                                                <label class="required fs-6 fw-semibold mb-2">Nama Anggota</label>
+                                                <label class="fs-6 fw-semibold mb-2">
+                                                    <span class="required">Nama Anggota</span>
+                                                    <span class="ms-1" data-bs-toggle="tooltip" title="Akses akun">
+                                                        <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+                                                    </span>
+                                                </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nama Anggota" name="name" />
+                                                <select name="user_id" aria-label="Pilih Nama Anggota" data-control="select2"
+                                                    data-placeholder="Pilih Nama Anggota"
+                                                    class="form-select form-select-solid fw-bold">
+                                                    <option></option>
+                                                    @foreach ($users as $data)
+                                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                                    @endforeach
                                                 <!--end::Input-->
+                                                </select>
                                             </div>
 
                                             <!--begin::Input group-->
@@ -148,8 +161,16 @@
                                                 <label class="required fs-6 fw-semibold mb-2">Jenis Transaksi</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Jenis Transaksi" name="desc" />
+                                                <select name="transaction_type" aria-label="Pilih Nama Anggota" data-control="select2"
+                                                    data-placeholder="Pilih Nama Anggota"
+                                                    class="form-select form-select-solid fw-bold">
+                                                    <option></option>
+                                                    <option value="Setoran">Setoran</option>
+                                                    <option value="Penarikan">Penarikan</option>
+                                                    <option value="SIMPANAN-BULANAN">SIMPANAN-BULANAN</option>
+                                                    <option value="Erorr">Erorr</option>
+                                                <!--end::Input-->
+                                                </select>
                                                 <!--end::Input-->
                                             </div>
                                             <!--begin::Input group-->
@@ -159,7 +180,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Deskripsi Transaksi" name="desc" />
+                                                    placeholder="Deskripsi Transaksi" name="description" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--begin::Input group-->
@@ -169,7 +190,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Tahun-Bulan-Tanggal -> 2XXX-XX-XX" name="desc" />
+                                                    placeholder="Tahun-Bulan-Tanggal -> 2XXX-XX-XX" name="date_transaction" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--begin::Input group-->
@@ -179,7 +200,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Banyak Nomninal (Rp)" name="desc" />
+                                                    placeholder="Banyak Nominal (Rp)" name="nominal" />
                                                 <!--end::Input-->
                                             </div>
                                         </div>
@@ -189,12 +210,12 @@
                                     <!--begin::Modal footer-->
                                     <div class="modal-footer flex-center">
                                         <!--begin::Button-->
-                                        <button type="reset" id="kt_modal_add_roles_cancel" class="btn btn-light me-3">
+                                        <button type="reset" id="kt_modal_add_transaksi_cancel" class="btn btn-light me-3">
                                             Buang
                                         </button>
                                         <!--end::Button-->
                                         <!--begin::Button-->
-                                        <button type="submit" id="kt_modal_add_roles_submit" class="btn btn-primary">
+                                        <button type="submit" id="kt_modal_add_transaksi_submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
                                             <span class="indicator-progress">Please wait...
                                                 <span
@@ -211,52 +232,62 @@
                     <!--end::Modal - Customers - Add-->
 
                     <!--begin::Modals Edit-->
-                    <div class="modal fade" id="kt_modal_edit_roles" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="kt_modal_edit_transaksi" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-lg">
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                <form class="form" action="{{ route('roles.update', ':id') }}"
-                                    id="kt_modal_edit_roles_form" data-kt-redirect="{{ route('roles.index') }}">
+                                <form class="form" action="{{ route('transaksi.update', ':id') }}"
+                                    id="kt_modal_edit_transaksi_form" data-kt-redirect="{{ route('transaksi.index') }}">
                                     @csrf
-                                    <div class="modal-header" id="kt_modal_edit_roles_header">
-                                        <h2 class="fw-bold">Merubah Data Roles</h2>
-                                        <div id="kt_modal_edit_roles_close"
+                                    <div class="modal-header" id="kt_modal_edit_transaksi_header">
+                                        <h2 class="fw-bold">Merubah Data Transaksi</h2>
+                                        <div id="kt_modal_edit_transaksi_close"
                                             class="btn btn-icon btn-sm btn-active-icon-primary">
                                             <i class="ki-outline ki-cross fs-1"></i>
                                         </div>
                                     </div>
                                     <div class="modal-body py-10 px-lg-17">
-                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_edit_roles_scroll"
+                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_edit_transaksi_scroll"
                                             data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}"
                                             data-kt-scroll-max-height="auto"
-                                            data-kt-scroll-dependencies="#kt_modal_edit_roles_header"
-                                            data-kt-scroll-wrappers="#kt_modal_edit_roles_scroll"
+                                            data-kt-scroll-dependencies="#kt_modal_edit_transaksi_header"
+                                            data-kt-scroll-wrappers="#kt_modal_edit_transaksi_scroll"
                                             data-kt-scroll-offset="300px">
                                             <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2">ID Role</label>
+                                                <label class="required fs-6 fw-semibold mb-2">Nama Anggota</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="ID Role" name="id" id="id" disabled />
+                                                    placeholder="ID Role" name="id" id="id"  />
                                             </div>
                                             <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2">Nama Role</label>
+                                                <label class="required fs-6 fw-semibold mb-2">Jenis Transaksi</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nama Role" name="name" id="name" />
+                                                    placeholder="Nama Role" name="name" id="group" />
                                             </div>
                                             <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2">Deskripsi</label>
+                                                <label class="required fs-6 fw-semibold mb-2">Deskripsi (opsional)</label>
                                                 <input type="text" class="form-control form-control-solid"
                                                     placeholder="Deskripsi" name="desc" id="desc" />
+                                            </div>
+                                            <div class="fv-row mb-7">
+                                                <label class="required fs-6 fw-semibold mb-2">Tanggal Transaksi</label>
+                                                <input type="text" class="form-control form-control-solid"
+                                                    placeholder="Tanggal Transaksi" name="desc" id="desc" />
+                                            </div>
+                                            <div class="fv-row mb-7">
+                                                <label class="required fs-6 fw-semibold mb-2">Nominal</label>
+                                                <input type="text" class="form-control form-control-solid"
+                                                    placeholder="Nominal" name="desc" id="desc" />
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer flex-center">
-                                        <button type="reset" id="kt_modal_edit_roles_cancel"
+                                        <button type="reset" id="kt_modal_edit_transaksi_cancel"
                                             class="btn btn-light me-3">
                                             Buang
                                         </button>
-                                        <button type="submit" id="kt_modal_edit_roles_submit" class="btn btn-primary">
+                                        <button type="submit" id="kt_modal_edit_transaksi_submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
                                             <span class="indicator-progress">Please wait...
                                                 <span
@@ -301,11 +332,11 @@
 
 @section('scripts')
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/c_mAddRoles.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/c_mUpdateRoles.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/c_mAddTransaksi') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/c_mUpdatetransaksi.js') }}"></script>
     <script>
-        const datatable = $("#table_roles").DataTable({
-            ajax: "{{ route('savings.datatable') }}",
+        const datatable = $("#table_transaksi").DataTable({
+            ajax: "{{ route('transaksi.datatable') }}",
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
@@ -344,7 +375,7 @@
                 datatable.search(e.target.value).draw();
             })
 
-        $(document).on("click", '.roles-delete', function(e) {
+        $(document).on("click", '.transaksi-delete', function(e) {
             e.preventDefault();
             n = $(this).data('id')
             name = $(this).data('name')
@@ -363,7 +394,7 @@
             }).then(function(e) {
                 if (e.value) {
                     $.ajax({
-                        url: "{{ route('roles.destroy', ['id' => ':id']) }}"
+                        url: "{{ route('transaksi.destroy', ['id' => ':id']) }}"
                             .replace(':id', n),
                         type: 'DELETE',
                         headers: {
@@ -415,23 +446,23 @@
 
         });
 
-        $(document).on("click", '.roles-edit', function(e) {
+        $(document).on("click", '.transaksi-edit', function(e) {
             e.preventDefault();
 
             let id = $(this).data('id')
 
             $.ajax({
                 type: "GET",
-                url: "{{ route('roles.findById', ':id') }}".replace(':id', id),
+                url: "{{ route('transaksi.findById', ':id') }}".replace(':id', id),
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
                         'content')
                 },
                 success: function(response) {
-                    $("#kt_modal_edit_roles").find("[name='id']").val(response.id)
-                    $("#kt_modal_edit_roles").find("[name='name']").val(response.name)
-                    $("#kt_modal_edit_roles").find("[name='desc']").val(response.desc)
-                    $("#kt_modal_edit_roles").modal("show")
+                    $("#kt_modal_edit_transaksi").find("[name='id']").val(response.id)
+                    $("#kt_modal_edit_transaksi").find("[name='name']").val(response.name)
+                    $("#kt_modal_edit_transaksi").find("[name='desc']").val(response.desc)
+                    $("#kt_modal_edit_transaksi").modal("show")
                 }
             });
         })

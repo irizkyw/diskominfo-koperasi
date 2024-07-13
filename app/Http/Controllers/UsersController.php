@@ -182,25 +182,18 @@ class UsersController extends Controller
         return response()->json($user);
     }
 
-    public function deleteUser($num_member)
+    public function deleteTransaksi($id)
     {
-        $user = User::where('num_member', $num_member)->first();
+        $transaksi = Transaksi::find($id);
 
-        if (!$user) {
-            return response()->json(['message' => 'User not found.'], 404);
+        if (!$transaksi) {
+            return response()->json(['message' => 'Transaksi not found.'], 404);
         }
 
-        $roleName = $user->role->name;
-        if ($roleName === 'Administrator') {
-            $adminCount = Role::where('name', 'Administrator')->count();
+        $transaksi->delete();
 
-            if ($adminCount <= 1) {
-                return response()->json(['message' => 'Minimal harus ada satu peran Administrator.'], 422);
-            }
-        }
-        $user->delete();
-
-        return response()->json(['message' => 'User deleted successfully.']);
+        return response()->json(['message' => 'Transaksi deleted successfully.']);
     }
+
 
 }

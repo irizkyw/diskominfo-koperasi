@@ -49,8 +49,12 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::get('/golongan', [GolonganController::class, 'index'])->name('golongan.index');
     Route::get('/golongan/datatable', [GolonganController::class, 'datatable'])->name('golongan.datatable');
 
-    Route::get('/savings', [TransaksiController::class, 'index'])->name('savings.index');
-    Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('savings.datatable');
+    Route::get('/savings', [TransaksiController::class, 'index'])->name('transaksi.index');
+    Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('transaksi.datatable');
+    Route::post('/savings/create', [TransaksiController::class, 'createTransaksi'])->name('transaksi.create');
+    Route::post('/savings/update/{id}', [TransaksiController::class, 'updateTransaksi'])->name('transaksi.update');
+    Route::delete('/savings/destroy/{id}', [TransaksiController::class, 'deleteTransksi'])->name('transaksi.destroy');
+    Route::get('/savings/detail/{id}', [TransaksiController::class, 'findById'])->name('transaksi.findById');
     // Route::get('/savings', function(){
     //     return view('dashboard.pages.savings');
     // })->name('savings.index');
