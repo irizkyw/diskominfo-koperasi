@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('golongans', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 32); // GOLONGAN 1, 2, pensiun, non pensiun
-            $table->string('desc', 255); // keterangan golongannya
-            $table->Integer('nominal'); // 100k, 150k, dst
+            $table->string('nama_golongan', 32); // GOLONGAN 1, 2, pensiun, non pensiun
+            $table->string('desc', 255); // keterangan golongannyaw
+            $table->integer('simp_pokok'); // keterangan golongannya
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('group');
+        Schema::dropIfExists('golongans');
     }
 };

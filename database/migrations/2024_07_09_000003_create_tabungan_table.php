@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('tabungan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->unsignedInteger('principal_savings'); // simpanan pokok
-            $table->unsignedInteger('voluntary_savings'); // simpanan sukarela
-            $table->unsignedInteger('mandatory_savings'); // simpanan wajib
-            $table->unsignedInteger('installments'); // angsuran
-            $table->foreignId('group_id')->constrained()->onDelete('cascade');
+            $table->unsignedInteger('simp_pokok'); // simpanan pokok
+            $table->unsignedInteger('simp_sukarela'); // simpanan sukarela
+            $table->unsignedInteger('simp_wajib'); // simpanan wajib
+            $table->unsignedInteger('angsuran'); // angsuran
+            $table->foreignId('golongan_id')->constrained()->onDelete('cascade');
             $table->timestamp('lastUpdate_principal')->nullable(); // last update simpanan wajib
             $table->timestamps();
         });
