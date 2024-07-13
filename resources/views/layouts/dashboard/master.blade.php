@@ -48,9 +48,8 @@
                     </button>
                     <!--end::Sidebar toggle-->
                     <!--begin::Logo-->
-                    <a href="index.html">
-                        <img alt="Logo" src="assets/media/logos/demo59.svg" class="h-30px theme-light-show" />
-                        <img alt="Logo" src="assets/media/logos/demo59-dark.svg" class="h-30px theme-dark-show" />
+                    <a href="{{ route('dashboard') }}">
+                        <h1>KODIJA</h1>
                     </a>
                     <!--end::Logo-->
                     <!--begin::Sidebar panel toggle-->
