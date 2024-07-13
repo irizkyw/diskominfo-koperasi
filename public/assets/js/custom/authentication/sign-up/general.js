@@ -138,7 +138,7 @@ var KTSignupGeneral = (function () {
                                                 });
                                         }, 1500))
                                       : Swal.fire({
-                                            text: "Sorry, looks like there are some errors detected, please try again.",
+                                            text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                             icon: "error",
                                             buttonsStyling: !1,
                                             confirmButtonText: "OK mengerti!",
@@ -253,11 +253,11 @@ var KTSignupGeneral = (function () {
                                                         "data-kt-redirect-url"
                                                     );
                                                     t && (location.href = t);
-                                                } else Swal.fire({ text: "Sorry, looks like there are some errors detected, please try again.", icon: "error", buttonsStyling: !1, confirmButtonText: "OK mengerti!", customClass: { confirmButton: "btn btn-primary" } });
+                                                } else Swal.fire({ text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.", icon: "error", buttonsStyling: !1, confirmButtonText: "OK mengerti!", customClass: { confirmButton: "btn btn-primary" } });
                                             })
                                             .catch(function (e) {
                                                 Swal.fire({
-                                                    text: "Sorry, looks like there are some errors detected, please try again.",
+                                                    text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                                     icon: "error",
                                                     buttonsStyling: !1,
                                                     confirmButtonText:
@@ -275,7 +275,7 @@ var KTSignupGeneral = (function () {
                                                     (t.disabled = !1);
                                             }))
                                       : Swal.fire({
-                                            text: "Sorry, looks like there are some errors detected, please try again.",
+                                            text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                             icon: "error",
                                             buttonsStyling: !1,
                                             confirmButtonText: "OK mengerti!",

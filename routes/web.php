@@ -36,7 +36,14 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::delete('/users/destory/{id}', [UsersController::class, 'deleteUser'])->name('users.destroy');
 
     Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');
+    Route::get('/roles/datatable', [RolesController::class, 'datatable'])->name('roles.datatable');
     Route::post('/roles/create', [RolesController::class, 'store'])->name('roles.create');
+    Route::post('/roles/update/{id}', [RolesController::class, 'update'])->name('roles.update');
+    Route::delete('/roles/destroy/{id}', [RolesController::class, 'destroy'])->name('roles.destroy');
+    Route::get('/roles/detail/{id}', [RolesController::class, 'findById'])->name('roles.findById');
+
+
+
 
     Route::get('/groups', function(){
         return view('dashboard.pages.group');

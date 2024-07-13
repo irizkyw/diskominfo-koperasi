@@ -293,7 +293,7 @@ var KTAppEcommerceSaveProduct = (function () {
                                                           });
                                                   }, 2e3))
                                                 : Swal.fire({
-                                                      html: "Sorry, looks like there are some errors detected, please try again. <br/><br/>Please note that there may be errors in the <strong>General</strong> or <strong>Advanced</strong> tabs",
+                                                      html: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi. <br/><br/>Please note that there may be errors in the <strong>General</strong> or <strong>Advanced</strong> tabs",
                                                       icon: "error",
                                                       buttonsStyling: !1,
                                                       confirmButtonText:

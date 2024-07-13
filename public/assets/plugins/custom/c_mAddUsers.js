@@ -90,7 +90,7 @@
                                         })
                                         .catch(error => {
                                             Swal.fire({
-                                                text: "Sorry, looks like there are some errors detected, please try again.",
+                                                text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                                 icon: "error",
                                                 buttonsStyling: !1,
                                                 confirmButtonText: "OK mengerti!",
@@ -102,7 +102,7 @@
                                         });
                                 } else {
                                     Swal.fire({
-                                        text: "Sorry, looks like there are some errors detected, please try again.",
+                                        text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                         icon: "error",
                                         buttonsStyling: !1,
                                         confirmButtonText: "OK mengerti!",

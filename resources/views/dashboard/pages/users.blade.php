@@ -1,7 +1,6 @@
 @extends('layouts.dashboard.master')
 @section('styles')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
@@ -763,6 +762,8 @@
 
 @section('scripts')
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/c_mAddUsers.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/c_mUpdateUsers.js') }}"></script>
     <script>
         const datatable = $("#table_anggota").DataTable({
             ajax: "{{ route('users.datatable') }}",
@@ -903,8 +904,6 @@
             });
         })
     </script>
-    <script src="{{ asset('assets/plugins/custom/c_mAddUsers.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/c_mUpdateUsers.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var modal_add = document.getElementById('kt_modal_add_users');

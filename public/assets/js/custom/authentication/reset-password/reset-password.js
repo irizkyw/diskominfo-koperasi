@@ -74,7 +74,7 @@ var KTAuthResetPassword = (function () {
                                                 });
                                         }, 1500))
                                       : Swal.fire({
-                                            text: "Sorry, looks like there are some errors detected, please try again.",
+                                            text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                             icon: "error",
                                             buttonsStyling: !1,
                                             confirmButtonText: "OK mengerti!",
@@ -123,7 +123,7 @@ var KTAuthResetPassword = (function () {
                                             })
                                             .catch(function (t) {
                                                 Swal.fire({
-                                                    text: "Sorry, looks like there are some errors detected, please try again.",
+                                                    text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                                     icon: "error",
                                                     buttonsStyling: !1,
                                                     confirmButtonText:
@@ -141,7 +141,7 @@ var KTAuthResetPassword = (function () {
                                                     (e.disabled = !1);
                                             }))
                                       : Swal.fire({
-                                            text: "Sorry, looks like there are some errors detected, please try again.",
+                                            text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                             icon: "error",
                                             buttonsStyling: !1,
                                             confirmButtonText: "OK mengerti!",
