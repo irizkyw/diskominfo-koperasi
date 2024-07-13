@@ -27,10 +27,18 @@ class AuthController extends Controller
             if (Auth::user()->status_active) {
                 $request->session()->regenerate();
 
-                return response()->json([
-                    'message' => 'You have successfully logged in!',
-                    'redirect' => '/dashboard',
-                ], 200);
+                // Cek role pengguna dan atur redirect sesuai dengan role
+                if (Auth::user()->role->name === 'Member') {
+                    return response()->json([
+                        'message' => 'You have successfully logged in!',
+                        'redirect' => '/profile',
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'message' => 'You have successfully logged in!',
+                        'redirect' => '/dashboard',
+                    ], 200);
+                }
             } else {
                 Auth::logout();
                 return response()->json([
@@ -43,6 +51,7 @@ class AuthController extends Controller
             ], 422);
         }
     }
+
 
 
     public function logout(Request $request)
