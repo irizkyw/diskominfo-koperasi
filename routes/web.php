@@ -46,6 +46,11 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
 
     Route::get('/golongan', [GolonganController::class, 'index'])->name('golongan.index');
     Route::get('/golongan/datatable', [GolonganController::class, 'datatable'])->name('golongan.datatable');
+    Route::post('/golongan/create', [GolonganController::class, 'store'])->name('golongan.create');
+    Route::post('/golongan/{id}/update', [GolonganController::class, 'update'])->name('golongan.update');
+    Route::delete('/golongan/{id}/delete', [GolonganController::class, 'destroy'])->name('golongan.destroy');
+    Route::get('/golongan/{id}/find', [GolonganController::class, 'findById'])->name('golongan.findById');
+
 
     Route::get('/savings', function(){
         return view('dashboard.pages.savings');

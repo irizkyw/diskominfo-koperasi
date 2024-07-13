@@ -56,15 +56,15 @@
                                 <div class="d-flex align-items-center position-relative my-1">
                                     <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
                                     <input type="text" data-kt-customer-table-filter="search"
-                                        class="form-control form-control-solid w-250px ps-13" placeholder="Cari Anggota" />
+                                        class="form-control form-control-solid w-250px ps-13" placeholder="Cari Golongan" />
                                 </div>
                             </div>
                             <div class="card-toolbar">
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_add_roles">
-                                        Tambahkan Anggota
+                                        data-bs-target="#kt_modal_add_golongan">
+                                        Tambahkan Golongan
                                     </button>
                                 </div>
                             </div>
@@ -98,22 +98,22 @@
 
 
                     <!--begin::Modals Create-->
-                    <div class="modal fade" id="kt_modal_add_roles" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="kt_modal_add_golongan" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-lg">
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                <form class="form" action="{{ route('roles.create') }}" id="kt_modal_add_roles_form"
-                                    data-kt-redirect="{{ route('roles.index') }}">
+                                <form class="form" action="{{ route('golongan.create') }}" id="kt_modal_add_golongan_form"
+                                    data-kt-redirect="{{ route('golongan.index') }}">
                                     @csrf
                                     <!--begin::Modal header-->
-                                    <div class="modal-header" id="kt_modal_add_roles_header">
+                                    <div class="modal-header" id="kt_modal_add_golongan_header">
                                         <!--begin::Modal title-->
-                                        <h2 class="fw-bold">Tambahkan Role</h2>
+                                        <h2 class="fw-bold">Tambahkan Golongan</h2>
                                         <!--end::Modal title-->
                                         <!--begin::Close-->
-                                        <div id="kt_modal_add_roles_close"
+                                        <div id="kt_modal_add_golongan_close"
                                             class="btn btn-icon btn-sm btn-active-icon-primary">
                                             <i class="ki-outline ki-cross fs-1"></i>
                                         </div>
@@ -123,20 +123,20 @@
                                     <!--begin::Modal body-->
                                     <div class="modal-body py-10 px-lg-17">
                                         <!--begin::Scroll-->
-                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_add_roles_scroll"
+                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_add_golongan_scroll"
                                             data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}"
                                             data-kt-scroll-max-height="auto"
-                                            data-kt-scroll-dependencies="#kt_modal_add_roles_header"
-                                            data-kt-scroll-wrappers="#kt_modal_add_roles_scroll"
+                                            data-kt-scroll-dependencies="#kt_modal_add_golongan_header"
+                                            data-kt-scroll-wrappers="#kt_modal_add_golongan_scroll"
                                             data-kt-scroll-offset="300px">
                                             <!--begin::Input group-->
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
-                                                <label class="required fs-6 fw-semibold mb-2">Nama Role</label>
+                                                <label class="required fs-6 fw-semibold mb-2">Nama Golongan</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nama Role" name="name" />
+                                                    placeholder="Nama Golongan" name="nama_golongan" />
                                                 <!--end::Input-->
                                             </div>
 
@@ -147,7 +147,18 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Deskripsi Role" name="desc" />
+                                                    placeholder="Deskripsi Golongan" name="desc" />
+                                                <!--end::Input-->
+                                            </div>
+
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="required fs-6 fw-semibold mb-2">Simpanan Pokok</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" class="form-control form-control-solid"
+                                                    placeholder="Simpanan Pokok" name="simp_pokok" />
                                                 <!--end::Input-->
                                             </div>
                                         </div>
@@ -157,12 +168,12 @@
                                     <!--begin::Modal footer-->
                                     <div class="modal-footer flex-center">
                                         <!--begin::Button-->
-                                        <button type="reset" id="kt_modal_add_roles_cancel" class="btn btn-light me-3">
-                                            Buang
+                                        <button type="reset" id="kt_modal_add_golongan_cancel" class="btn btn-light me-3">
+                                            Batal
                                         </button>
                                         <!--end::Button-->
                                         <!--begin::Button-->
-                                        <button type="submit" id="kt_modal_add_roles_submit" class="btn btn-primary">
+                                        <button type="submit" id="kt_modal_add_golongan_submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
                                             <span class="indicator-progress">Please wait...
                                                 <span
@@ -179,52 +190,57 @@
                     <!--end::Modal - Customers - Add-->
 
                     <!--begin::Modals Edit-->
-                    <div class="modal fade" id="kt_modal_edit_roles" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="kt_modal_edit_golongan" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-lg">
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                <form class="form" action="{{ route('roles.update', ':id') }}"
-                                    id="kt_modal_edit_roles_form" data-kt-redirect="{{ route('roles.index') }}">
+                                <form class="form" action="{{ route('golongan.update', ':id') }}"
+                                    id="kt_modal_edit_golongan_form" data-kt-redirect="{{ route('golongan.index') }}">
                                     @csrf
-                                    <div class="modal-header" id="kt_modal_edit_roles_header">
-                                        <h2 class="fw-bold">Merubah Data Roles</h2>
-                                        <div id="kt_modal_edit_roles_close"
+                                    <div class="modal-header" id="kt_modal_edit_golongan_header">
+                                        <h2 class="fw-bold">Merubah Data Golongan</h2>
+                                        <div id="kt_modal_edit_golongan_close"
                                             class="btn btn-icon btn-sm btn-active-icon-primary">
                                             <i class="ki-outline ki-cross fs-1"></i>
                                         </div>
                                     </div>
                                     <div class="modal-body py-10 px-lg-17">
-                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_edit_roles_scroll"
+                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_edit_golongan_scroll"
                                             data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}"
                                             data-kt-scroll-max-height="auto"
-                                            data-kt-scroll-dependencies="#kt_modal_edit_roles_header"
-                                            data-kt-scroll-wrappers="#kt_modal_edit_roles_scroll"
+                                            data-kt-scroll-dependencies="#kt_modal_edit_golongan_header"
+                                            data-kt-scroll-wrappers="#kt_modal_edit_golongan_scroll"
                                             data-kt-scroll-offset="300px">
                                             <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2">ID Role</label>
+                                                <label class="required fs-6 fw-semibold mb-2" >ID Golongan</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="ID Role" name="id" id="id" disabled />
+                                                    placeholder="ID Golongan" name="id" id="id" disabled />
                                             </div>
                                             <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2">Nama Role</label>
+                                                <label class="required fs-6 fw-semibold mb-2">Nama Golongan</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nama Role" name="name" id="name" />
+                                                    placeholder="Nama Golongan" name="nama_golongan" id="nama_golongan" />
                                             </div>
                                             <div class="fv-row mb-7">
                                                 <label class="required fs-6 fw-semibold mb-2">Deskripsi</label>
                                                 <input type="text" class="form-control form-control-solid"
                                                     placeholder="Deskripsi" name="desc" id="desc" />
                                             </div>
+                                            <div class="fv-row mb-7">
+                                                <label class="required fs-6 fw-semibold mb-2">Simpanan Pokok</label>
+                                                <input type="text" class="form-control form-control-solid"
+                                                    placeholder="Simpanan Pokok" name="simp_pokok" id="simp_pokok" />
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer flex-center">
-                                        <button type="reset" id="kt_modal_edit_roles_cancel"
+                                        <button type="reset" id="kt_modal_edit_golongan_cancel"
                                             class="btn btn-light me-3">
                                             Buang
                                         </button>
-                                        <button type="submit" id="kt_modal_edit_roles_submit" class="btn btn-primary">
+                                        <button type="submit" id="kt_modal_edit_golongan_submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
                                             <span class="indicator-progress">Please wait...
                                                 <span
@@ -269,8 +285,8 @@
 
 @section('scripts')
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    {{-- <script src="{{ asset('assets/plugins/custom/c_mAddRoles.js') }}"></script> --}}
-    {{-- <script src="{{ asset('assets/plugins/custom/c_mUpdateRoles.js') }}"></script> --}}
+    <script src="{{ asset('assets/plugins/custom/c_mAddgolongan.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/c_mUpdategolongan.js') }}"></script>
     <script>
         const datatable = $("#table_golongan").DataTable({
             ajax: "{{ route('golongan.datatable') }}",
@@ -279,8 +295,8 @@
                     name: 'DT_RowIndex'
                 },
                 {
-                    data: 'name',
-                    name: 'name'
+                    data: 'nama_golongan',
+                    name: 'nama_golongan'
                 },
                 {
                     data: 'desc',
@@ -302,12 +318,12 @@
                 datatable.search(e.target.value).draw();
             })
 
-        $(document).on("click", '.roles-delete', function(e) {
+        $(document).on("click", '.golongan-delete', function(e) {
             e.preventDefault();
             n = $(this).data('id')
             name = $(this).data('name')
             Swal.fire({
-                text: "Apakah yakin ingin menghapus Role " + name +
+                text: "Apakah yakin ingin menghapus Golongan " + name +
                     "?",
                 icon: "warning",
                 showCancelButton: true,
@@ -321,7 +337,7 @@
             }).then(function(e) {
                 if (e.value) {
                     $.ajax({
-                        url: "{{ route('roles.destroy', ['id' => ':id']) }}"
+                        url: "{{ route('golongan.destroy', ['id' => ':id']) }}"
                             .replace(':id', n),
                         type: 'DELETE',
                         headers: {
@@ -373,23 +389,24 @@
 
         });
 
-        $(document).on("click", '.roles-edit', function(e) {
+        $(document).on("click", '.golongan-edit', function(e) {
             e.preventDefault();
 
             let id = $(this).data('id')
 
             $.ajax({
                 type: "GET",
-                url: "{{ route('roles.findById', ':id') }}".replace(':id', id),
+                url: "{{ route('golongan.findById', ':id') }}".replace(':id', id),
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
                         'content')
                 },
                 success: function(response) {
-                    $("#kt_modal_edit_roles").find("[name='id']").val(response.id)
-                    $("#kt_modal_edit_roles").find("[name='name']").val(response.name)
-                    $("#kt_modal_edit_roles").find("[name='desc']").val(response.desc)
-                    $("#kt_modal_edit_roles").modal("show")
+                    $("#kt_modal_edit_golongan").find("[name='id']").val(response.id)
+                    $("#kt_modal_edit_golongan").find("[name='nama_golongan']").val(response.nama_golongan)
+                    $("#kt_modal_edit_golongan").find("[name='desc']").val(response.desc)
+                    $("#kt_modal_edit_golongan").find("[name='simp_pokok']").val(response.simp_pokok)
+                    $("#kt_modal_edit_golongan").modal("show")
                 }
             });
         })
