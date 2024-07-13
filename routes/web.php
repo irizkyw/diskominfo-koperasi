@@ -23,6 +23,7 @@ Route::get('/authentication/sign-in', [AuthController::class, 'showLoginForm'])-
 Route::post('/authentication/authenticated', [AuthController::class, 'login'])->name('login.submit');
 
 Route::middleware(['auth'])->group(function () {
+    route::get('/profile', function(){return view('dashboard.pages.profile');})->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
