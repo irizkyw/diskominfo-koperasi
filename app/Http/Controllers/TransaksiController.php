@@ -4,16 +4,66 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Models\Tabungan;
+use Yajra\DataTables\DataTables;
+use App\Models\User;
 
 class TransaksiController extends Controller
 {
     //
     public function index()
     {
-        
-        return view('transaksi.index');
+        $transaksi = Transaksi::all();
+        return view('dashboard.pages.savings', compact('transaksi'));
     }
 
+    public function datatable()
+    {
+        $query = Transaksi::get();
+
+        return DataTables::of($query)
+        ->addIndexColumn()
+        ->addColumn('user_id', function($row) {
+            $user = User::find($row->user_id);
+            return $user ? $user->name : 'Unknown';
+        })
+    
+        ->editColumn('transaction_type', function($row) {
+            return $row->transaction_type;
+        })
+        ->editColumn('description', function($row) {
+            return $row->description;
+        })
+        ->editColumn('date_transaction', function($row) {
+            return $row->date_transaction;
+        })
+        
+        ->editColumn('nominal', function($row) {
+            return $row->nominal;
+        })
+
+        
+        ->addColumn('actions', function($row) {
+            return '
+            <div class="d-flex justify-content-end">
+            <a href="#"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 roles-edit"
+                data-id="'. $row->id .'" data-name="'.$row->name.'">
+                <span class="svg-icon svg-icon-2">
+                    <i class="fas fa-pen"></i>
+                </span>
+            </a>
+            <a href="#"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 roles-delete"
+                data-id="'. $row->id .'" data-name="'.$row->name.'">
+                <span class="svg-icon svg-icon-2">
+                    <i class="fas fa-trash"></i>
+                </span>
+            </a>
+        </div>';
+        })
+        ->rawColumns(['status', 'actions'])
+        ->make(true);
+    }
     public function cekTransaksiAll()
     {
         $transaksi = Transaksi::all();

@@ -49,9 +49,11 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::get('/golongan', [GolonganController::class, 'index'])->name('golongan.index');
     Route::get('/golongan/datatable', [GolonganController::class, 'datatable'])->name('golongan.datatable');
 
-    Route::get('/savings', function(){
-        return view('dashboard.pages.savings');
-    })->name('savings.index');
+    Route::get('/savings', [TransaksiController::class, 'index'])->name('savings.index');
+    Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('savings.datatable');
+    // Route::get('/savings', function(){
+    //     return view('dashboard.pages.savings');
+    // })->name('savings.index');
 
 
     Route::get('/cekSemuaUser', [AdminContoller::class, 'cekSemuaUser']);
