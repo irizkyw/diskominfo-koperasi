@@ -190,6 +190,14 @@ class UsersController extends Controller
             return response()->json(['message' => 'User not found.'], 404);
         }
 
+        $roleName = $user->role->name;
+        if ($roleName === 'Administrator') {
+            $adminCount = Role::where('name', 'Administrator')->count();
+
+            if ($adminCount <= 1) {
+                return response()->json(['message' => 'Minimal harus ada satu peran Administrator.'], 422);
+            }
+        }
         $user->delete();
 
         return response()->json(['message' => 'User deleted successfully.']);
