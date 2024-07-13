@@ -12,13 +12,13 @@
 </head>
 
 <body id="kt_app_body"
-    @if (Auth::user()->role->name !== 'Member') data-kt-app-sidebar-enabled="true"
+    @if (Auth::user()->role->name !== 'Administrator') data-kt-app-sidebar-enabled="true"
+    data-kt-app-sidebar-enabled="false"
+    @else
     data-kt-app-sidebar-fixed="true"
     data-kt-app-sidebar-push-header="true"
     data-kt-app-sidebar-push-toolbar="true"
-    data-kt-app-sidebar-push-footer="true"
-    @else
-    data-kt-app-sidebar-enabled="false" @endif
+    data-kt-app-sidebar-push-footer="true" @endif
     data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-toolbar-enabled="true"
     class="app-default">
     <script>
