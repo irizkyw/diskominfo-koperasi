@@ -67,7 +67,7 @@
                                 </span>
                                 <span class="menu-title">Kelola Posisi</span>
                             </a>
-                            <a class="menu-link" href="{{ route('groups.index') }}">
+                            <a class="menu-link" href="{{ route('golongan.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>

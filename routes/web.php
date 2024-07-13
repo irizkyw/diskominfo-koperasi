@@ -11,6 +11,7 @@ use App\Http\Controllers\RolesController;
 
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\TabunganController;
+use App\Http\Controllers\GolonganController;
 
 use App\Http\Middleware\AdminMiddleware;
 
@@ -43,11 +44,9 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::get('/roles/detail/{id}', [RolesController::class, 'findById'])->name('roles.findById');
 
 
+    Route::get('/golongan', [GolonganController::class, 'index'])->name('golongan.index');
+    Route::get('/golongan/datatable', [GolonganController::class, 'datatable'])->name('golongan.datatable');
 
-
-    Route::get('/groups', function(){
-        return view('dashboard.pages.group');
-    })->name('groups.index');
     Route::get('/savings', function(){
         return view('dashboard.pages.savings');
     })->name('savings.index');

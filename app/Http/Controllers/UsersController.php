@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Group;
+use App\Models\Golongan;
 use Yajra\DataTables\DataTables;
 
 class UsersController extends Controller
@@ -19,9 +19,9 @@ class UsersController extends Controller
         $users = User::orderBy('created_at', 'desc')->get();
         $users = User::latest()->get();
         $roles = Role::all();
-        $groups = Group::all();
+        $golongan = Golongan::all();
 
-        return view('dashboard.pages.users', compact('users','roles','groups'));
+        return view('dashboard.pages.users', compact('users','roles','golongan'));
     }
 
     public function datatable()

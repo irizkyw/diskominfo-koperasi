@@ -210,7 +210,7 @@
                                                     data-dropdown-parent="#kt_modal_add_users"
                                                     class="form-select form-select-solid fw-bold">
                                                     <option value="">Pilih Golongan</option>
-                                                    @foreach ($groups as $data)
+                                                    @foreach ($golongan as $data)
                                                         <option value="{{ $data->id }}">{{ $data->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -506,7 +506,7 @@
                                                     data-dropdown-parent="#kt_modal_edit_users"
                                                     class="form-select form-select-solid fw-bold" id="group">
                                                     <option value="">Pilih Golongan</option>
-                                                    @foreach ($groups as $data)
+                                                    @foreach ($golongan as $data)
                                                         <option value="{{ $data->id }}">{{ $data->name }}</option>
                                                     @endforeach
                                                 </select>
