@@ -211,7 +211,10 @@
                                                     class="form-select form-select-solid fw-bold">
                                                     <option value="">Pilih Golongan</option>
                                                     @foreach ($golongan as $data)
-                                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                                        <option value="{{ $data->id }}">{{ $data->nama_golongan }} :
+                                                            {{ 'Rp ' . number_format($data->simp_pokok, 0, ',', '.') }}
+
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                                 <!--end::Input-->

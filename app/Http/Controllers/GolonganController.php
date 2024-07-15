@@ -35,14 +35,14 @@ class GolonganController extends Controller
                 <div class="d-flex justify-content-end">
                 <a href="#"
                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 golongan-edit"
-                    data-id="'. $row->id .'" data-name="'.$row->name.'">
+                    data-id="'. $row->id .'" data-name="'.$row->nama_golongan.'">
                     <span class="svg-icon svg-icon-2">
                         <i class="fas fa-pen"></i>
                     </span>
                 </a>
                 <a href="#"
                     class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 golongan-delete"
-                    data-id="'. $row->id .'" data-name="'.$row->name.'">
+                    data-id="'. $row->id .'" data-name="'.$row->nama_golongan.'">
                     <span class="svg-icon svg-icon-2">
                         <i class="fas fa-trash"></i>
                     </span>
@@ -101,10 +101,12 @@ class GolonganController extends Controller
         return response()->json(['message' => 'Golongan berhasil diubah.']);
     }
 
-    public function destroy(Golongan $golongan)
+    public function destroy($id)
     {
+        $golongan = Golongan::findOrFail($id);
         $golongan->delete();
 
-        return redirect()->route('golongan.index')->with('success', 'Golongan deleted successfully');
+        return response()->json(['message' => 'Golongan berhasil dihapus.']);
     }
+
 }

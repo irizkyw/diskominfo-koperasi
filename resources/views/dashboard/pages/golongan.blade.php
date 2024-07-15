@@ -350,7 +350,7 @@
                         },
                         success: function(response) {
                             Swal.fire({
-                                text: "Berhasil menghapus Role " +
+                                text: "Berhasil menghapus Golongan " +
                                     name + "!",
                                 icon: "success",
                                 buttonsStyling: false,
@@ -364,7 +364,7 @@
                         },
                         error: function(xhr, status, error) {
                             Swal.fire({
-                                text: "Gagal menghapus Role " +
+                                text: "Gagal menghapus Golongan " +
                                     n +
                                     ". Silakan coba lagi.",
                                 icon: "error",
