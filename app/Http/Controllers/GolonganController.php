@@ -28,7 +28,7 @@ class GolonganController extends Controller
                 return $row->desc;
             })
             ->editColumn('simp_pokok', function($row) {
-                return $row->simp_pokok;
+                return 'Rp. ' . number_format($row->simp_pokok, 0, ',', '.');
             })
             ->addColumn('actions', function($row) {
                 return '
@@ -60,16 +60,16 @@ class GolonganController extends Controller
             'desc' => 'nullable|string|max:255',
             'simp_pokok' => 'required|integer',
         ]);
-    
+
         Golongan::create([
             'nama_golongan' => $request->nama_golongan,
             'desc' => $request->desc,
             'simp_pokok' => $request->simp_pokok,
         ]);
-    
+
         return response()->json(['message' => 'Golongan berhasil dibuat.']);
     }
-    
+
 
     public function show(Golongan $golongan)
     {
@@ -94,10 +94,10 @@ class GolonganController extends Controller
             'desc' => 'nullable|string|max:255',
             'simp_pokok' => 'required|integer',
         ]);
-    
+
         $golongan = Golongan::find($id);
         $golongan->update($request->all());
-    
+
         return response()->json(['message' => 'Golongan berhasil diubah.']);
     }
 

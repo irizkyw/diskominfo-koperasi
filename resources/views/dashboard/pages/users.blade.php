@@ -117,7 +117,7 @@
                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="table_anggota">
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                        <th class="w-10px pe-2">
+                                        <th class="w-50px pe-2">
                                             No
                                         </th>
                                         <th class="min-w-125px">Nomor anggota</th>
