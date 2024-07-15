@@ -186,6 +186,7 @@
                             <div class="modal-content">
                                 <!--begin::Form-->
                                 <form class="form" action="{{ route('roles.update', ':id') }}"
+                                    data-original-action="{{ route('roles.update', ':id') }}"
                                     id="kt_modal_edit_roles_form" data-kt-redirect="{{ route('roles.index') }}">
                                     @csrf
                                     <div class="modal-header" id="kt_modal_edit_roles_header">

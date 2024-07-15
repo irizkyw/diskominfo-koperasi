@@ -21,27 +21,27 @@ class GolonganController extends Controller
 
         return DataTables::of($query)
             ->addIndexColumn()
-            ->addColumn('name', function($row) {
-                return $row->name;
+            ->editColumn('nama_golongan', function($row) {
+                return $row->nama_golongan;
             })
             ->editColumn('desc', function($row) {
                 return $row->desc;
             })
             ->editColumn('simp_pokok', function($row) {
-                return $row->sim_pokok;
+                return $row->simp_pokok;
             })
             ->addColumn('actions', function($row) {
                 return '
                 <div class="d-flex justify-content-end">
                 <a href="#"
-                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 roles-edit"
+                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 golongan-edit"
                     data-id="'. $row->id .'" data-name="'.$row->name.'">
                     <span class="svg-icon svg-icon-2">
                         <i class="fas fa-pen"></i>
                     </span>
                 </a>
                 <a href="#"
-                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 roles-delete"
+                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 golongan-delete"
                     data-id="'. $row->id .'" data-name="'.$row->name.'">
                     <span class="svg-icon svg-icon-2">
                         <i class="fas fa-trash"></i>
@@ -52,10 +52,6 @@ class GolonganController extends Controller
             ->rawColumns(['status', 'actions'])
             ->make(true);
     }
-    public function create()
-    {
-        return view('golongans.create');
-    }
 
     public function store(Request $request)
     {
@@ -64,11 +60,16 @@ class GolonganController extends Controller
             'desc' => 'nullable|string|max:255',
             'simp_pokok' => 'required|integer',
         ]);
-
-        Golongan::create($request->all());
-
-        return response()->json(['success' => 'Golongan created successfully']);
+    
+        Golongan::create([
+            'nama_golongan' => $request->nama_golongan,
+            'desc' => $request->desc,
+            'simp_pokok' => $request->simp_pokok,
+        ]);
+    
+        return response()->json(['message' => 'Golongan berhasil dibuat.']);
     }
+    
 
     public function show(Golongan $golongan)
     {
@@ -80,17 +81,24 @@ class GolonganController extends Controller
         return view('golongans.edit', compact('golongan'));
     }
 
-    public function update(Request $request, Golongan $golongan)
+    public function findById($id)
+    {
+        $golongan = Golongan::find($id);
+        return response()->json($golongan);
+    }
+
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nama_golongan' => 'required|string|max:32',
             'desc' => 'nullable|string|max:255',
             'simp_pokok' => 'required|integer',
         ]);
-
+    
+        $golongan = Golongan::find($id);
         $golongan->update($request->all());
-
-        return redirect()->route('golongan.index')->with('success', 'Golongan updated successfully');
+    
+        return response()->json(['message' => 'Golongan berhasil diubah.']);
     }
 
     public function destroy(Golongan $golongan)

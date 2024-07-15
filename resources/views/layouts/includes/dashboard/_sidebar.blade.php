@@ -85,6 +85,7 @@
                     <!--end:Menu sub-->
                 </div>
                 <!--end:Menu item-->
+                <div class="separator separator-gray-300 separator-dashed my-3"></div>
                 <!--end:Menu item-->
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
@@ -97,32 +98,6 @@
                     <!--end:Menu link-->
                 </div>
 
-                <div class="separator separator-gray-300 separator-dashed my-3"></div>
-                <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                    <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <i class="ki-outline ki-setting-2 fs-2"></i>
-                        </span>
-                        <span class="menu-title">Settings</span>
-                    </span>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                    <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <i class="ki-outline ki-user fs-2"></i>
-                        </span>
-                        <span class="menu-title">My Accounts</span>
-                    </span>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-                <div class="separator separator-gray-300 separator-dashed my-3"></div>
             </div>
             <!--end::Primary menu-->
         </div>
@@ -141,8 +116,8 @@
                 </div>
                 <!--begin::Name-->
                 <div class="d-flex flex-column align-items-start justify-content-center ms-3">
-                    <span class="text-gray-500 fs-8 fw-semibold">Hello</span>
-                    <a href="#"
+                    <span class="text-gray-500 fs-8 fw-semibold">Hello 👋</span>
+                    <a href="{{ route('profile') }}"
                         class="text-gray-800 fs-7 fw-bold text-hover-primary">{{ Auth::user()->name }}</a>
                 </div>
                 <!--end::Name-->
@@ -165,7 +140,7 @@
                                 <span
                                     class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">{{ Auth::user()->role->name }}</span>
                             </div>
-                            <a href="#"
+                            <a href="{{ route('profile') }}"
                                 class="fw-semibold text-muted text-hover-primary fs-7">{{ Auth::user()->username }}</a>
                         </div>
                         <!--end::Username-->
@@ -177,7 +152,7 @@
                 <!--end::Menu separator-->
                 <!--begin::Menu item-->
                 <div class="menu-item px-5">
-                    <a href="account/overview.html" class="menu-link px-5">Profile</a>
+                    <a href="{{ route('profile') }}" class="menu-link px-5">Profile</a>
                 </div>
                 <!--end::Menu item-->
                 <!--begin::Menu item-->

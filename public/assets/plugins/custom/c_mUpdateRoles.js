@@ -39,61 +39,61 @@
                                 console.log("validated!");
                                 if ("Valid" == e) {
                                     t.setAttribute("data-kt-indicator", "on");
-                                    t.disabled = !0;
+                                    t.disabled = true;
 
-                                    id = $("#kt_modal_edit_roles_form").find('[name="id"]')
-                                        .val()
-                                    console.log(id)
-                                    url = $("#kt_modal_edit_roles_form").attr('action')
-                                    $("#kt_modal_edit_roles_form").attr('action', url.replace(":id",
-                                        id))
+                                    var idField = $("#kt_modal_edit_roles_form").find('[name="id"]');
+                                    idField.prop('disabled', false);
 
-                                    // Collect form data
+                                    var id = idField.val();
+                                    var form = $("#kt_modal_edit_roles_form");
+                                    var originalUrl = form.attr('data-original-action');
+                                    var url = originalUrl.replace(":id", id);
+                                    form.attr('action', url);
                                     var formData = new FormData(r);
-
-                                    fetch(r.action, {
-                                            method: 'POST',
-                                            headers: {
-                                                'X-CSRF-TOKEN': document.querySelector(
-                                                    'meta[name="csrf-token"]').getAttribute(
-                                                    'content')
+                                    fetch(url, {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                        },
+                                        body: formData
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log(data);
+                                        t.removeAttribute("data-kt-indicator");
+                                        Swal.fire({
+                                            text: data.message,
+                                            icon: "success",
+                                            buttonsStyling: false,
+                                            confirmButtonText: "OK mengerti!",
+                                            customClass: {
+                                                confirmButton: "btn btn-primary",
                                             },
-                                            body: formData
-                                        })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            console.log(data);
-                                            t.removeAttribute("data-kt-indicator");
-                                            Swal.fire({
-                                                text: data.message,
-                                                icon: "success",
-                                                buttonsStyling: !1,
-                                                confirmButtonText: "OK mengerti!",
-                                                customClass: {
-                                                    confirmButton: "btn btn-primary",
-                                                },
-                                            }).then(function(e) {
-                                                if (e.isConfirmed) {
-                                                    r.reset();
-                                                    i.hide();
-                                                    t.disabled = !1;
-                                                    datatable.ajax.reload()
-                                                }
-                                            });
-                                        })
-                                        .catch(error => {
-                                            Swal.fire({
-                                                text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
-                                                icon: "error",
-                                                buttonsStyling: !1,
-                                                confirmButtonText: "OK mengerti!",
-                                                customClass: {
-                                                    confirmButton: "btn btn-primary",
-                                                },
-                                            });
-                                            t.disabled = !1;
+                                        }).then(function(e) {
+                                            if (e.isConfirmed) {
+                                                r.reset();
+                                                i.hide();
+                                                t.disabled = false;
+                                                datatable.ajax.reload()
+                                            }
                                         });
-                                } else {
+                                    })
+                                    .catch(error => {
+                                        Swal.fire({
+                                            text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
+                                            icon: "error",
+                                            buttonsStyling: false,
+                                            confirmButtonText: "OK mengerti!",
+                                            customClass: {
+                                                confirmButton: "btn btn-primary",
+                                            },
+                                        });
+                                        t.disabled = false;
+                                    });
+
+                                    // Disable idField after the fetch call
+                                    idField.prop('disabled', true);
+                                }else {
                                     Swal.fire({
                                         text: "Maaf, sepertinya ada beberapa kesalahan yang terdeteksi, silakan coba lagi.",
                                         icon: "error",

@@ -23,6 +23,7 @@ Route::get('/authentication/sign-in', [AuthController::class, 'showLoginForm'])-
 Route::post('/authentication/authenticated', [AuthController::class, 'login'])->name('login.submit');
 
 Route::middleware(['auth'])->group(function () {
+    route::get('/profile', function(){return view('dashboard.pages.profile');})->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 Route::get('/users/datatable', [UsersController::class, 'datatable'])->name('users.datatable');
@@ -48,6 +49,11 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
 
     Route::get('/golongan', [GolonganController::class, 'index'])->name('golongan.index');
     Route::get('/golongan/datatable', [GolonganController::class, 'datatable'])->name('golongan.datatable');
+    Route::post('/golongan/create', [GolonganController::class, 'store'])->name('golongan.create');
+    Route::post('/golongan/{id}/update', [GolonganController::class, 'update'])->name('golongan.update');
+    Route::delete('/golongan/{id}/delete', [GolonganController::class, 'destroy'])->name('golongan.destroy');
+    Route::get('/golongan/{id}/find', [GolonganController::class, 'findById'])->name('golongan.findById');
+
 
     Route::get('/savings', [TransaksiController::class, 'index'])->name('transaksi.index');
     Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('transaksi.datatable');

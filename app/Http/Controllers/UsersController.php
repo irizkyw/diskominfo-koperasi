@@ -131,20 +131,20 @@ class UsersController extends Controller
             ], 422);
         }
 
-        $generateUniqueUsername = function ($name) {
-            do {
-                $words = explode(' ', $name);
-                $selectedWord = $words[array_rand($words)];
-                $randomPart = Str::random(4);
-                $username = ucfirst(Str::slug($selectedWord, '')) . '#' . strtoupper($randomPart);
-                $username = substr($username, 0, 16);
-                $userExists = User::where('username', $username)->exists();
-            } while ($userExists);
+        $generateUniqueUsername = function ($name, $num_member) {
+        do {
+            $words = explode(' ', $name);
+            $firstName = strtolower($words[0]);
+            $username = $firstName.str_pad($num_member, 3, '0', STR_PAD_LEFT);
+            $userExists = User::where('username', $username)->exists();
+        } while ($userExists);
 
-            return $username;
-        };
+        return $username;
+    };
 
-        $username = $generateUniqueUsername($request->name);
+    $username = $generateUniqueUsername($request->name, $request->num_member);
+
+
 
         $user = User::create([
             'name' => $request->name,
