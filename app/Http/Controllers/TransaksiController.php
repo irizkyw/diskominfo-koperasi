@@ -4,15 +4,147 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Models\Tabungan;
-
+use Yajra\DataTables\DataTables;
+use App\Models\User;
+use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 class TransaksiController extends Controller
 {
     //
     public function index()
     {
-        return view('transaksi.index');
+        $transaksi = Transaksi::all();
+        $users = User::all();
+        $roles = Role::all();
+
+        return view('dashboard.pages.transaksi', compact('transaksi', 'users', 'roles'));
     }
 
+    public function datatable()
+    {
+        $query = Transaksi::get();
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('user_id', function($row) {
+                $user = User::find($row->user_id);
+                return $user ? $user->name : 'Unknown';
+            })
+            ->editColumn('transaction_type', function($row) {
+                return $row->transaction_type;
+            })
+            ->editColumn('description', function($row) {
+                return $row->description;
+            })
+            ->editColumn('date_transaction', function($row) {
+                return $row->date_transaction;
+            })
+            ->editColumn('nominal', function($row) {
+                return $row->nominal;
+            })
+            ->addColumn('actions', function($row) {
+                return '
+                <div class="d-flex justify-content-end">
+                    <a href="#"
+                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 transaksi-edit"
+                        data-id="'. $row->id .'" data-name="'.$row->name.'">
+                        <span class="svg-icon svg-icon-2">
+                            <i class="fas fa-pen"></i>
+                        </span>
+                    </a>
+                    <a href="#"
+                        class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 transaksi-delete"
+                        data-id="'. $row->id .'" data-name="'.$row->name.'">
+                        <span class="svg-icon svg-icon-2">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                    </a>
+                </div>';
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
+    }
+
+
+    public function createTransaksi(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'transaction_type' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'date_transaction' => 'required|date',
+            'nominal' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $transaksi = Transaksi::create([
+            'user_id' => $request->user_id,
+            'transaction_type' => $request->transaction_type,
+            'description' => $request->description,
+            'date_transaction' => $request->date_transaction,
+            'nominal' => $request->nominal,
+        ]);
+
+        return response()->json([
+            'message' => 'Transaksi telah ditambahkan',
+            'transaksi' => $transaksi
+        ], 200);
+    }
+
+    public function updateTransaksi(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'transaction_type' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'date_transaction' => 'required|date',
+            'nominal' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $transaksi = Transaksi::find($id);
+
+        if (!$transaksi) {
+            return response()->json(['message' => 'Transaksi not found'], 404);
+        }
+
+        $data = [
+            'user_id' => $request->user_id,
+            'transaction_type' => $request->transaction_type,
+            'description' => $request->description,
+            'date_transaction' => $request->date_transaction,
+            'nominal' => $request->nominal,
+        ];
+
+        $transaksi->update($data);
+
+        return response()->json($transaksi);
+    }
+
+    public function transaksiById($id)
+    {
+        $transaksi = Transaksi::find($id);
+
+        if (!$transaksi) {
+            return response()->json(['message' => 'Transaksi not found'], 404);
+        }
+
+        return response()->json($transaksi);
+    }
+
+
+    
     public function cekTransaksiAll()
     {
         $transaksi = Transaksi::all();
@@ -22,6 +154,13 @@ class TransaksiController extends Controller
     public function LogAllTransaksiByUserId($id)
     {
         $transaksi = Transaksi::where('user_id', $id)->get();
+        return response()->json($transaksi);
+    }
+
+    public function LogAllTransaksiByUserLogged()
+    {
+        $User = Auth::user();
+        $transaksi = Transaksi::where('user_id', $User->id)->get();
         return response()->json($transaksi);
     }
 
@@ -39,10 +178,36 @@ class TransaksiController extends Controller
         return response()->json($transaksi);
     }
 
+    public function LogTransaksiSimpananBulananByUserLogged()
+    {
+        $User = Auth::user();
+        $transaksi = Transaksi::where('user_id', $User->id)
+                              ->where('transaction_type', 'SIMPANAN-BULANAN')
+                              ->get();
+
+        $transaksi->each(function ($item) {
+            $date = new \DateTime($item->date_transaction);
+            $item->bulan_simpanan = $date->format('F');
+        });
+
+        return response()->json($transaksi);
+    }
+
     public function SumTransaksiSimpananBulananByUserId($id)
     {
         $SimpananWajibLast = Tabungan::where('user_id', $id)->first()->mandatory_savings;
         $SimpananWajibTemp = Transaksi::where('user_id', $id)
+                        ->where('transaction_type', 'SIMPANAN-BULANAN')
+                        ->sum('nominal');
+        $totalSimpananWajib = $SimpananWajibLast + $SimpananWajibTemp;
+        return response()->json(['SimpananBulanan' => $totalSimpananWajib]);
+    }
+
+    public function SumTransaksiSimpananBulananByUserLogged()
+    {
+        $User = Auth::user();
+        $SimpananWajibLast = Tabungan::where('user_id', $User->id)->first()->mandatory_savings;
+        $SimpananWajibTemp = Transaksi::where('user_id', $User->id)
                         ->where('transaction_type', 'SIMPANAN-BULANAN')
                         ->sum('nominal');
         $totalSimpananWajib = $SimpananWajibLast + $SimpananWajibTemp;
@@ -84,4 +249,48 @@ class TransaksiController extends Controller
                                     'SimpananWajib80' => $SimpananWajib80,
                                     'SimpananAkhir' => $SimpananAkhir]);
     }
+
+    public function LaporanByUserLogged()
+    {
+        $User = Auth::user();
+        $id = $User->id;
+        $SimpananWajibLast = Tabungan::where('user_id', $id)->first()->mandatory_savings; //Simpanan Wajib Terakhir
+        $SimpananWajib = Transaksi::where('user_id', $id)
+                        ->where('transaction_type', 'SIMPANAN-BULANAN')
+                        ->sum('nominal'); //Total Simpanan Wajib Bulanan
+        $SimpananWajib = $SimpananWajibLast + $SimpananWajib; //Simpanan Wajib hingga saat ini
+        $SimpananWajib80 = $SimpananWajib * 0.8; //80% dari total simpanan bulanan || Setelah dikurangi 20%
+
+        $SimpananPokok = Tabungan::where('user_id', $id)->first()->principal_savings;
+        $SimpananSukarela = Tabungan::where('user_id', $id)->first()->voluntary_savings;
+        $SimpananAkhir = $SimpananWajib80 + $SimpananPokok + $SimpananSukarela; 
+        return response()->json([   
+                                    'SimpananWajibLast' => $SimpananWajibLast,
+                                    'SimpananSukarela' => $SimpananSukarela,
+                                    'SimpananPokok' => $SimpananPokok,             
+                                    'SimpananWajibNow' => $SimpananWajib,
+                                    'SimpananWajib80' => $SimpananWajib80,
+                                    'SimpananAkhir' => $SimpananAkhir]);
+    }
+
+    public function cekTransaksiByUserId($id)
+    {
+        $transaksi = Transaksi::where('user_id', $id)->get();
+        return response()->json($transaksi);
+    }
+
+    public function cekTransaksiByType($type)
+    {
+        $transaksi = Transaksi::where('transaction_type', $type)->get();
+        return response()->json($transaksi);
+    }
+
+    public function cekTransaksiByDate($date)
+    {
+        $transaksi = Transaksi::where('date_transaction', $date)->get();
+        return response()->json($transaksi);
+    }
+
+    
+    
 }

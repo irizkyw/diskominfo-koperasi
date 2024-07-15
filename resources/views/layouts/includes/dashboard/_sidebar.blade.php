@@ -89,7 +89,7 @@
                 <!--end:Menu item-->
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('savings.index') }}">
+                    <a class="menu-link" href="{{ route('transaksi.index') }}">
                         <span class="menu-icon">
                             <i class="ki-outline ki-folder fs-2"></i> <!-- Ganti dengan ikon ki-folder -->
                         </span>

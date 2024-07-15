@@ -26,7 +26,9 @@ Route::middleware(['auth'])->group(function () {
     route::get('/profile', function(){return view('dashboard.pages.profile');})->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+Route::get('/users/datatable', [UsersController::class, 'datatable'])->name('users.datatable');
 
+Route::get('/roles/datatable', [RolesController::class, 'datatable'])->name('roles.datatable');
 Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
@@ -53,9 +55,15 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::get('/golongan/{id}/find', [GolonganController::class, 'findById'])->name('golongan.findById');
 
 
-    Route::get('/savings', function(){
-        return view('dashboard.pages.savings');
-    })->name('savings.index');
+    Route::get('/savings', [TransaksiController::class, 'index'])->name('transaksi.index');
+    Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('transaksi.datatable');
+    Route::post('/savings/create', [TransaksiController::class, 'createTransaksi'])->name('transaksi.create');
+    Route::post('/savings/update/{id}', [TransaksiController::class, 'updateTransaksi'])->name('transaksi.update');
+    Route::delete('/savings/destroy/{id}', [TransaksiController::class, 'deleteTransksi'])->name('transaksi.destroy');
+    Route::get('/savings/detail/{id}', [TransaksiController::class, 'transaksiById'])->name('transaksi.findById');
+    // Route::get('/savings', function(){
+    //     return view('dashboard.pages.savings');
+    // })->name('savings.index');
 
 
     Route::get('/cekSemuaUser', [AdminContoller::class, 'cekSemuaUser']);

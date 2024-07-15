@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Transaksi extends Model
 {
@@ -12,4 +13,9 @@ class Transaksi extends Model
     protected $table = 'transaksi'; // Specify the correct table name
 
     protected $fillable = ['user_id', 'transaction_type', 'description', 'date_transaction', 'nominal'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
