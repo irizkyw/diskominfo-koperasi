@@ -13,7 +13,7 @@ var KTSubscriptionsExport = (function () {
                     fields: {
                         date: {
                             validators: {
-                                notEmpty: { message: "Date range is required" },
+                                notEmpty: { message: "Date range tidak boleh kosong" },
                             },
                         },
                     },

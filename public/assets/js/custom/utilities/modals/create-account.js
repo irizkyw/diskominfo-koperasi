@@ -65,7 +65,7 @@ var KTCreateAccount = (function () {
                                 account_type: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Account type is required",
+                                            message: "Account type tidak boleh kosong",
                                         },
                                     },
                                 },
@@ -87,21 +87,21 @@ var KTCreateAccount = (function () {
                                 account_team_size: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Time size is required",
+                                            message: "Time size tidak boleh kosong",
                                         },
                                     },
                                 },
                                 account_name: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Account name is required",
+                                            message: "Account name tidak boleh kosong",
                                         },
                                     },
                                 },
                                 account_plan: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Account plan is required",
+                                            message: "Account plan tidak boleh kosong",
                                         },
                                     },
                                 },
@@ -123,7 +123,7 @@ var KTCreateAccount = (function () {
                                 business_name: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Busines name is required",
+                                            message: "Busines name tidak boleh kosong",
                                         },
                                     },
                                 },
@@ -131,14 +131,14 @@ var KTCreateAccount = (function () {
                                     validators: {
                                         notEmpty: {
                                             message:
-                                                "Busines descriptor is required",
+                                                "Busines descriptor tidak boleh kosong",
                                         },
                                     },
                                 },
                                 business_type: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Busines type is required",
+                                            message: "Busines type tidak boleh kosong",
                                         },
                                     },
                                 },
@@ -146,7 +146,7 @@ var KTCreateAccount = (function () {
                                     validators: {
                                         notEmpty: {
                                             message:
-                                                "Busines email is required",
+                                                "Busines email tidak boleh kosong",
                                         },
                                         emailAddress: {
                                             message:
@@ -172,14 +172,14 @@ var KTCreateAccount = (function () {
                                 card_name: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Name on card is required",
+                                            message: "Name on card tidak boleh kosong",
                                         },
                                     },
                                 },
                                 card_number: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Card member is required",
+                                            message: "Card member tidak boleh kosong",
                                         },
                                         creditCard: {
                                             message: "Card number is not valid",
@@ -189,21 +189,21 @@ var KTCreateAccount = (function () {
                                 card_expiry_month: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Month is required",
+                                            message: "Month tidak boleh kosong",
                                         },
                                     },
                                 },
                                 card_expiry_year: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Year is required",
+                                            message: "Year tidak boleh kosong",
                                         },
                                     },
                                 },
                                 card_cvv: {
                                     validators: {
                                         notEmpty: {
-                                            message: "CVV is required",
+                                            message: "CVV tidak boleh kosong",
                                         },
                                         digits: {
                                             message:

@@ -207,26 +207,26 @@ var KTAppEcommerceSaveProduct = (function () {
                             product_name: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Product name is required",
+                                        message: "Product name tidak boleh kosong",
                                     },
                                 },
                             },
                             sku: {
                                 validators: {
-                                    notEmpty: { message: "SKU is required" },
+                                    notEmpty: { message: "SKU tidak boleh kosong" },
                                 },
                             },
                             barcode: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Product barcode is required",
+                                        message: "Product barcode tidak boleh kosong",
                                     },
                                 },
                             },
                             shelf: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Shelf quantity is required",
+                                        message: "Shelf quantity tidak boleh kosong",
                                     },
                                 },
                             },
@@ -234,7 +234,7 @@ var KTAppEcommerceSaveProduct = (function () {
                                 validators: {
                                     notEmpty: {
                                         message:
-                                            "Product base price is required",
+                                            "Product base price tidak boleh kosong",
                                     },
                                 },
                             },
@@ -242,7 +242,7 @@ var KTAppEcommerceSaveProduct = (function () {
                                 validators: {
                                     notEmpty: {
                                         message:
-                                            "Product tax class is required",
+                                            "Product tax class tidak boleh kosong",
                                     },
                                 },
                             },

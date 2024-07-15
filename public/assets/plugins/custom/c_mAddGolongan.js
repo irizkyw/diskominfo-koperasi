@@ -12,21 +12,21 @@ var KTModalRolesAdd = (function() {
                     nama_golongan: {
                         validators: {
                             notEmpty: {
-                                message: "Nama Golongan is required",
+                                message: "Nama Golongan tidak boleh kosong",
                             },
                         },
                     },
                     desc: {
                         validators: {
                             notEmpty: {
-                                message: "Deskripsi is required",
+                                message: "Deskripsi tidak boleh kosong",
                             },
                         },
                     },
                     simp_pokok: {
                         validators: {
                             notEmpty: {
-                                message: "Simpanan Pokok is required",
+                                message: "Simpanan Pokok tidak boleh kosong",
                             },
                         },
                     },

@@ -15,50 +15,50 @@ var KTModalCustomersAdd = (function () {
                         name: {
                             validators: {
                                 notEmpty: {
-                                    message: "Customer name is required",
+                                    message: "Customer name tidak boleh kosong",
                                 },
                             },
                         },
                         email: {
                             validators: {
                                 notEmpty: {
-                                    message: "Customer email is required",
+                                    message: "Customer email tidak boleh kosong",
                                 },
                             },
                         },
                         "first-name": {
                             validators: {
-                                notEmpty: { message: "First name is required" },
+                                notEmpty: { message: "First name tidak boleh kosong" },
                             },
                         },
                         "last-name": {
                             validators: {
-                                notEmpty: { message: "Last name is required" },
+                                notEmpty: { message: "Last name tidak boleh kosong" },
                             },
                         },
                         country: {
                             validators: {
-                                notEmpty: { message: "Country is required" },
+                                notEmpty: { message: "Country tidak boleh kosong" },
                             },
                         },
                         address1: {
                             validators: {
-                                notEmpty: { message: "Address 1 is required" },
+                                notEmpty: { message: "Address 1 tidak boleh kosong" },
                             },
                         },
                         city: {
                             validators: {
-                                notEmpty: { message: "City is required" },
+                                notEmpty: { message: "City tidak boleh kosong" },
                             },
                         },
                         state: {
                             validators: {
-                                notEmpty: { message: "State is required" },
+                                notEmpty: { message: "State tidak boleh kosong" },
                             },
                         },
                         postcode: {
                             validators: {
-                                notEmpty: { message: "Postcode is required" },
+                                notEmpty: { message: "Postcode tidak boleh kosong" },
                             },
                         },
                     },

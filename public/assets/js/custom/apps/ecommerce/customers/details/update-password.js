@@ -11,14 +11,14 @@ var KTUsersUpdatePassword = (function () {
                         current_password: {
                             validators: {
                                 notEmpty: {
-                                    message: "Current password is required",
+                                    message: "Current password tidak boleh kosong",
                                 },
                             },
                         },
                         new_password: {
                             validators: {
                                 notEmpty: {
-                                    message: "The password is required",
+                                    message: "The password tidak boleh kosong",
                                 },
                                 callback: {
                                     message: "Please enter valid password",
@@ -33,7 +33,7 @@ var KTUsersUpdatePassword = (function () {
                             validators: {
                                 notEmpty: {
                                     message:
-                                        "The password confirmation is required",
+                                        "The password confirmation tidak boleh kosong",
                                 },
                                 identical: {
                                     compare: function () {

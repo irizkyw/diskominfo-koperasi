@@ -18,24 +18,24 @@ var KTModalCreateApiKey = (function () {
                     fields: {
                         name: {
                             validators: {
-                                notEmpty: { message: "API name is required" },
+                                notEmpty: { message: "API name tidak boleh kosong" },
                             },
                         },
                         description: {
                             validators: {
                                 notEmpty: {
-                                    message: "Description is required",
+                                    message: "Description tidak boleh kosong",
                                 },
                             },
                         },
                         category: {
                             validators: {
-                                notEmpty: { message: "Country is required" },
+                                notEmpty: { message: "Country tidak boleh kosong" },
                             },
                         },
                         method: {
                             validators: {
-                                notEmpty: { message: "API method is required" },
+                                notEmpty: { message: "API method tidak boleh kosong" },
                             },
                         },
                     },

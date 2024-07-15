@@ -39,26 +39,26 @@ var KTUsersAddSchedule = (function () {
                         event_datetime: {
                             validators: {
                                 notEmpty: {
-                                    message: "Event date & time is required",
+                                    message: "Event date & time tidak boleh kosong",
                                 },
                             },
                         },
                         event_name: {
                             validators: {
-                                notEmpty: { message: "Event name is required" },
+                                notEmpty: { message: "Event name tidak boleh kosong" },
                             },
                         },
                         event_org: {
                             validators: {
                                 notEmpty: {
-                                    message: "Event organiser is required",
+                                    message: "Event organiser tidak boleh kosong",
                                 },
                             },
                         },
                         event_invitees: {
                             validators: {
                                 notEmpty: {
-                                    message: "Event invitees is required",
+                                    message: "Event invitees tidak boleh kosong",
                                 },
                             },
                         },

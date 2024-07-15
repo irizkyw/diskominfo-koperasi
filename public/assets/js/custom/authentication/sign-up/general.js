@@ -26,14 +26,14 @@ var KTSignupGeneral = (function () {
                               "first-name": {
                                   validators: {
                                       notEmpty: {
-                                          message: "First Name is required",
+                                          message: "First Name tidak boleh kosong",
                                       },
                                   },
                               },
                               "last-name": {
                                   validators: {
                                       notEmpty: {
-                                          message: "Last Name is required",
+                                          message: "Last Name tidak boleh kosong",
                                       },
                                   },
                               },
@@ -45,14 +45,14 @@ var KTSignupGeneral = (function () {
                                               "The value is not a valid email address",
                                       },
                                       notEmpty: {
-                                          message: "Email address is required",
+                                          message: "Email address tidak boleh kosong",
                                       },
                                   },
                               },
                               password: {
                                   validators: {
                                       notEmpty: {
-                                          message: "The password is required",
+                                          message: "The password tidak boleh kosong",
                                       },
                                       callback: {
                                           message:
@@ -68,7 +68,7 @@ var KTSignupGeneral = (function () {
                                   validators: {
                                       notEmpty: {
                                           message:
-                                              "The password confirmation is required",
+                                              "The password confirmation tidak boleh kosong",
                                       },
                                       identical: {
                                           compare: function () {
@@ -162,7 +162,7 @@ var KTSignupGeneral = (function () {
                           fields: {
                               name: {
                                   validators: {
-                                      notEmpty: { message: "Name is required" },
+                                      notEmpty: { message: "Name tidak boleh kosong" },
                                   },
                               },
                               email: {
@@ -173,14 +173,14 @@ var KTSignupGeneral = (function () {
                                               "The value is not a valid email address",
                                       },
                                       notEmpty: {
-                                          message: "Email address is required",
+                                          message: "Email address tidak boleh kosong",
                                       },
                                   },
                               },
                               password: {
                                   validators: {
                                       notEmpty: {
-                                          message: "The password is required",
+                                          message: "The password tidak boleh kosong",
                                       },
                                       callback: {
                                           message:
@@ -196,7 +196,7 @@ var KTSignupGeneral = (function () {
                                   validators: {
                                       notEmpty: {
                                           message:
-                                              "The password confirmation is required",
+                                              "The password confirmation tidak boleh kosong",
                                       },
                                       identical: {
                                           compare: function () {

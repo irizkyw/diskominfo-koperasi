@@ -55,16 +55,13 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::get('/golongan/{id}/find', [GolonganController::class, 'findById'])->name('golongan.findById');
 
 
-    Route::get('/savings', [TransaksiController::class, 'index'])->name('transaksi.index');
-    Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('transaksi.datatable');
-    Route::post('/savings/create', [TransaksiController::class, 'createTransaksi'])->name('transaksi.create');
-    Route::post('/savings/update/{id}', [TransaksiController::class, 'updateTransaksi'])->name('transaksi.update');
-    Route::delete('/savings/destroy/{id}', [TransaksiController::class, 'deleteTransksi'])->name('transaksi.destroy');
-    Route::get('/savings/detail/{id}', [TransaksiController::class, 'transaksiById'])->name('transaksi.findById');
-    // Route::get('/savings', function(){
-    //     return view('dashboard.pages.savings');
-    // })->name('savings.index');
+    Route::get('/savings', [TransaksiController::class, 'index'])->name('simpanan.index');
+    Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('simpanan.datatable');
+    Route::post('/savings/create', [TransaksiController::class, 'createSimpanan'])->name('simpanan.create');
+    Route::delete('/savings/destroy/{id}', [TransaksiController::class, 'deleteSimpanan'])->name('simpanan.destroy');
 
+    Route::post('/savings/update/{id}', [TransaksiController::class, 'updateSimpanan'])->name('simpanan.update');
+    Route::get('/savings/detail/{id}', [TransaksiController::class, 'transaksiById'])->name('simpanan.findById');
 
     Route::get('/cekSemuaUser', [AdminContoller::class, 'cekSemuaUser']);
 

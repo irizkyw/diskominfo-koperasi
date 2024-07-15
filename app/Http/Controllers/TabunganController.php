@@ -35,7 +35,7 @@ class TabunganController extends Controller
     public function updateSimpananBulananUser($id)
     {
         $total = Transaksi::where('user_id', $id)
-                        ->where('transaction_type', 'SIMPANAN-BULANAN')
+                        ->where('transaction_type', 'Simpanan Wajib')
                         ->sum('nominal');
 
         $transaksi = Tabungan::where('user_id', $id)

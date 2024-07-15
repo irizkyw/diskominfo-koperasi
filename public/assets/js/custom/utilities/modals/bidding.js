@@ -66,7 +66,7 @@ var KTModalBidding = (function () {
                             r.fields[a] = {
                                 validators: {
                                     notEmpty: {
-                                        message: t.innerText + " is required",
+                                        message: t.innerText + " tidak boleh kosong",
                                     },
                                 },
                             };

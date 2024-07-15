@@ -17,7 +17,7 @@ var KTSignupComingSoon = (function () {
                                             "The value is not a valid email address",
                                     },
                                     notEmpty: {
-                                        message: "Email address is required",
+                                        message: "Email address tidak boleh kosong",
                                     },
                                 },
                             },

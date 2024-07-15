@@ -10,7 +10,7 @@ class Transaksi extends Model
 {
     use HasFactory;
 
-    protected $table = 'transaksi'; // Specify the correct table name
+    protected $table = 'transaksi';
 
     protected $fillable = ['user_id', 'transaction_type', 'description', 'date_transaction', 'nominal'];
 

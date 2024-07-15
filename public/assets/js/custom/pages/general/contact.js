@@ -15,13 +15,13 @@ var KTContactApply = (function () {
                     fields: {
                         name: {
                             validators: {
-                                notEmpty: { message: "Name is required" },
+                                notEmpty: { message: "Name tidak boleh kosong" },
                             },
                         },
                         email: {
                             validators: {
                                 notEmpty: {
-                                    message: "Email address is required",
+                                    message: "Email address tidak boleh kosong",
                                 },
                                 emailAddress: {
                                     message:
@@ -31,7 +31,7 @@ var KTContactApply = (function () {
                         },
                         message: {
                             validators: {
-                                notEmpty: { message: "Message is required" },
+                                notEmpty: { message: "Message tidak boleh kosong" },
                             },
                         },
                     },

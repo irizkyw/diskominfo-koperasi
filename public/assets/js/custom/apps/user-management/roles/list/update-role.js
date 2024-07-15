@@ -10,7 +10,7 @@ var KTUsersUpdatePermissions = (function () {
                     fields: {
                         role_name: {
                             validators: {
-                                notEmpty: { message: "Role name is required" },
+                                notEmpty: { message: "Role name tidak boleh kosong" },
                             },
                         },
                     },

@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 1,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'Januari',
                 'date_transaction' => '2024-01-17',
                 'nominal' => 100000,
@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 2,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'Februari',
                 'date_transaction' => '2024-02-15',
                 'nominal' => 100000,
@@ -86,7 +86,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 3,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'Maret',
                 'date_transaction' => '2024-03-14',
                 'nominal' => 100000,
@@ -94,7 +94,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 4,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'April',
                 'date_transaction' => '2024-04-18',
                 'nominal' => 100000,
@@ -102,7 +102,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 5,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'Mei',
                 'date_transaction' => '2024-05-15',
                 'nominal' => 100000,
@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 6,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'Juni',
                 'date_transaction' => '2024-06-04',
                 'nominal' => 100000,
@@ -118,7 +118,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 7,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'Juli',
                 'date_transaction' => '2024-07-10',
                 'nominal' => 100000,
@@ -126,7 +126,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 8,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'Agustus',
                 'date_transaction' => '2024-08-07',
                 'nominal' => 100000,
@@ -134,7 +134,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 9,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'September',
                 'date_transaction' => '2024-09-11',
                 'nominal' => 100000,
@@ -142,7 +142,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 10,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'Oktober',
                 'date_transaction' => '2024-10-09',
                 'nominal' => 100000,
@@ -150,7 +150,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 11,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'November',
                 'date_transaction' => '2024-11-08',
                 'nominal' => 100000,
@@ -158,7 +158,7 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 12,
                 'user_id' => 2,
-                'transaction_type' => 'SIMPANAN-BULANAN',
+                'transaction_type' => 'Simpanan Wajib',
                 'description' => 'Desember',
                 'date_transaction' => '2024-12-10',
                 'nominal' => 100000,

@@ -1,84 +1,86 @@
-var KTModalTransaksiAdd = (function() {
+var KTModalSimpananEdit = (function () {
     var t, e, o, n, r, i;
     return {
-        init: function() {
-            (i = new bootstrap.Modal(document.querySelector("#kt_modal_add_transaksi"))),
-            (r = document.querySelector("#kt_modal_add_transaksi_form")),
-            (t = r.querySelector("#kt_modal_add_transaksi_submit")),
-            (e = r.querySelector("#kt_modal_add_transaksi_cancel")),
-            (o = r.querySelector("#kt_modal_add_transaksi_close")),
-            (n = FormValidation.formValidation(r, {
-                fields: {
-                    user_id: {
-                        validators: {
-                            notEmpty: {
-                                message: "User ID is required",
+        init: function () {
+            (i = new bootstrap.Modal(document.querySelector("#kt_modal_edit_simpanan"))),
+                (r = document.querySelector("#kt_modal_edit_simpanan_form")),
+                (t = r.querySelector("#kt_modal_edit_simpanan_submit")),
+                (e = r.querySelector("#kt_modal_edit_simpanan_cancel")),
+                (o = r.querySelector("#kt_modal_edit_simpanan_close")),
+                (n = FormValidation.formValidation(r, {
+                        fields: {
+                            user_id: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Nama Anggota tidak boleh kosong",
+                                    },
+                                },
+                            },
+                            transaction_type: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Tipe simpanan tidak boleh kosong",
+                                    },
+                                },
+                            },
+                            date_transaction: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Bulan bayar tidak boleh kosong",
+                                    },
+                                },
+                            },
+                            nominal: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Nominal tidak boleh kosong",
+                                    },
+                                },
+                            },
+                            desc: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Deskripsi tidak boleh kosong",
+                                    },
+                                },
                             },
                         },
+                    plugins: {
+                        trigger: new FormValidation.plugins.Trigger(),
+                        bootstrap: new FormValidation.plugins.Bootstrap5({
+                            rowSelector: ".fv-row",
+                            eleInvalidClass: "",
+                            eleValidClass: "",
+                        }),
                     },
-                    transaction_type: {
-                        validators: {
-                            notEmpty: {
-                                message: "Transaction type is required",
-                            },
-                        },
-                    },
-                    description: {
-                        validators: {
-                            notEmpty: {
-                                message: "Description is required",
-                            },
-                        },
-                    },
-                    date_transaction: {
-                        validators: {
-                            notEmpty: {
-                                message: "Date of transaction is required",
-                            },
-                            date: {
-                                format: 'YYYY-MM-DD',
-                                message: 'The date is not valid',
-                            },
-                        },
-                    },
-                    nominal: {
-                        validators: {
-                            notEmpty: {
-                                message: "Nominal is required",
-                            },
-                            numeric: {
-                                message: "Nominal must be a number",
-                            },
-                        },
-                    },
-                },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    bootstrap: new FormValidation.plugins.Bootstrap5({
-                        rowSelector: ".fv-row",
-                        eleInvalidClass: "",
-                        eleValidClass: "",
-                    }),
-                },
-            })),
-            t.addEventListener("click", function(e) {
+                })),
+                t.addEventListener("click", function (e) {
                     e.preventDefault();
-                    n && n.validate().then(function(e) {
+                    n && n.validate().then(function (e) {
                         console.log("validated!");
                         if ("Valid" == e) {
                             t.setAttribute("data-kt-indicator", "on");
                             t.disabled = !0;
+
+                            var idField = $("#kt_modal_edit_simpanan_form").find('[name="id"]');
+                            idField.prop('disabled', false);
+
+                            var id = idField.val();
+                            var form = $("#kt_modal_edit_simpanan_form");
+                            var originalUrl = form.attr('data-original-action');
+                            var url = originalUrl.replace(":id", id);
+                            form.attr('action', url);
                             var formData = new FormData(r);
 
                             fetch(r.action, {
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': document.querySelector(
-                                            'meta[name="csrf-token"]').getAttribute(
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]').getAttribute(
                                             'content')
-                                    },
-                                    body: formData
-                                })
+                                },
+                                body: formData
+                            })
                                 .then(response => response.json())
                                 .then(data => {
                                     console.log(data);
@@ -91,14 +93,13 @@ var KTModalTransaksiAdd = (function() {
                                         customClass: {
                                             confirmButton: "btn btn-primary",
                                         },
-                                    }).then(function(e) {
+                                    }).then(function (e) {
                                         if (e.isConfirmed) {
                                             r.reset();
                                             i.hide();
                                             t.disabled = !1;
                                             datatable.ajax.reload()
                                         }
-
                                     });
                                 })
                                 .catch(error => {
@@ -126,7 +127,7 @@ var KTModalTransaksiAdd = (function() {
                         }
                     });
                 }),
-                e.addEventListener("click", function(t) {
+                e.addEventListener("click", function (t) {
                     t.preventDefault(),
                         Swal.fire({
                             text: "Apakah Anda yakin ingin membatalkan?",
@@ -139,7 +140,7 @@ var KTModalTransaksiAdd = (function() {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light",
                             },
-                        }).then(function(t) {
+                        }).then(function (t) {
                             t.value ?
                                 (r.reset(), i.hide()) :
                                 "cancel" === t.dismiss &&
@@ -154,7 +155,7 @@ var KTModalTransaksiAdd = (function() {
                                 });
                         });
                 }),
-                o.addEventListener("click", function(t) {
+                o.addEventListener("click", function (t) {
                     t.preventDefault(),
                         Swal.fire({
                             text: "Apakah Anda yakin ingin membatalkan?",
@@ -167,7 +168,7 @@ var KTModalTransaksiAdd = (function() {
                                 confirmButton: "btn btn-primary",
                                 cancelButton: "btn btn-active-light",
                             },
-                        }).then(function(t) {
+                        }).then(function (t) {
                             t.value ?
                                 (r.reset(), i.hide()) :
                                 "cancel" === t.dismiss &&
@@ -185,7 +186,6 @@ var KTModalTransaksiAdd = (function() {
         },
     };
 })();
-
-KTUtil.onDOMContentLoaded(function() {
-    KTModalTransaksiAdd.init();
+KTUtil.onDOMContentLoaded(function () {
+    KTModalSimpananEdit.init();
 });

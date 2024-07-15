@@ -1,32 +1,46 @@
-        var KTModalMemberAdd = (function() {
+    var KTModalsimpananAdd = (function() {
             var t, e, o, n, r, i;
             return {
                 init: function() {
-                    (i = new bootstrap.Modal(document.querySelector("#kt_modal_add_users"))),
-                    (r = document.querySelector("#kt_modal_add_users_form")),
-                    (t = r.querySelector("#kt_modal_add_users_submit")),
-                    (e = r.querySelector("#kt_modal_add_users_cancel")),
-                    (o = r.querySelector("#kt_modal_add_users_close")),
+                    (i = new bootstrap.Modal(document.querySelector("#kt_modal_add_simpanan"))),
+                    (r = document.querySelector("#kt_modal_add_simpanan_form")),
+                    (t = r.querySelector("#kt_modal_add_simpanan_submit")),
+                    (e = r.querySelector("#kt_modal_add_simpanan_cancel")),
+                    (o = r.querySelector("#kt_modal_add_simpanan_close")),
                     (n = FormValidation.formValidation(r, {
                         fields: {
-                            name: {
+                            user_id: {
                                 validators: {
                                     notEmpty: {
                                         message: "Nama Anggota tidak boleh kosong",
                                     },
                                 },
                             },
-                            num_member: {
+                            transaction_type: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Nomor Anggota tidak boleh kosong",
+                                        message: "Tipe simpanan tidak boleh kosong",
                                     },
                                 },
                             },
-                            roles: {
+                            date_transaction: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Posisi Anggota tidak boleh kosong",
+                                        message: "Bulan bayar tidak boleh kosong",
+                                    },
+                                },
+                            },
+                            nominal: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Nominal tidak boleh kosong",
+                                    },
+                                },
+                            },
+                            desc: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "Deskripsi tidak boleh kosong",
                                     },
                                 },
                             },
@@ -40,21 +54,13 @@
                             }),
                         },
                     })),
-                    $(r.querySelector('[name="country"]')).on("change", function() {
-                            n.revalidateField("country");
-                        }),
-                        t.addEventListener("click", function(e) {
+                    t.addEventListener("click", function(e) {
                             e.preventDefault();
                             n && n.validate().then(function(e) {
                                 console.log("validated!");
                                 if ("Valid" == e) {
                                     t.setAttribute("data-kt-indicator", "on");
                                     t.disabled = !0;
-
-                                    // Enable num_member input
-                                    document.getElementById('num_member').disabled = false;
-
-                                    // Collect form data
                                     var formData = new FormData(r);
 
                                     fetch(r.action, {
@@ -172,6 +178,7 @@
                 },
             };
         })();
+
         KTUtil.onDOMContentLoaded(function() {
-            KTModalMemberAdd.init();
+            KTModalsimpananAdd.init();
         });

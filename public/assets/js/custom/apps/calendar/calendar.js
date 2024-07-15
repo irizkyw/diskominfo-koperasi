@@ -571,17 +571,17 @@ var KTAppCalendar = (function () {
                     fields: {
                         calendar_event_name: {
                             validators: {
-                                notEmpty: { message: "Event name is required" },
+                                notEmpty: { message: "Event name tidak boleh kosong" },
                             },
                         },
                         calendar_event_start_date: {
                             validators: {
-                                notEmpty: { message: "Start date is required" },
+                                notEmpty: { message: "Start date tidak boleh kosong" },
                             },
                         },
                         calendar_event_end_date: {
                             validators: {
-                                notEmpty: { message: "End date is required" },
+                                notEmpty: { message: "End date tidak boleh kosong" },
                             },
                         },
                     },
