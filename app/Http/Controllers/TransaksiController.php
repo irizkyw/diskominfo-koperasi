@@ -15,11 +15,11 @@ class TransaksiController extends Controller
 {
     public function index()
     {
-        $transaksi = Transaksi::all();
-        $users = User::all();
-        $roles = Role::all();
+    $transaksi = Transaksi::orderBy('created_at', 'desc')->get();
+    $users = User::all();
+    $roles = Role::all();
 
-        return view('dashboard.pages.transaksi', compact('transaksi', 'users', 'roles'));
+    return view('dashboard.pages.transaksi', compact('transaksi', 'users', 'roles'));
     }
 
     public function datatable()
@@ -46,7 +46,7 @@ class TransaksiController extends Controller
                 return Carbon::parse($row->date_transaction)->translatedFormat('d F Y');
             })
             ->editColumn('nominal', function($row) {
-                return $row->nominal;
+                return 'Rp. ' . number_format($row->nominal, 0, ',', '.');
             })
             ->addColumn('actions', function($row) {
                 return '
