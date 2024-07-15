@@ -1,1 +1,46 @@
+# Node.js dependencies
+node_modules
+
+# Laravel vendor directory
+vendor
+
+# Log files
+*.log
+*.log.*
+
+# Environment files
+.env
+.env.*
+
+# Composer cache
+composer.lock
+
+# NPM/Yarn lock files
+package-lock.json
+yarn.lock
+
+# Temporary files
+tmp
+temp
+
+# Cache directories
+.cache
+.phpunit.result.cache
+
+# IDE directories
+.vscode
+.idea
+
+# MacOS files
+.DS_Store
+
+# Ignored by Git
+.git
+.gitignore
+
+# Docker specific ignores
+docker-compose.override.yml
 docker-compose.yml
+
+# System specific files
+Thumbs.db
