@@ -38,26 +38,26 @@ var KTModalCreateProjectSettings = (function () {
                         settings_name: {
                             validators: {
                                 notEmpty: {
-                                    message: "Project name is required",
+                                    message: "Project name tidak boleh kosong",
                                 },
                             },
                         },
                         settings_customer: {
                             validators: {
-                                notEmpty: { message: "Customer is required" },
+                                notEmpty: { message: "Customer tidak boleh kosong" },
                             },
                         },
                         settings_description: {
                             validators: {
                                 notEmpty: {
-                                    message: "Description is required",
+                                    message: "Description tidak boleh kosong",
                                 },
                             },
                         },
                         settings_release_date: {
                             validators: {
                                 notEmpty: {
-                                    message: "Release date is required",
+                                    message: "Release date tidak boleh kosong",
                                 },
                             },
                         },

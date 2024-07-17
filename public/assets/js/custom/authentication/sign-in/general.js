@@ -11,14 +11,14 @@ var KTSigninGeneral = (function () {
                         username: {
                             validators: {
                                 notEmpty: {
-                                    message: "Username is required",
+                                    message: "Username tidak boleh kosong",
                                 },
                             },
                         },
                         password: {
                             validators: {
                                 notEmpty: {
-                                    message: "Password is required",
+                                    message: "Password tidak boleh kosong",
                                 },
                             },
                         },

@@ -19,7 +19,7 @@
                             <!--begin::Title-->
                             <h1
                                 class="page-heading d-flex flex-column justify-content-center text-gray-900 fw-bold fs-3 m-0">
-                                Transaksi
+                                Anggota
                             </h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
@@ -33,7 +33,7 @@
                                 <li class="breadcrumb-item">
                                     <span class="bullet bg-gray-500 w-5px h-2px"></span>
                                 </li>
-                                <li class="breadcrumb-item text-muted">Transaksi</li>
+                                <li class="breadcrumb-item text-muted">Anggota</li>
                             </ul>
                             <!--end::Breadcrumb-->
                         </div>
@@ -56,15 +56,15 @@
                                 <div class="d-flex align-items-center position-relative my-1">
                                     <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
                                     <input type="text" data-kt-customer-table-filter="search"
-                                        class="form-control form-control-solid w-250px ps-13" placeholder="Cari Anggota" />
+                                        class="form-control form-control-solid w-250px ps-13" placeholder="Pencarian" />
                                 </div>
                             </div>
                             <div class="card-toolbar">
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_add_transaksi">
-                                        Tambahkan Transaksi
+                                        data-bs-target="#kt_modal_add_simpanan">
+                                        Tambahkan Simpanan
                                     </button>
                                 </div>
                             </div>
@@ -73,17 +73,18 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
                             <!--begin::Table-->
-                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="table_transaksi">
+                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="table_simpanan">
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                        <th class="w-10px pe-2">
+                                        <th class="w-50px pe-2">
                                             No
                                         </th>
-                                        <th class="min-w-125px">ID Aggota</th>
-                                        <th class="min-w-125px">Jenis Transaksi</th>
+                                        <th class="min-w-100px">ID Transaksi</th>
+                                        <th class="min-w-100px">Aggota</th>
+                                        <th class="min-w-100px">Jenis Simpanan</th>
                                         <th class="min-w-125px">Deskripsi</th>
-                                        <th class="min-w-125px">Tanggal Transaksi</th>
-                                        <th class="min-w-125px">Nominal</th>
+                                        <th class="min-w-125px">Tanggal Simpanan</th>
+                                        <th class="min-w-75px">Nominal</th>
                                         <th class="text-end min-w-70px">Actions</th>
                                     </tr>
                                 </thead>
@@ -100,22 +101,22 @@
 
 
                     <!--begin::Modals Create-->
-                    <div class="modal fade" id="kt_modal_add_transaksi" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="kt_modal_add_simpanan" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-lg">
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                <form class="form" action="{{ route('transaksi.create') }}" method="post" id="kt_modal_add_transaksi_form"
-                                    data-kt-redirect="{{ route('transaksi.index') }}">
+                                <form class="form" action="{{ route('simpanan.create') }}" id="kt_modal_add_simpanan_form"
+                                    data-kt-redirect="{{ route('simpanan.index') }}">
                                     @csrf
                                     <!--begin::Modal header-->
-                                    <div class="modal-header" id="kt_modal_add_transaksi_header">
+                                    <div class="modal-header" id="kt_modal_add_simpanan_header">
                                         <!--begin::Modal title-->
-                                        <h2 class="fw-bold">Tambahkan Role</h2>
+                                        <h2 class="fw-bold">Tambahkan Simpanan</h2>
                                         <!--end::Modal title-->
                                         <!--begin::Close-->
-                                        <div id="kt_modal_add_transaksi_close"
+                                        <div id="kt_modal_add_simpanan_close"
                                             class="btn btn-icon btn-sm btn-active-icon-primary">
                                             <i class="ki-outline ki-cross fs-1"></i>
                                         </div>
@@ -125,97 +126,85 @@
                                     <!--begin::Modal body-->
                                     <div class="modal-body py-10 px-lg-17">
                                         <!--begin::Scroll-->
-                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_add_transaksi_scroll"
+                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_add_simpanan_scroll"
                                             data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}"
                                             data-kt-scroll-max-height="auto"
-                                            data-kt-scroll-dependencies="#kt_modal_add_transaksi_header"
-                                            data-kt-scroll-wrappers="#kt_modal_add_transaksi_scroll"
+                                            data-kt-scroll-dependencies="#kt_modal_add_simpanan_header"
+                                            data-kt-scroll-wrappers="#kt_modal_add_simpanan_scroll"
                                             data-kt-scroll-offset="300px">
-                                            
 
-                                            <!--begin::Input group-->
                                             <div class="d-flex flex-column mb-7 fv-row">
-                                                <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold mb-2">
                                                     <span class="required">Nama Anggota</span>
-                                                    <span class="ms-1" data-bs-toggle="tooltip" title="Akses akun">
+                                                    <span class="ms-1" data-bs-toggle="tooltip" title="Pilih Anggota">
                                                         <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
                                                     </span>
                                                 </label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <select name="user_id" aria-label="Pilih Nama Anggota" data-control="select2"
-                                                    data-placeholder="Pilih Nama Anggota"
+                                                <select name="user_id" aria-label="Pilih Anggota" data-control="select2"
+                                                    data-placeholder="Pilih Jenis Simpanan"
+                                                    data-dropdown-parent="#kt_modal_add_simpanan"
                                                     class="form-select form-select-solid fw-bold">
-                                                    <option></option>
+                                                    <option value="">Pilih Anggota</option>
                                                     @foreach ($users as $data)
-                                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                                        @foreach ($data->savings as $tabungan)
+                                                            <option value="{{ $data->id }}">{{ $data->name }} (
+                                                                {{ $tabungan->golongan->nama_golongan }} )
+                                                            </option>
+                                                        @endforeach
                                                     @endforeach
-                                                <!--end::Input-->
                                                 </select>
+
                                             </div>
 
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-7">
-                                                <!--begin::Label-->
-                                                <label class="required fs-6 fw-semibold mb-2">Jenis Transaksi</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <select name="transaction_type" aria-label="Pilih Nama Anggota" data-control="select2"
-                                                    data-placeholder="Pilih Nama Anggota"
+                                            <div class="d-flex flex-column mb-7 fv-row">
+                                                <label class="fs-6 fw-semibold mb-2">
+                                                    <span class="required">Jenis Simpanan</span>
+                                                    <span class="ms-1" data-bs-toggle="tooltip"
+                                                        title="Pilih jenis simpanan">
+                                                        <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+                                                    </span>
+                                                </label>
+                                                <select name="transaction_type" aria-label="Pilih Jenis Simpanan"
+                                                    data-control="select2" data-placeholder="Pilih Jenis Simpanan"
+                                                    data-dropdown-parent="#kt_modal_add_simpanan"
                                                     class="form-select form-select-solid fw-bold">
-                                                    <option></option>
-                                                    <option value="Setoran">Setoran</option>
-                                                    <option value="Penarikan">Penarikan</option>
-                                                    <option value="SIMPANAN-BULANAN">SIMPANAN-BULANAN</option>
-                                                    <option value="Erorr">Erorr</option>
-                                                <!--end::Input-->
+                                                    <option value="">Pilih Simpanan</option>
+                                                    <option value="Simpanan Wajib">Simpanan Wajib</option>
+                                                    <option value="Simpanan Sukarela">Simpanan Sukarela</option>
                                                 </select>
-                                                <!--end::Input-->
                                             </div>
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-7">
-                                                <!--begin::Label-->
-                                                <label class="required fs-6 fw-semibold mb-2">Deskripsi (opsional)</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Deskripsi Transaksi" name="description" />
-                                                <!--end::Input-->
+                                            <div class="d-flex flex-column mb-7 fv-row">
+                                                <label class="fs-6 fw-semibold mb-2">
+                                                    <span class="required">Bayar untuk Bulan</span>
+                                                    <span class="ms-1" data-bs-toggle="tooltip"
+                                                        title="Pilih tanggal,bulan dan tahun untuk bayar simpanan bulan tersebut">
+                                                        <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+                                                    </span>
+                                                </label>
+                                                <input class="form-control form-control-solid" name="date_transaction"
+                                                    placeholder="Bayar untuk bulan" id="datepicker_create" />
                                             </div>
-                                            <!--begin::Input group-->
                                             <div class="fv-row mb-7">
-                                                <!--begin::Label-->
-                                                <label class="required fs-6 fw-semibold mb-2">Tanggal Transaksi</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Tahun-Bulan-Tanggal -> 2XXX-XX-XX" name="date_transaction" />
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-7">
-                                                <!--begin::Label-->
                                                 <label class="required fs-6 fw-semibold mb-2">Nominal</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
+                                                <input type="number" class="form-control form-control-solid"
+                                                    min="0" placeholder="Nominal (Rp)" name="nominal" />
+                                            </div>
+                                            <div class="fv-row mb-7">
+                                                <label class="required fs-6 fw-semibold mb-2">Deskripsi</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Banyak Nominal (Rp)" name="nominal" />
-                                                <!--end::Input-->
+                                                    placeholder="Deskripsi" name="desc" />
                                             </div>
                                         </div>
-                                        <!--end::Scroll-->
                                     </div>
-                                    <!--end::Modal body-->
-                                    <!--begin::Modal footer-->
                                     <div class="modal-footer flex-center">
                                         <!--begin::Button-->
-                                        <button type="reset" id="kt_modal_add_transaksi_cancel" class="btn btn-light me-3">
+                                        <button type="reset" id="kt_modal_add_simpanan_cancel"
+                                            class="btn btn-light me-3">
                                             Buang
                                         </button>
                                         <!--end::Button-->
                                         <!--begin::Button-->
-                                        <button type="submit" id="kt_modal_add_transaksi_submit" class="btn btn-primary">
+                                        <button type="submit" id="kt_modal_add_simpanan_submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
                                             <span class="indicator-progress">Please wait...
                                                 <span
@@ -232,63 +221,91 @@
                     <!--end::Modal - Customers - Add-->
 
                     <!--begin::Modals Edit-->
-                    <div class="modal fade" id="kt_modal_edit_transaksi" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="kt_modal_edit_simpanan" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-lg">
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                
-                                <form class="form" action="{{ route('transaksi.update', ':id') }}"
-                                    id="kt_modal_edit_transaksi_form"  data-kt-redirect="{{ route('transaksi.index') }}">
+                                <form class="form" action="{{ route('simpanan.update', ':id') }}"
+                                    data-original-action="{{ route('simpanan.update', ':id') }}"
+                                    id="kt_modal_edit_simpanan_form" data-kt-redirect="{{ route('simpanan.index') }}">
                                     @csrf
-                                    <div class="modal-header" id="kt_modal_edit_transaksi_header">
-                                        <h2 class="fw-bold">Merubah Data Transaksi</h2>
-                                        <div id="kt_modal_edit_transaksi_close"
+                                    <div class="modal-header" id="kt_modal_edit_simpanan_header">
+                                        <h2 class="fw-bold">Merubah Data Simpanan</h2>
+                                        <div id="kt_modal_edit_simpanan_close"
                                             class="btn btn-icon btn-sm btn-active-icon-primary">
                                             <i class="ki-outline ki-cross fs-1"></i>
                                         </div>
                                     </div>
                                     <div class="modal-body py-10 px-lg-17">
-                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_edit_transaksi_scroll"
+                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_edit_simpanan_scroll"
                                             data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}"
                                             data-kt-scroll-max-height="auto"
-                                            data-kt-scroll-dependencies="#kt_modal_edit_transaksi_header"
-                                            data-kt-scroll-wrappers="#kt_modal_edit_transaksi_scroll"
+                                            data-kt-scroll-dependencies="#kt_modal_edit_simpanan_header"
+                                            data-kt-scroll-wrappers="#kt_modal_edit_simpanan_scroll"
                                             data-kt-scroll-offset="300px">
                                             <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2">Nama Anggota</label>
+                                                <label class="required fs-6 fw-semibold mb-2">ID Transaksi</label>
+
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="ID Role" name="user_id" id="user_id"  />
+                                                    name="id" id="id" disabled />
+
+                                                <input type="text" class="form-control form-control-solid"
+                                                    name="user_id" id="user_id" hidden />
                                             </div>
                                             <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2">Jenis Transaksi</label>
+                                                <label class="required fs-6 fw-semibold mb-2">Anggota</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nama Role" name="transaction_type" id="transaction_type" />
+                                                    placeholder="Nama Anggota" name="name" id="name" disabled />
                                             </div>
-                                            <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2">Deskripsi (opsional)</label>
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Deskripsi" name="description" id="description" />
+                                            <div class="d-flex flex-column mb-7 fv-row">
+                                                <label class="fs-6 fw-semibold mb-2">
+                                                    <span class="required">Jenis Simpanan</span>
+                                                    <span class="ms-1" data-bs-toggle="tooltip"
+                                                        title="Pilih jenis simpanan">
+                                                        <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+                                                    </span>
+                                                </label>
+                                                <select name="transaction_type" aria-label="Pilih Jenis Simpanan"
+                                                    data-control="select2" data-placeholder="Pilih Jenis Simpanan"
+                                                    data-dropdown-parent="#kt_modal_edit_simpanan"
+                                                    class="form-select form-select-solid fw-bold">
+                                                    <option value="">Pilih Simpanan</option>
+                                                    <option value="Simpanan Wajib">Simpanan Wajib</option>
+                                                    <option value="Simpanan Sukarela">Simpanan Sukarela</option>
+                                                </select>
                                             </div>
-                                            <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2">Tanggal Transaksi</label>
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Tanggal Transaksi" name="date_transaction" id="date_transaction" />
+                                            <div class="d-flex flex-column mb-7 fv-row">
+                                                <label class="fs-6 fw-semibold mb-2">
+                                                    <span class="required">Bayar untuk Bulan</span>
+                                                    <span class="ms-1" data-bs-toggle="tooltip"
+                                                        title="Pilih tanggal,bulan dan tahun untuk bayar simpanan bulan tersebut">
+                                                        <i class="ki-outline ki-information-5 text-gray-500 fs-6"></i>
+                                                    </span>
+                                                </label>
+                                                <input class="form-control form-control-solid" name="date_transaction"
+                                                    placeholder="Bayar untuk bulan" id="datepicker_edit" />
                                             </div>
                                             <div class="fv-row mb-7">
                                                 <label class="required fs-6 fw-semibold mb-2">Nominal</label>
+                                                <input type="number" class="form-control form-control-solid"
+                                                    min="0" placeholder="Nominal (Rp)" name="nominal" />
+                                            </div>
+                                            <div class="fv-row mb-7">
+                                                <label class="required fs-6 fw-semibold mb-2">Deskripsi</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nominal" name="nominal" id="nominal" />
+                                                    placeholder="Deskripsi" name="desc" />
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer flex-center">
-                                        <button type="reset" id="kt_modal_edit_transaksi_cancel"
+                                        <button type="reset" id="kt_modal_edit_simpanan_cancel"
                                             class="btn btn-light me-3">
                                             Buang
                                         </button>
-                                        <button type="submit" id="kt_modal_edit_transaksi_submit" class="btn btn-primary">
+                                        <button type="submit" id="kt_modal_edit_simpanan_submit"
+                                            class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
                                             <span class="indicator-progress">Please wait...
                                                 <span
@@ -333,14 +350,22 @@
 
 @section('scripts')
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/c_mAddTransaksi') }}"></script>
-    <script src="{{ asset('assets/plugins/custom/c_mUpdatetransaksi.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/c_mAddSimpanan.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/c_mUpdateSimpanan.js') }}"></script>
     <script>
-        const datatable = $("#table_transaksi").DataTable({
-            ajax: "{{ route('transaksi.datatable') }}",
+        $("#datepicker_create").flatpickr();
+        $("#datepicker_edit").flatpickr();
+    </script>
+    <script>
+        const datatable = $("#table_simpanan").DataTable({
+            ajax: "{{ route('simpanan.datatable') }}",
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex'
+                },
+                {
+                    data: 'simpanan_id',
+                    name: 'simpanan_id'
                 },
                 {
                     data: 'user_id',
@@ -362,14 +387,12 @@
                     data: 'nominal',
                     name: 'nominal'
                 },
-                
                 {
                     data: 'actions',
                     name: 'actions'
                 },
             ]
         })
-
 
         document.querySelector('[data-kt-customer-table-filter="search"]')
             .addEventListener("keyup", function(e) {
@@ -378,10 +401,9 @@
 
         $(document).on("click", '.transaksi-delete', function(e) {
             e.preventDefault();
-            n = $(this).data('id')
-            name = $(this).data('name')
+            var n = $(this).data('id');
             Swal.fire({
-                text: "Apakah yakin ingin menghapus Role " + name +
+                text: "Apakah yakin ingin menghapus Simpanan ID " + n +
                     "?",
                 icon: "warning",
                 showCancelButton: true,
@@ -395,7 +417,7 @@
             }).then(function(e) {
                 if (e.value) {
                     $.ajax({
-                        url: "{{ route('transaksi.destroy', ['id' => ':id']) }}"
+                        url: "{{ route('simpanan.destroy', ['id' => ':id']) }}"
                             .replace(':id', n),
                         type: 'DELETE',
                         headers: {
@@ -405,8 +427,7 @@
                         },
                         success: function(response) {
                             Swal.fire({
-                                text: "Berhasil menghapus Role " +
-                                    name + "!",
+                                text: "Berhasil menghapus Simpanan!",
                                 icon: "success",
                                 buttonsStyling: false,
                                 confirmButtonText: "OK mengerti!",
@@ -419,7 +440,7 @@
                         },
                         error: function(xhr, status, error) {
                             Swal.fire({
-                                text: "Gagal menghapus Role " +
+                                text: "Gagal menghapus Simpanan " +
                                     n +
                                     ". Silakan coba lagi.",
                                 icon: "error",
@@ -433,8 +454,7 @@
                     });
                 } else if (e.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire({
-                        text: "Role " + name +
-                            " tidak dihapus.",
+                        text: "Simpanan tidak dihapus.",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "OK mengerti!",
@@ -454,36 +474,24 @@
 
             $.ajax({
                 type: "GET",
-                url: "{{ route('transaksi.findById', ':id') }}".replace(':id', id),
+                url: "{{ route('simpanan.findById', ':id') }}".replace(':id', id),
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
                         'content')
                 },
                 success: function(response) {
-                    // Mengisi nilai-nilai form di modal edit transaksi
-                    $("#kt_modal_edit_transaksi").find("[name='id']").val(response.id)
-                    $("#kt_modal_edit_transaksi").find("[name='user_id']").val(response.user_id)
-                    $("#kt_modal_edit_transaksi").find("[name='transaction_type']").val(response.transaction_type)
-                    $("#kt_modal_edit_transaksi").find("[name='description']").val(response.description)
-                    $("#kt_modal_edit_transaksi").find("[name='date_transaction']").val(response.date_transaction)
-                    $("#kt_modal_edit_transaksi").find("[name='nominal']").val(response.nominal)
-                    
-                    // Menampilkan modal edit transaksi
-                    $("#kt_modal_edit_transaksi").modal("show")
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    Swal.fire({
-                        text: "Gagal memuat data transaksi.",
-                        icon: "error",
-                        buttonsStyling: !1,
-                        confirmButtonText: "OK mengerti!",
-                        customClass: {
-                            confirmButton: "btn btn-primary",
-                        },
-                    });
+                    $("#kt_modal_edit_simpanan").find("[name='id']").val(response.id)
+                    $("#kt_modal_edit_simpanan").find("[name='user_id']").val(response.user_id)
+                    $("#kt_modal_edit_simpanan").find("[name='name']").val(response.name)
+                    $("#kt_modal_edit_simpanan").find("[name='desc']").val(response.description)
+                    $("#kt_modal_edit_simpanan").find("[name='nominal']").val(response.nominal)
+                    $("#kt_modal_edit_simpanan").find("[name='transaction_type']").val(response
+                            .transaction_type)
+                        .trigger('change');
+                    $("#datepicker_edit").flatpickr().setDate(response.date_transaction);
+                    $("#kt_modal_edit_simpanan").modal("show")
                 }
             });
-        });
+        })
     </script>
 @stop

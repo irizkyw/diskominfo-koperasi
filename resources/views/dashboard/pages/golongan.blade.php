@@ -76,7 +76,7 @@
                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="table_golongan">
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                        <th class="w-10px pe-2">
+                                        <th class="w-50px pe-2">
                                             No
                                         </th>
                                         <th class="min-w-125px">GOLONGAN</th>
@@ -215,14 +215,15 @@
                                             data-kt-scroll-wrappers="#kt_modal_edit_golongan_scroll"
                                             data-kt-scroll-offset="300px">
                                             <div class="fv-row mb-7">
-                                                <label class="required fs-6 fw-semibold mb-2" >ID Golongan</label>
+                                                <label class="required fs-6 fw-semibold mb-2">ID Golongan</label>
                                                 <input type="text" class="form-control form-control-solid"
                                                     placeholder="ID Golongan" name="id" id="id" disabled />
                                             </div>
                                             <div class="fv-row mb-7">
                                                 <label class="required fs-6 fw-semibold mb-2">Nama Golongan</label>
                                                 <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nama Golongan" name="nama_golongan" id="nama_golongan" />
+                                                    placeholder="Nama Golongan" name="nama_golongan"
+                                                    id="nama_golongan" />
                                             </div>
                                             <div class="fv-row mb-7">
                                                 <label class="required fs-6 fw-semibold mb-2">Deskripsi</label>
@@ -241,7 +242,8 @@
                                             class="btn btn-light me-3">
                                             Buang
                                         </button>
-                                        <button type="submit" id="kt_modal_edit_golongan_submit" class="btn btn-primary">
+                                        <button type="submit" id="kt_modal_edit_golongan_submit"
+                                            class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
                                             <span class="indicator-progress">Please wait...
                                                 <span
@@ -348,7 +350,7 @@
                         },
                         success: function(response) {
                             Swal.fire({
-                                text: "Berhasil menghapus Role " +
+                                text: "Berhasil menghapus Golongan " +
                                     name + "!",
                                 icon: "success",
                                 buttonsStyling: false,
@@ -362,7 +364,7 @@
                         },
                         error: function(xhr, status, error) {
                             Swal.fire({
-                                text: "Gagal menghapus Role " +
+                                text: "Gagal menghapus Golongan " +
                                     n +
                                     ". Silakan coba lagi.",
                                 icon: "error",
@@ -404,7 +406,8 @@
                 },
                 success: function(response) {
                     $("#kt_modal_edit_golongan").find("[name='id']").val(response.id)
-                    $("#kt_modal_edit_golongan").find("[name='nama_golongan']").val(response.nama_golongan)
+                    $("#kt_modal_edit_golongan").find("[name='nama_golongan']").val(response
+                        .nama_golongan)
                     $("#kt_modal_edit_golongan").find("[name='desc']").val(response.desc)
                     $("#kt_modal_edit_golongan").find("[name='simp_pokok']").val(response.simp_pokok)
                     $("#kt_modal_edit_golongan").modal("show")

@@ -149,47 +149,47 @@ var KTAppEcommerceSalesSaveOrder = (function () {
                             payment_method: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Payment method is required",
+                                        message: "Payment method tidak boleh kosong",
                                     },
                                 },
                             },
                             shipping_method: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Shipping method is required",
+                                        message: "Shipping method tidak boleh kosong",
                                     },
                                 },
                             },
                             order_date: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Order date is required",
+                                        message: "Order date tidak boleh kosong",
                                     },
                                 },
                             },
                             billing_order_address_1: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Address line 1 is required",
+                                        message: "Address line 1 tidak boleh kosong",
                                     },
                                 },
                             },
                             billing_order_postcode: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Postcode is required",
+                                        message: "Postcode tidak boleh kosong",
                                     },
                                 },
                             },
                             billing_order_state: {
                                 validators: {
-                                    notEmpty: { message: "State is required" },
+                                    notEmpty: { message: "State tidak boleh kosong" },
                                 },
                             },
                             billing_order_country: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Country is required",
+                                        message: "Country tidak boleh kosong",
                                     },
                                 },
                             },

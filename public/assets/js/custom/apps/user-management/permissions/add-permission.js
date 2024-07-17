@@ -11,7 +11,7 @@ var KTUsersAddPermission = (function () {
                         permission_name: {
                             validators: {
                                 notEmpty: {
-                                    message: "Permission name is required",
+                                    message: "Permission name tidak boleh kosong",
                                 },
                             },
                         },

@@ -30,21 +30,21 @@ var KTModalNewTarget = (function () {
                         target_title: {
                             validators: {
                                 notEmpty: {
-                                    message: "Target title is required",
+                                    message: "Target title tidak boleh kosong",
                                 },
                             },
                         },
                         target_assign: {
                             validators: {
                                 notEmpty: {
-                                    message: "Target assign is required",
+                                    message: "Target assign tidak boleh kosong",
                                 },
                             },
                         },
                         target_due_date: {
                             validators: {
                                 notEmpty: {
-                                    message: "Target due date is required",
+                                    message: "Target due date tidak boleh kosong",
                                 },
                             },
                         },

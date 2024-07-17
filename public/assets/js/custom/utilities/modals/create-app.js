@@ -94,14 +94,14 @@ var KTCreateApp = (function () {
                             name: {
                                 validators: {
                                     notEmpty: {
-                                        message: "App name is required",
+                                        message: "App name tidak boleh kosong",
                                     },
                                 },
                             },
                             category: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Category is required",
+                                        message: "Category tidak boleh kosong",
                                     },
                                 },
                             },
@@ -122,7 +122,7 @@ var KTCreateApp = (function () {
                             framework: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Framework is required",
+                                        message: "Framework tidak boleh kosong",
                                     },
                                 },
                             },
@@ -143,14 +143,14 @@ var KTCreateApp = (function () {
                             dbname: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Database name is required",
+                                        message: "Database name tidak boleh kosong",
                                     },
                                 },
                             },
                             dbengine: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Database engine is required",
+                                        message: "Database engine tidak boleh kosong",
                                     },
                                 },
                             },
@@ -171,14 +171,14 @@ var KTCreateApp = (function () {
                             card_name: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Name on card is required",
+                                        message: "Name on card tidak boleh kosong",
                                     },
                                 },
                             },
                             card_number: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Card member is required",
+                                        message: "Card member tidak boleh kosong",
                                     },
                                     creditCard: {
                                         message: "Card number is not valid",
@@ -187,17 +187,17 @@ var KTCreateApp = (function () {
                             },
                             card_expiry_month: {
                                 validators: {
-                                    notEmpty: { message: "Month is required" },
+                                    notEmpty: { message: "Month tidak boleh kosong" },
                                 },
                             },
                             card_expiry_year: {
                                 validators: {
-                                    notEmpty: { message: "Year is required" },
+                                    notEmpty: { message: "Year tidak boleh kosong" },
                                 },
                             },
                             card_cvv: {
                                 validators: {
-                                    notEmpty: { message: "CVV is required" },
+                                    notEmpty: { message: "CVV tidak boleh kosong" },
                                     digits: {
                                         message: "CVV must contain only digits",
                                     },

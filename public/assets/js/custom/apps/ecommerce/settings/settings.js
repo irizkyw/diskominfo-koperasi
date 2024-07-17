@@ -33,7 +33,7 @@ var KTAppEcommerceSettings = {
                 const i = o.getAttribute("name");
                 n.fields[i] = {
                     validators: {
-                        notEmpty: { message: e.innerText + " is required" },
+                        notEmpty: { message: e.innerText + " tidak boleh kosong" },
                     },
                 };
             });

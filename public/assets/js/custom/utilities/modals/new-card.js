@@ -25,14 +25,14 @@ var KTModalNewCard = (function () {
                         card_name: {
                             validators: {
                                 notEmpty: {
-                                    message: "Name on card is required",
+                                    message: "Name on card tidak boleh kosong",
                                 },
                             },
                         },
                         card_number: {
                             validators: {
                                 notEmpty: {
-                                    message: "Card member is required",
+                                    message: "Card member tidak boleh kosong",
                                 },
                                 creditCard: {
                                     message: "Card number is not valid",
@@ -41,17 +41,17 @@ var KTModalNewCard = (function () {
                         },
                         card_expiry_month: {
                             validators: {
-                                notEmpty: { message: "Month is required" },
+                                notEmpty: { message: "Month tidak boleh kosong" },
                             },
                         },
                         card_expiry_year: {
                             validators: {
-                                notEmpty: { message: "Year is required" },
+                                notEmpty: { message: "Year tidak boleh kosong" },
                             },
                         },
                         card_cvv: {
                             validators: {
-                                notEmpty: { message: "CVV is required" },
+                                notEmpty: { message: "CVV tidak boleh kosong" },
                                 digits: {
                                     message: "CVV must contain only digits",
                                 },

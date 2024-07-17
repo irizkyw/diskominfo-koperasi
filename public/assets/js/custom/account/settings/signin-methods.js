@@ -53,7 +53,7 @@ var KTAccountSettingsSigninMethods = (function () {
                         fields: {
                             emailaddress: {
                                 validators: {
-                                    notEmpty: { message: "Email is required" },
+                                    notEmpty: { message: "Email tidak boleh kosong" },
                                     emailAddress: {
                                         message:
                                             "The value is not a valid email address",
@@ -63,7 +63,7 @@ var KTAccountSettingsSigninMethods = (function () {
                             confirmemailpassword: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Password is required",
+                                        message: "Password tidak boleh kosong",
                                     },
                                 },
                             },
@@ -121,14 +121,14 @@ var KTAccountSettingsSigninMethods = (function () {
                                     validators: {
                                         notEmpty: {
                                             message:
-                                                "Current Password is required",
+                                                "Current Password tidak boleh kosong",
                                         },
                                     },
                                 },
                                 newpassword: {
                                     validators: {
                                         notEmpty: {
-                                            message: "New Password is required",
+                                            message: "New Password tidak boleh kosong",
                                         },
                                     },
                                 },
@@ -136,7 +136,7 @@ var KTAccountSettingsSigninMethods = (function () {
                                     validators: {
                                         notEmpty: {
                                             message:
-                                                "Confirm Password is required",
+                                                "Confirm Password tidak boleh kosong",
                                         },
                                         identical: {
                                             compare: function () {

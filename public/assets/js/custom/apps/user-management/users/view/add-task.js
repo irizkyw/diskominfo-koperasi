@@ -14,13 +14,13 @@ var KTUsersAddTask = (function () {
                         task_duedate: {
                             validators: {
                                 notEmpty: {
-                                    message: "Task due date is required",
+                                    message: "Task due date tidak boleh kosong",
                                 },
                             },
                         },
                         task_name: {
                             validators: {
-                                notEmpty: { message: "Task name is required" },
+                                notEmpty: { message: "Task name tidak boleh kosong" },
                             },
                         },
                     },
@@ -158,7 +158,7 @@ var KTUsersAddTask = (function () {
                                     validators: {
                                         notEmpty: {
                                             message:
-                                                "Task due date is required",
+                                                "Task due date tidak boleh kosong",
                                         },
                                     },
                                 },

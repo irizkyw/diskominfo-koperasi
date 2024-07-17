@@ -12,14 +12,14 @@
                             name: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Nama Anggota is required",
+                                        message: "Nama Anggota tidak boleh kosong",
                                     },
                                 },
                             },
                             desc: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Deskripsi is required",
+                                        message: "Deskripsi tidak boleh kosong",
                                     },
                                 },
                             },

@@ -3,7 +3,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 @endsection
-
 @section('content')
 
     <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
@@ -31,74 +30,86 @@
                                 <!--begin::Info-->
                                 <div class="flex-grow-1">
                                     <!--begin::Title-->
-                                    <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
-                                        <!--begin::User-->
-                                        <div class="d-flex flex-column">
-                                            <!--begin::Name-->
-                                            <div class="d-flex align-items-center mb-2">
-                                                <a href="#"
-                                                    class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ Auth::user()->name }}</a>
-                                                <a href="#">
-                                                    <i class="ki-outline ki-verify fs-1 text-primary"></i>
-                                                </a>
-                                            </div>
-                                            <!--end::Name-->
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
-                                                <div
-                                                    class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
-                                                    <i
-                                                        class="ki-outline ki-profile-circle fs-4 me-1"></i>{{ Auth::user()->username }}
+                                    <div class="flex-grow-1">
+                                        <!--begin::Title-->
+                                        <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                                            <!--begin::User-->
+                                            <div class="d-flex flex-column">
+                                                <!--begin::Name-->
+                                                <div class="d-flex align-items-center mb-2">
+                                                    @if (Auth::user()->isAdmin() || Auth::user()->id == $User->id)
+                                                        <a href="#"
+                                                            class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ $User->name }}</a>
+                                                    @else
+                                                        <span
+                                                            class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ $User->name }}</span>
+                                                    @endif
+                                                    @if (Auth::user()->isAdmin())
+                                                        <a href="#"><i
+                                                                class="ki-outline ki-verify fs-1 text-primary"></i></a>
+                                                    @endif
                                                 </div>
+                                                <!--end::Name-->
+                                                <!--begin::Info-->
+                                                <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
+                                                    <div
+                                                        class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                                                        <i
+                                                            class="ki-outline ki-profile-circle fs-4 me-1"></i>{{ $User->username }}
+                                                    </div>
 
-                                                <div
-                                                    class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
-                                                    <i class="ki-outline ki-sms fs-4 me-1"></i>Nomor Anggota :
-                                                    {{ str_pad(Auth::user()->num_member, 3, '0', STR_PAD_LEFT) }}
-                                                </div>
+                                                    <div
+                                                        class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                                                        <i class="ki-outline ki-sms fs-4 me-1"></i>Nomor Anggota :
+                                                        {{ str_pad($User->num_member, 3, '0', STR_PAD_LEFT) }}
+                                                    </div>
 
-                                                <div
-                                                    class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
-                                                    <i class="ki-outline ki-geolocation fs-4 me-1"></i> {{$Role->name}}
+                                                    <div
+                                                        class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
+                                                        <i class="ki-outline ki-sms fs-4 me-1"></i>
+                                                        {{ $User->savings->first()->golongan->nama_golongan ?? 'Belum ada golongan' }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <!--end::Info-->
-                                        </div>
-                                        <!--end::User-->
-                                        <!--begin::Actions-->
-                                        <div class="d-flex my-4">
-                                            <!--begin::Menu-->
-                                            <div class="me-0">
-                                                <a href="{{ route('logout') }}"
-                                                    class="btn btn-icon btn-color-gray-500 btn-active-color-primary me-3">
-                                                    <i class="ki-outline ki-exit-right fs-2"></i>
-                                                </a>
-                                                <button class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
-                                                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                                    <i class="ki-solid ki-dots-horizontal fs-2x"></i>
-                                                </button>
-                                                <!--begin::Menu 3-->
-                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
-                                                    data-kt-menu="true">
-                                                    <!--begin::Heading-->
-                                                    <div class="menu-item px-3">
-                                                        <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
-                                                            Downloads
+                                            <div class="d-flex my-4">
+                                                <!--begin::Menu-->
+                                                <div class="me-0">
+                                                    @if (!Auth::user()->isAdmin())
+                                                        <a href="{{ route('logout') }}"
+                                                            class="btn btn-icon btn-color-gray-500 btn-active-color-primary me-3">
+                                                            <i class="ki-outline ki-exit-right fs-2"></i>
+                                                        </a>
+                                                    @endif
+                                                    <button
+                                                        class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
+                                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                        <i class="ki-solid ki-dots-horizontal fs-2x"></i>
+                                                    </button>
+                                                    <!--begin::Menu 3-->
+                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
+                                                        data-kt-menu="true">
+                                                        <!--end::Menu item-->
+                                                        <!--begin::Heading-->
+                                                        <div class="menu-item px-3">
+                                                            <div
+                                                                class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
+                                                                Downloads
+                                                            </div>
                                                         </div>
+                                                        <!--end::Heading-->
+                                                        <!--begin::Menu item-->
+                                                        <div class="menu-item px-3 my-1">
+                                                            <a href="#" class="menu-link px-3">Laporan Simpanan</a>
+                                                        </div>
+                                                        <!--end::Menu item-->
                                                     </div>
-                                                    <!--end::Heading-->
-                                                    <!--begin::Menu item-->
-                                                    <div class="menu-item px-3 my-1">
-                                                        <a href="#" class="menu-link px-3">Laporan Simpanan</a>
-                                                    </div>
-                                                    <!--end::Menu item-->
+                                                    <!--end::Menu 3-->
                                                 </div>
-                                                <!--end::Menu 3-->
+                                                <!--end::Menu-->
                                             </div>
-                                            <!--end::Menu-->
                                         </div>
-                                        <!--end::Actions-->
                                     </div>
+
                                     <!--end::Title-->
                                     <!--begin::Stats-->
                                     <div class="d-flex flex-wrap flex-stack">
@@ -111,23 +122,27 @@
                                                     class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                                     <!--begin::Number-->
                                                     <div class="d-flex align-items-center">
-                                                        {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i> --}}
+                                                        {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i>
+                                                    --}}
                                                         <div class="fs-2 fw-bold counted" data-kt-countup="true"
-                                                            data-kt-countup-value="4500" data-kt-countup-prefix="$"
-                                                            data-kt-initialized="1">Rp. {{ $SimpananWajib }}</div>
+                                                            data-kt-countup-value="{{ $SimpananAkhir }}"
+                                                            data-kt-countup-prefix="Rp" data-kt-initialized="1">
+                                                            Rp{{ number_format($SimpananAkhir, 0, ',', '.') }}</div>
                                                     </div>
                                                     <!--end::Number-->
                                                     <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">Simpanan Wajib</div>
+                                                    <div class="fw-semibold fs-6 text-gray-500">Simpanan</div>
                                                     <!--end::Label-->
                                                 </div>
                                                 <!--end::Stat-->
+
                                                 <!--begin::Stat-->
                                                 <div
                                                     class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                                     <!--begin::Number-->
                                                     <div class="d-flex align-items-center">
-                                                        {{-- <i class="ki-outline ki-arrow-down fs-3 text-danger me-2"></i> --}}
+                                                        {{-- <i class="ki-outline ki-arrow-down fs-3 text-danger me-2"></i>
+                                                    --}}
                                                         <div class="fs-2 fw-bold counted" data-kt-countup="true"
                                                             data-kt-countup-value="80" data-kt-initialized="1">80</div>
                                                     </div>
@@ -142,7 +157,8 @@
                                                     class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                                     <!--begin::Number-->
                                                     <div class="d-flex align-items-center">
-                                                        {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i> --}}
+                                                        {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i>
+                                                    --}}
                                                         <div class="fs-2 fw-bold counted" data-kt-countup="true"
                                                             data-kt-countup-value="60" data-kt-countup-prefix="%"
                                                             data-kt-initialized="1">%60</div>
@@ -170,13 +186,6 @@
                     <div class="card">
                         <!--begin::Card head-->
                         <div class="card-header card-header-stretch">
-                            <!--begin::Title-->
-                            <div class="card-title d-flex align-items-center">
-                                {{-- <i class="ki-outline ki-calendar-8 fs-1 text-primary me-3 lh-0"></i> --}}
-                                <h5 class="fw-bold m-0 text-gray-800">Halo {{ Auth::user()->name }}👋, Selamat datang di
-                                    aplikasi Koperasi Diskominfo Jawabarat (Kodija)</h5>
-                            </div>
-                            <!--end::Title-->
                             <!--begin::Toolbar-->
                             <div class="card-toolbar m-0">
                                 <!--begin::Tab nav-->
@@ -206,7 +215,7 @@
                         </div>
                         <!--end::Card head-->
                         <!--begin::Card body-->
-                        <div class="card-body">
+                        <div class="card-body" style="max-height: 50em; overflow-y: scroll;">
                             <!--begin::Tab Content-->
                             <div class="tab-content">
                                 <!--begin::Tab panel-->
@@ -214,100 +223,75 @@
                                     role="tabpanel" aria-labelledby="kt_activity_today_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
-                                        <!--begin::Timeline item-->
-                                        <div class="timeline-item">
-                                            <!--begin::Timeline line-->
-                                            <div class="timeline-line"></div>
-                                            <!--end::Timeline line-->
-                                            <!--begin::Timeline icon-->
-                                            <div class="timeline-icon me-4">
-                                                <i class="ki-outline ki-flag fs-2 text-gray-500"></i>
+                                        @if ($LogTransaksi->isEmpty())
+                                            <div class="timeline-item">
+                                                Tidak ada History Transaksi
                                             </div>
-                                            <!--end::Timeline icon-->
-                                            <!--begin::Timeline content-->
-                                            <div class="timeline-content mb-10 mt-n1">
-                                                <!--begin::Timeline heading-->
-                                                <div class="pe-3 mb-5">
-                                                    <!--begin::Title-->
-                                                    <div class="fs-5 fw-semibold mb-2">Transaksi ...</div>
-                                                    <!--end::Title-->
-                                                    <!--begin::Description-->
-                                                    <div class="d-flex align-items-center mt-1 fs-6">
-                                                        <!--begin::Info-->
-                                                        <div class="text-muted me-2 fs-7">Added at 4:23 PM by ...</div>
-                                                        <!--end::Info-->
+                                        @else
+                                            @foreach ($LogTransaksi as $data)
+                                                <div class="timeline-item">
+                                                    <!--begin::Timeline line-->
+                                                    <div class="timeline-line"></div>
+                                                    <!--end::Timeline line-->
+                                                    <!--begin::Timeline icon-->
+                                                    <div class="timeline-icon me-4">
+                                                        <i class="ki-outline ki-flag fs-2 text-gray-500"></i>
                                                     </div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Timeline heading-->
-                                                <!-- @foreach ($LogTransaksi as $data)
-                                                    <div class="overflow-auto pb-5">
-                                                        <div
-                                                            class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
-                                                            <div
-                                                                class="fs-5 text-gray-900 text-hover-primary fw-semibold w-375px min-w-200px">
-                                                                {{$data->transaction_type}}
+                                                    <!--end::Timeline icon-->
+                                                    <!--begin::Timeline content-->
+                                                    <div class="timeline-content mb-10 mt-n1">
+                                                        <!--begin::Timeline heading-->
+                                                        <div class="pe-3 mb-5">
+                                                            <!--begin::Title-->
+                                                            <div class="fs-5 fw-semibold mb-2">Transaksi berhasil untuk
+                                                                {{ $data->transaction_type }}</div>
+                                                            <!--end::Title-->
+                                                            <!--begin::Description-->
+                                                            <div class="d-flex align-items-center mt-1 fs-6">
+                                                                <!--begin::Info-->
+                                                                <div class="text-muted me-2 fs-7">
+                                                                    Ditambahkan pada
+                                                                    {{ $data->created_at->format('d F Y') }}
+                                                                </div>
+
+                                                                <!--end::Info-->
                                                             </div>
-                                                            <div class="min-w-175px">
-                                                                <span class="badge badge-light text-muted">Tipe
-                                                                    Transaksi</span>
-                                                            </div>
-                                                            <div
-                                                                class="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px">
-                                                                <p>Rp {{$data->nominal}}</p>
-                                                            </div>
-                                                            <div class="min-w-125px">
-                                                                @if ($data->nominal < 0)
-                                                                    <span class="badge badge-light-danger">OUT</span>
-                                                                @else
-                                                                    <span class="badge badge-light-success">IN</span>
-                                                                @endif
-                                                            </div>
+                                                            <!--end::Description-->
                                                         </div>
-                                                @endforeach -->
-                                            </div>
-                                            <!--end::Timeline content-->
-                                        </div>
-                                        <!--end::Timeline item-->
-                                        <!--begin::Timeline item-->
-                                        <div class="timeline-item">
-                                            <!--begin::Timeline line-->
-                                            <div class="timeline-line"></div>
-                                            <!--end::Timeline line-->
-                                            <!--begin::Timeline icon-->
-                                            <div class="timeline-icon me-4">
-                                                <i class="ki-outline ki-flag fs-2 text-gray-500"></i>
-                                            </div>
-                                            <!--end::Timeline icon-->
-                                            <!--begin::Timeline content-->
-                                            <div class="timeline-content mb-10 mt-n2">
-                                                <!--begin::Timeline heading-->
-                                                <div class="overflow-auto pe-3">
-                                                    <!--begin::Title-->
-                                                    <div class="fs-5 fw-semibold mb-2">Invitation for crafting engaging
-                                                        designs that speak human workshop</div>
-                                                    <!--end::Title-->
-                                                    <!--begin::Description-->
-                                                    <div class="d-flex align-items-center mt-1 fs-6">
-                                                        <!--begin::Info-->
-                                                        <div class="text-muted me-2 fs-7">Sent at 4:23 PM by</div>
-                                                        <!--end::Info-->
-                                                        <!--begin::User-->
-                                                        <div class="symbol symbol-circle symbol-25px"
-                                                            data-bs-toggle="tooltip" data-bs-boundary="window"
-                                                            data-bs-placement="top" aria-label="Alan Nilson"
-                                                            data-bs-original-title="Alan Nilson" data-kt-initialized="1">
-                                                            <img src="assets/media/avatars/300-1.jpg" alt="img">
+                                                        <!--end::Timeline heading-->
+                                                        <!--begin::Timeline details-->
+                                                        <div class="overflow-auto pb-5">
+                                                            <div
+                                                                class="d-flex align-items-center justify-content-between border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
+                                                                <div
+                                                                    class="fs-5 text-hover-primary fw-semibold w-375px min-w-200px">
+                                                                    {{ $data->description }}</div>
+                                                                <div class="min-w-175px">
+                                                                    <span
+                                                                        class="badge badge-light text-muted">{{ $data->transaction_type }}</span>
+                                                                </div>
+                                                                <div class="min-w-175px">
+                                                                    <span class="badge badge-light-success">
+                                                                        {{ 'Rp' . number_format($data->nominal, 0, ',', '.') }}
+                                                                    </span>
+                                                                </div>
+
+                                                                <div class="d-flex justify-content-end min-w-125px">
+                                                                    @if ($data->transaction_type != 'Pinjam')
+                                                                        <span class="badge badge-light-success">IN</span>
+                                                                    @else
+                                                                        <span class="badge badge-light-danger">OUT</span>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <!--end::Record-->
                                                         </div>
-                                                        <!--end::User-->
+                                                        <!--end::Timeline details-->
                                                     </div>
-                                                    <!--end::Description-->
+                                                    <!--end::Timeline content-->
                                                 </div>
-                                                <!--end::Timeline heading-->
-                                            </div>
-                                            <!--end::Timeline content-->
-                                        </div>
-                                        <!--end::Timeline item-->
+                                            @endforeach
+                                        @endif
                                     </div>
                                     <!--end::Timeline-->
                                 </div>
@@ -315,61 +299,49 @@
                                 <!--begin::Tab panel-->
                                 <div id="kt_activity_week" class="card-body p-0 tab-pane fade" role="tabpanel"
                                     aria-labelledby="kt_activity_week_tab">
-                                    <div class="card-body pt-0">
-                                        
-                                        <!--begin::Table-->
-                                        <div class="table-responsive">
-                                            <table id="datatable_simpanan" class="table table-striped table-row-bordered gy-5 gs-7">
-                                                <thead>
-                                                    <tr class="fw-semibold fs-6 text-gray-800">
-                                                        <th class="min-w-85px">Tahun</th>
-                                                        <th class="min-w-150px">Januari</th>
-                                                        <th class="min-w-150px">Februari</th>
-                                                        <th class="min-w-150px">Maret</th>
-                                                        <th class="min-w-150px">April</th>
-                                                        <th class="min-w-150px">Mei</th>
-                                                        <th class="min-w-150px">Juni</th>
-                                                        <th class="min-w-150px">Juli</th>
-                                                        <th class="min-w-150px">Agustus</th>
-                                                        <th class="min-w-150px">September</th>
-                                                        <th class="min-w-150px">Oktober</th>
-                                                        <th class="min-w-150px">November</th>
-                                                        <th class="min-w-150px">Desember</th>
-                                                        <th class="min-w-150px">Total saat ini</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @php
-                                                        $months = [
-                                                            'January', 'February' , 'March' , 'April' , 'May' , 'June' , 'July' , 'August' , 'September' , 'October' , 'November' , 'December'
-                                                        ];
-                                                        $yearlyTransactions = [];
-                                                        foreach ($LogSimpananBulanan as $transaction) {
-                                                            $year = date('Y', strtotime($transaction->date_transaction));
-                                                            $month = date('F', strtotime($transaction->date_transaction));
-                                                            if (!isset($yearlyTransactions[$year])) {
-                                                                $yearlyTransactions[$year] = array_fill_keys($months, 0);
-                                                            }
-                                                            $yearlyTransactions[$year][$month] += $transaction->nominal;
-                                                        }
-                                                    @endphp
-
-                                                    @foreach ($yearlyTransactions as $year => $transactions)
-                                                        <tr>
-                                                            <td>{{ $year }}</td>
-                                                            @foreach ($months as $month)
-                                                                <td>Rp {{ number_format($transactions[$month], 0, ',', '.') }}</td>
-                                                            @endforeach
-                                                            <td>Rp {{ number_format(array_sum($transactions), 0, ',', '.') }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <div class="card-title">
+                                            <div class="d-flex align-items-center position-relative my-1">
+                                                <h5 class="text-gray">Data History Simpanan</h5>
+                                            </div>
                                         </div>
+                                    </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body pt-0">
+                                        <!--begin::Table-->
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5"
+                                            id="datatable_simpanan">
+                                            <thead>
+                                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                                    <th class="min-w-75px">Tahun</th>
+                                                    <th class="min-w-125px">Januari</th>
+                                                    <th class="min-w-125px">Februari</th>
+                                                    <th class="min-w-125px">Maret</th>
+                                                    <th class="min-w-125px">April</th>
+                                                    <th class="min-w-125px">Mei</th>
+                                                    <th class="min-w-125px">Juni</th>
+                                                    <th class="min-w-125px">Juli</th>
+                                                    <th class="min-w-125px">Agustus</th>
+                                                    <th class="min-w-125px">September</th>
+                                                    <th class="min-w-125px">Oktober</th>
+                                                    <th class="min-w-125px">November</th>
+                                                    <th class="min-w-125px">Desember</th>
+                                                    <th class="min-w-125px">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fw-semibold text-gray-600">
+                                            </tbody>
+                                            <!--end::Table body-->
+                                        </table>
+
                                         <!--end::Table-->
                                     </div>
+                                    <!--end::Card body-->
                                 </div>
                                 <!--end::Tab panel-->
+
                                 <!--begin::Tab panel-->
                                 <div id="kt_activity_month" class="card-body p-0 tab-pane fade" role="tabpanel"
                                     aria-labelledby="kt_activity_month_tab">
@@ -452,13 +424,79 @@
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 
     <script>
-        $("#datatable_simpanan").DataTable({
-            scrollY: "300px",
-            scrollX: true,
-            scrollCollapse: true,
-            fixedColumns: {
-                left: 1
-            }
+        $(document).ready(function() {
+            $("#datatable_simpanan").DataTable({
+                scrollY: "300px",
+                scrollX: true,
+                scrollCollapse: true,
+                fixedColumns: {
+                    left: 1
+                },
+                ajax: {
+                    url: "{{ route('profile.datatable') }}?user_id={{ $User->id }}",
+                    type: "GET",
+                    dataSrc: function(json) {
+                        return json.data;
+                    }
+                },
+                columns: [{
+                        name: 'year',
+                        data: 'year'
+                    },
+                    {
+                        name: 'january',
+                        data: 'january'
+                    },
+                    {
+                        name: 'february',
+                        data: 'february'
+                    },
+                    {
+                        name: 'march',
+                        data: 'march'
+                    },
+                    {
+                        name: 'april',
+                        data: 'april'
+                    },
+                    {
+                        name: 'may',
+                        data: 'may'
+                    },
+                    {
+                        name: 'june',
+                        data: 'june'
+                    },
+                    {
+                        name: 'july',
+                        data: 'july'
+                    },
+                    {
+                        name: 'august',
+                        data: 'august'
+                    },
+                    {
+                        name: 'september',
+                        data: 'september'
+                    },
+                    {
+                        name: 'october',
+                        data: 'october'
+                    },
+                    {
+                        name: 'november',
+                        data: 'november'
+                    },
+                    {
+                        name: 'december',
+                        data: 'december'
+                    },
+                    {
+                        name: 'total',
+                        data: 'total'
+                    }
+                ]
+            });
         });
     </script>
 @stop
