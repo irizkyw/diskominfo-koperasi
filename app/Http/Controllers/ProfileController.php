@@ -23,14 +23,8 @@ class ProfileController extends Controller
         $Role = Role::find($User->role_id);
         $Golongan = Golongan::find($User->golongan_id);
         $LogTransaksi = Transaksi::where('user_id', $User->id)->get();
-        $LogSimpananBulanan = Transaksi::where('user_id', $User->id)->where('transaction_type', 'Simpanan Wajib')->get();
 
-        // Retrieve Simpanan Wajib Last
-        $SimpananWajibLast = Tabungan::where('user_id', $id)->first()->simp_wajib; // Simpanan Wajib Terakhir
-        $SimpananWajib = Transaksi::where('user_id', $id)
-            ->where('transaction_type', 'Simpanan Wajib')
-            ->sum('nominal'); // Total Simpanan Wajib Bulanan
-        $SimpananWajib = $SimpananWajibLast + $SimpananWajib; // Simpanan Wajib hingga saat ini
+        $SimpananWajib = Tabungan::where('user_id', $id)->first()->simp_wajib;
         $SimpananWajib80 = $SimpananWajib * 0.8; // 80% dari total simpanan bulanan || Setelah dikurangi 20%
 
         $SimpananPokok = Tabungan::where('user_id', $id)->first()->simp_pokok;
@@ -64,12 +58,10 @@ class ProfileController extends Controller
                 'Role',
                 'Golongan',
                 'LogTransaksi',
-                'LogSimpananBulanan',
                 'SimpananWajib',
                 'SimpananPokok',
                 'SimpananSukarela',
-                'SimpananAkhir',
-                'monthlySimpananWajib'
+                'SimpananAkhir'
             )
         );
     }
