@@ -117,7 +117,7 @@ class UsersController extends Controller
 
     public function cekUserByNumMember($num_member)
     {
-        $user = User::where('num_member', $num_member)->first();
+        $user = User::withTrashed()->where('num_member', $num_member)->first();
 
         if (!$user) {
             return response()->json(['message' => 'User not found.'], 404);
@@ -250,6 +250,26 @@ class UsersController extends Controller
 
         return response()->json(['message' => 'User deleted successfully.']);
     }
+
+    public function forceDeleteUser($num_member)
+    {
+        if ($num_member == 0) {
+            return response()->json(['message' => 'Invalid user number.'], 400);
+        }
+
+        $user = User::withTrashed()->where('num_member', $num_member)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
+        $user->savings()->delete();
+        $user->transactions()->delete();
+        $user->forceDelete();
+
+        return response()->json(['message' => 'User permanently deleted successfully.']);
+    }
+
 
 
     public function restoreUser($num_member)
