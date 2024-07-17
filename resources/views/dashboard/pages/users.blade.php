@@ -891,7 +891,8 @@
             e.preventDefault();
             n = $("#kt_modal_edit_users").find("[name='num_member']").val();
             Swal.fire({
-                text: "Apakah yakin ingin menghapus permanen karena data yang dihapus termasuk tabungan dan transaksi dengan Nomor Anggota " + n +
+                text: "Apakah yakin ingin menghapus permanen karena data yang dihapus termasuk tabungan dan transaksi dengan Nomor Anggota " +
+                    n +
                     "?",
                 icon: "warning",
                 showCancelButton: true,
@@ -971,12 +972,19 @@
                         'content')
                 },
                 success: function(response) {
+                    console.log(response);
                     $("#kt_modal_edit_users").find("[name='num_member']").val(response.num_member)
                     $("#kt_modal_edit_users").find("[name='name']").val(response.name)
                     $("#kt_modal_edit_users").find("[name='username']").val(response.username)
+                    $("#kt_modal_edit_users").find("[name='mandatory_savings']").val(response
+                        .simp_wajib)
+                    $("#kt_modal_edit_users").find("[name='voluntary_savings']").val(response
+                        .simp_sukarela)
                     $("#kt_modal_edit_users").find("[name='roles']").val(response.role_id).trigger(
                         'change')
                     $("#kt_modal_edit_users").find("[name='status']").val(response.status_active)
+                        .trigger('change')
+                    $("#kt_modal_edit_users").find("[name='group']").val(response.golongan)
                         .trigger('change')
 
                     $("#kt_modal_edit_users").modal("show")
