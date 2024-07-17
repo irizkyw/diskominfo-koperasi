@@ -353,28 +353,25 @@
                                 <div id="kt_activity_month" class="card-body p-0 tab-pane fade" role="tabpanel"
                                     aria-labelledby="kt_activity_month_tab">
                                     <!--begin::Timeline-->
-                                    <div class="timeline  timeline-border-dashed">
-                                        <form action="">
+                                    <div class="timeline timeline-border-dashed">
+                                        <form id="password-update-form" action="{{ route('profile.updatePassword') }}" method="POST">
+                                            @csrf
                                             <div class="mb-10">
-                                                <label for="password" class="required form-label">Password</label>
-                                                <input type="password" class="form-control form-control-solid"
-                                                    placeholder="Password lama" />
+                                                <label for="old_password" class="required form-label">Password Lama</label>
+                                                <input type="password" class="form-control form-control-solid" name="old_password" placeholder="Password lama" required />
                                             </div>
 
                                             <div class="mb-10">
-                                                <label for="newPassword" class="required form-label">Password
-                                                    baru</label>
-                                                <input type="password" class="form-control form-control-solid"
-                                                    placeholder="Password baru" />
-                                            </div>
-                                            <div class="mb-10">
-                                                <label for="confirm_newPassword" class="required form-label">Konfirmasi
-                                                    Password baru</label>
-                                                <input type="password" class="form-control form-control-solid"
-                                                    placeholder="Konfirmasi password baru" />
+                                                <label for="password" class="required form-label">Password Baru</label>
+                                                <input type="password" class="form-control form-control-solid" name="password" placeholder="Password baru" required />
                                             </div>
 
-                                            <button type="button" class="btn btn-sm btn-primary">
+                                            <div class="mb-10">
+                                                <label for="password_confirmation" class="required form-label">Konfirmasi Password Baru</label>
+                                                <input type="password" class="form-control form-control-solid" name="password_confirmation" placeholder="Konfirmasi password baru" required />
+                                            </div>
+
+                                            <button type="button" class="btn btn-sm btn-primary password-update-button">
                                                 Simpan
                                             </button>
                                         </form>
@@ -382,6 +379,7 @@
                                     <!--end::Timeline-->
                                 </div>
                                 <!--end::Tab panel-->
+
                             </div>
                             <!--end::Tab Content-->
                         </div>
@@ -429,6 +427,7 @@
 @section('scripts')
     <script src="{{ asset('assets/js/custom/pages/user-profile/general.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function() {
@@ -505,5 +504,50 @@
                 ]
             });
         });
+
+        $(document).on("click", '.password-update-button', function(e) {
+            e.preventDefault();
+            
+            Swal.fire({
+                text: "Apakah Anda yakin ingin mengubah password?",
+                icon: "warning",
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonText: "Ya, Ubah!",
+                cancelButtonText: "Tidak",
+                customClass: {
+                    confirmButton: "btn fw-bold btn-primary",
+                    cancelButton: "btn fw-bold btn-active-light-primary",
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#password-update-form').submit();
+                }
+            });
+        });
+
+        @if(session('success'))
+            Swal.fire({
+                text: "{{ session('success') }}",
+                icon: "success",
+                buttonsStyling: false,
+                confirmButtonText: "OK",
+                customClass: {
+                    confirmButton: "btn fw-bold btn-primary",
+                },
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                text: "{{ session('error') }}",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "OK",
+                customClass: {
+                    confirmButton: "btn fw-bold btn-primary",
+                },
+            });
+        @endif
     </script>
 @stop

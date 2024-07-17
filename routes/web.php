@@ -26,6 +26,7 @@ Route::post('/authentication/authenticated', [AuthController::class, 'login'])->
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/datatable', [ProfileController::class, 'monthly'])->name('profile.datatable');
+    Route::post('/profile/updatePassword', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

@@ -11,7 +11,7 @@ use App\Models\Tabungan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
-
+use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     public function __construct()
@@ -163,6 +163,22 @@ return DataTables::of($data)
     })
     ->make(true);
 }
+
+public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|min:4|confirmed',
+        ]);
+
+        $user = Auth::user();
+        
+        if (Hash::check($request->old_password, $user->password)) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return redirect()->back()->with('success', 'Password berhasil direset');
+        }
+        return redirect()->back()->with('error', 'Password lama tidak sesuai'); 
+    }
 
 
 }
