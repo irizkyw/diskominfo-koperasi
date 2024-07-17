@@ -240,7 +240,7 @@
                                                     <!--end::Description-->
                                                 </div>
                                                 <!--end::Timeline heading-->
-                                                @foreach ($LogTransaksi as $data)
+                                                <!-- @foreach ($LogTransaksi as $data)
                                                     <div class="overflow-auto pb-5">
                                                         <div
                                                             class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
@@ -264,7 +264,7 @@
                                                                 @endif
                                                             </div>
                                                         </div>
-                                                @endforeach
+                                                @endforeach -->
                                             </div>
                                             <!--end::Timeline content-->
                                         </div>
