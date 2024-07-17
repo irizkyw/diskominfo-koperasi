@@ -578,6 +578,11 @@
                                                 </select>
                                                 <!--end::Input-->
                                             </div>
+                                            <div class="d-flex flex-column mb-7 fv-row mt-3">
+                                                <a href="#" class="btn btn-danger btn-sm .delete-force"
+                                                    id="delete-force">Hapus
+                                                    Permanen!</a>
+                                            </div>
                                             <!--end::Input group-->
                                         </div>
                                         <!--end::Scroll-->
@@ -870,6 +875,77 @@
                     Swal.fire({
                         text: "Nomor Anggota " + n +
                             " tidak dinon-aktifkan.",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK mengerti!",
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-primary",
+                        },
+                    });
+                }
+            });
+
+        });
+
+        $(document).on("click", '#delete-force', function(e) {
+            e.preventDefault();
+            n = $("#kt_modal_edit_users").find("[name='num_member']").val();
+            Swal.fire({
+                text: "Apakah yakin ingin menghapus permanen karena data yang dihapus termasuk tabungan dan transaksi dengan Nomor Anggota " + n +
+                    "?",
+                icon: "warning",
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Tidak",
+                customClass: {
+                    confirmButton: "btn fw-bold btn-danger",
+                    cancelButton: "btn fw-bold btn-active-light-primary",
+                },
+            }).then(function(e) {
+                if (e.value) {
+                    $.ajax({
+                        url: "{{ route('users.forceDestroy', ['id' => ':id']) }}"
+                            .replace(':id', n),
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': $(
+                                'meta[name="csrf-token"]').attr(
+                                'content')
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                text: "Berhasil hapus permanen Nomor Anggota " +
+                                    n + "!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK mengerti!",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            }).then(function() {
+                                $("#kt_modal_edit_users").modal('hide');
+                                datatable.ajax.reload();
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                text: "Gagal hapus permanen Nomor Anggota " +
+                                    n +
+                                    ". Silakan coba lagi.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK mengerti!",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            });
+                        }
+                    });
+                } else if (e.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        text: "Nomor Anggota " + n +
+                            " tidak dihapus.",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "OK mengerti!",
