@@ -518,23 +518,6 @@
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div class="fv-row mb-7">
-                                                <label class="fs-6 fw-semibold mb-2">Simpanan Wajib</label>
-                                                <input type="number" class="form-control form-control-solid"
-                                                    placeholder="Simpanan Wajib Pertama kali daftar (Opsional)"
-                                                    name="mandatory_savings" id="mandatory_savings" />
-                                                <!--end::Input-->
-                                            </div>
-
-                                            <div class="fv-row mb-7">
-                                                <label class="fs-6 fw-semibold mb-2">Simpanan Sukarela</label>
-                                                <input type="number" class="form-control form-control-solid"
-                                                    placeholder="Simpanan Sukarela (Opsional)" name="voluntary_savings"
-                                                    id="voluntary_savings" />
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--begin::Input group-->
-                                            <!--begin::Input group-->
                                             <div class="d-flex flex-column mb-7 fv-row">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold mb-2">

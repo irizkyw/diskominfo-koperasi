@@ -133,8 +133,6 @@ class UsersController extends Controller
             "username" => $user->username,
             "name" => $user->name,
             "golongan" => $user->savings->first()->golongan_id,
-            "simp_wajib" => $user->savings->first()->simp_wajib,
-            "simp_sukarela" => $user->savings->first()->simp_sukarela,
             "role_id" => $user->role_id,
             "status_active" => $user->status_active
         ];
@@ -253,8 +251,15 @@ class UsersController extends Controller
         if (!empty($request->password))
             $data['password'] = Hash::make($request->password);
 
+        $tabungan = Tabungan::where('user_id', $user->id)->first();
+        $tabungan->update(['golongan_id' => $request->group]);
+
         $user->update($data);
-        return response()->json($user);
+        return response()->json([
+            'message' => 'Data user telah diubah',
+            'user' => $user,
+            'tabungan' => $tabungan
+        ]);
     }
 
     public function deleteUser($num_member)
