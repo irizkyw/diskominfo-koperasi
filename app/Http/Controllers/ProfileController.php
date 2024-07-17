@@ -48,7 +48,10 @@ class ProfileController extends Controller
         $Role = Role::find($User->role_id);
         $Golongan = Golongan::find($User->golongan_id);
 
-        $LogTransaksi = Transaksi::where('user_id', $User->id)->get();
+        $LogTransaksi = Transaksi::where('user_id', $User->id)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
 
         $SimpananWajib = Tabungan::where('user_id', $User->id)->value('simp_wajib') ?? 0;
         $SimpananWajib80 = $SimpananWajib * 0.8;
@@ -56,7 +59,6 @@ class ProfileController extends Controller
         $SimpananPokok = Tabungan::where('user_id', $User->id)->value('simp_pokok') ?? 0;
         $SimpananSukarela = Tabungan::where('user_id', $User->id)->value('simp_sukarela') ?? 0;
         $SimpananAkhir = $SimpananWajib80 + $SimpananPokok + $SimpananSukarela;
-
         return view('dashboard.pages.profile', compact('User', 'Role', 'Golongan', 'LogTransaksi', 'SimpananWajib', 'SimpananPokok', 'SimpananSukarela', 'SimpananAkhir'));
     }
 
