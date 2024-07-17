@@ -66,7 +66,7 @@
 
                                                     <div
                                                         class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
-                                                        <i class="ki-outline ki-geolocation fs-4 me-1"></i>
+                                                        <i class="ki-outline ki-sms fs-4 me-1"></i>
                                                         {{ $User->savings->first()->golongan->nama_golongan ?? 'Belum ada golongan' }}
                                                     </div>
                                                 </div>
@@ -88,6 +88,7 @@
                                                     <!--begin::Menu 3-->
                                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
                                                         data-kt-menu="true">
+                                                        <!--end::Menu item-->
                                                         <!--begin::Heading-->
                                                         <div class="menu-item px-3">
                                                             <div
@@ -222,68 +223,75 @@
                                     role="tabpanel" aria-labelledby="kt_activity_today_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
-                                        @foreach ($LogTransaksi as $data)
+                                        @if ($LogTransaksi->isEmpty())
                                             <div class="timeline-item">
-                                                <!--begin::Timeline line-->
-                                                <div class="timeline-line"></div>
-                                                <!--end::Timeline line-->
-                                                <!--begin::Timeline icon-->
-                                                <div class="timeline-icon me-4">
-                                                    <i class="ki-outline ki-flag fs-2 text-gray-500"></i>
-                                                </div>
-                                                <!--end::Timeline icon-->
-                                                <!--begin::Timeline content-->
-                                                <div class="timeline-content mb-10 mt-n1">
-                                                    <!--begin::Timeline heading-->
-                                                    <div class="pe-3 mb-5">
-                                                        <!--begin::Title-->
-                                                        <div class="fs-5 fw-semibold mb-2">Transaksi berhasil untuk
-                                                            {{ $data->transaction_type }}</div>
-                                                        <!--end::Title-->
-                                                        <!--begin::Description-->
-                                                        <div class="d-flex align-items-center mt-1 fs-6">
-                                                            <!--begin::Info-->
-                                                            <div class="text-muted me-2 fs-7">
-                                                                Ditambahkan pada {{ $data->created_at->format('d F Y') }}
-                                                            </div>
-
-                                                            <!--end::Info-->
-                                                        </div>
-                                                        <!--end::Description-->
-                                                    </div>
-                                                    <!--end::Timeline heading-->
-                                                    <!--begin::Timeline details-->
-                                                    <div class="overflow-auto pb-5">
-                                                        <div
-                                                            class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
-                                                            <div
-                                                                class="fs-5 text-gray-900 text-hover-primary fw-semibold w-375px min-w-200px">
-                                                                {{ $data->description }}</div>
-                                                            <div class="min-w-175px">
-                                                                <span
-                                                                    class="badge badge-light text-muted">{{ $data->transaction_type }}</span>
-                                                            </div>
-                                                            <div class="min-w-175px">
-                                                                <span class="badge badge-light-success">
-                                                                    {{ 'Rp' . number_format($data->nominal, 0, ',', '.') }}
-                                                                </span>
-                                                            </div>
-
-                                                            <div class="d-flex justify-content-end min-w-125px">
-                                                                @if ($data->transaction_type != 'Pinjam')
-                                                                    <span class="badge badge-light-success">IN</span>
-                                                                @else
-                                                                    <span class="badge badge-light-danger">OUT</span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Record-->
-                                                    </div>
-                                                    <!--end::Timeline details-->
-                                                </div>
-                                                <!--end::Timeline content-->
+                                                Tidak ada History Transaksi
                                             </div>
-                                        @endforeach
+                                        @else
+                                            @foreach ($LogTransaksi as $data)
+                                                <div class="timeline-item">
+                                                    <!--begin::Timeline line-->
+                                                    <div class="timeline-line"></div>
+                                                    <!--end::Timeline line-->
+                                                    <!--begin::Timeline icon-->
+                                                    <div class="timeline-icon me-4">
+                                                        <i class="ki-outline ki-flag fs-2 text-gray-500"></i>
+                                                    </div>
+                                                    <!--end::Timeline icon-->
+                                                    <!--begin::Timeline content-->
+                                                    <div class="timeline-content mb-10 mt-n1">
+                                                        <!--begin::Timeline heading-->
+                                                        <div class="pe-3 mb-5">
+                                                            <!--begin::Title-->
+                                                            <div class="fs-5 fw-semibold mb-2">Transaksi berhasil untuk
+                                                                {{ $data->transaction_type }}</div>
+                                                            <!--end::Title-->
+                                                            <!--begin::Description-->
+                                                            <div class="d-flex align-items-center mt-1 fs-6">
+                                                                <!--begin::Info-->
+                                                                <div class="text-muted me-2 fs-7">
+                                                                    Ditambahkan pada
+                                                                    {{ $data->created_at->format('d F Y') }}
+                                                                </div>
+
+                                                                <!--end::Info-->
+                                                            </div>
+                                                            <!--end::Description-->
+                                                        </div>
+                                                        <!--end::Timeline heading-->
+                                                        <!--begin::Timeline details-->
+                                                        <div class="overflow-auto pb-5">
+                                                            <div
+                                                                class="d-flex align-items-center justify-content-between border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
+                                                                <div
+                                                                    class="fs-5 text-hover-primary fw-semibold w-375px min-w-200px">
+                                                                    {{ $data->description }}</div>
+                                                                <div class="min-w-175px">
+                                                                    <span
+                                                                        class="badge badge-light text-muted">{{ $data->transaction_type }}</span>
+                                                                </div>
+                                                                <div class="min-w-175px">
+                                                                    <span class="badge badge-light-success">
+                                                                        {{ 'Rp' . number_format($data->nominal, 0, ',', '.') }}
+                                                                    </span>
+                                                                </div>
+
+                                                                <div class="d-flex justify-content-end min-w-125px">
+                                                                    @if ($data->transaction_type != 'Pinjam')
+                                                                        <span class="badge badge-light-success">IN</span>
+                                                                    @else
+                                                                        <span class="badge badge-light-danger">OUT</span>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <!--end::Record-->
+                                                        </div>
+                                                        <!--end::Timeline details-->
+                                                    </div>
+                                                    <!--end::Timeline content-->
+                                                </div>
+                                            @endforeach
+                                        @endif
                                     </div>
                                     <!--end::Timeline-->
                                 </div>
