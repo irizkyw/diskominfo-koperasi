@@ -38,7 +38,9 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::post('/users/create', [UsersController::class, 'createUser'])->name('users.create');
     Route::post('/users/update/{id}', [UsersController::class, 'updateUser'])->name('users.update');
     Route::delete('/users/destory/{id}', [UsersController::class, 'deleteUser'])->name('users.destroy');
+    Route::delete('/users/forceDestroy/{id}', [UsersController::class, 'forceDeleteUser'])->name('users.forceDestroy');
     Route::get('/users/restore/{num_member}', [UsersController::class, 'restoreUser'])->name('users.restore');
+
     Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');
     Route::get('/roles/datatable', [RolesController::class, 'datatable'])->name('roles.datatable');
     Route::post('/roles/create', [RolesController::class, 'store'])->name('roles.create');
