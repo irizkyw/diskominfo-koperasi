@@ -240,8 +240,6 @@
                                                     <!--end::Description-->
                                                 </div>
                                                 <!--end::Timeline heading-->
-                                                <!--begin::Timeline details-->
-                                                
                                                 @foreach ($LogTransaksi as $data)
                                                     <div class="overflow-auto pb-5">
                                                         <div
@@ -267,10 +265,6 @@
                                                             </div>
                                                         </div>
                                                 @endforeach
-                                                
-                                                    <!--end::Record-->
-                                                </div>
-                                                <!--end::Timeline details-->
                                             </div>
                                             <!--end::Timeline content-->
                                         </div>
@@ -322,10 +316,10 @@
                                 <div id="kt_activity_week" class="card-body p-0 tab-pane fade" role="tabpanel"
                                     aria-labelledby="kt_activity_week_tab">
                                     <div class="card-body pt-0">
+                                        
                                         <!--begin::Table-->
                                         <div class="table-responsive">
-                                            <table id="datatable_simpanan"
-                                                class="table table-striped table-row-bordered gy-5 gs-7">
+                                            <table id="datatable_simpanan" class="table table-striped table-row-bordered gy-5 gs-7">
                                                 <thead>
                                                     <tr class="fw-semibold fs-6 text-gray-800">
                                                         <th class="min-w-85px">Tahun</th>
@@ -345,40 +339,30 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>2024</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 5.000.000</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2023</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 100.000</td>
-                                                        <td>Rp 5.000.000</td>
-                                                        
-                                                    </tr>
-                                                    
+                                                    @php
+                                                        $months = [
+                                                            'January', 'February' , 'March' , 'April' , 'May' , 'June' , 'July' , 'August' , 'September' , 'October' , 'November' , 'December'
+                                                        ];
+                                                        $yearlyTransactions = [];
+                                                        foreach ($LogSimpananBulanan as $transaction) {
+                                                            $year = date('Y', strtotime($transaction->date_transaction));
+                                                            $month = date('F', strtotime($transaction->date_transaction));
+                                                            if (!isset($yearlyTransactions[$year])) {
+                                                                $yearlyTransactions[$year] = array_fill_keys($months, 0);
+                                                            }
+                                                            $yearlyTransactions[$year][$month] += $transaction->nominal;
+                                                        }
+                                                    @endphp
+
+                                                    @foreach ($yearlyTransactions as $year => $transactions)
+                                                        <tr>
+                                                            <td>{{ $year }}</td>
+                                                            @foreach ($months as $month)
+                                                                <td>Rp {{ number_format($transactions[$month], 0, ',', '.') }}</td>
+                                                            @endforeach
+                                                            <td>Rp {{ number_format(array_sum($transactions), 0, ',', '.') }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
