@@ -11,7 +11,7 @@
             <!--begin::Content-->
             <div id="kt_app_content" class="app-content flex-column-fluid">
                 <!--begin::Content container-->
-                <div id="kt_app_content_container" class="app-container container-xxl">
+                <div id="kt_app_content_container" class="app-container container-xxl" {!! Auth::user()->role->name !== 'Administrator' ? 'style="padding: 0px!important;"' : '' !!}>
                     <!--begin::Navbar-->
                     <div class="card mb-6">
                         <div class="card-body pt-9 pb-0">
@@ -280,7 +280,7 @@
                                                                             {{ 'Rp' . number_format($data->nominal, 0, ',', '.') }}
                                                                         </span>
                                                                     @endif
-                                                                    
+
                                                                 </div>
 
                                                                 <div class="d-flex justify-content-end min-w-125px">
@@ -354,21 +354,28 @@
                                     aria-labelledby="kt_activity_month_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
-                                        <form id="password-update-form" action="{{ route('profile.updatePassword') }}" method="POST">
+                                        <form id="password-update-form" action="{{ route('profile.updatePassword') }}"
+                                            method="POST">
                                             @csrf
                                             <div class="mb-10">
-                                                <label for="old_password" class="required form-label">Password Lama</label>
-                                                <input type="password" class="form-control form-control-solid" name="old_password" placeholder="Password lama" required />
+                                                <label for="old_password" class="required form-label">Password
+                                                    Lama</label>
+                                                <input type="password" class="form-control form-control-solid"
+                                                    name="old_password" placeholder="Password lama" required />
                                             </div>
 
                                             <div class="mb-10">
                                                 <label for="password" class="required form-label">Password Baru</label>
-                                                <input type="password" class="form-control form-control-solid" name="password" placeholder="Password baru" required />
+                                                <input type="password" class="form-control form-control-solid"
+                                                    name="password" placeholder="Password baru" required />
                                             </div>
 
                                             <div class="mb-10">
-                                                <label for="password_confirmation" class="required form-label">Konfirmasi Password Baru</label>
-                                                <input type="password" class="form-control form-control-solid" name="password_confirmation" placeholder="Konfirmasi password baru" required />
+                                                <label for="password_confirmation" class="required form-label">Konfirmasi
+                                                    Password Baru</label>
+                                                <input type="password" class="form-control form-control-solid"
+                                                    name="password_confirmation" placeholder="Konfirmasi password baru"
+                                                    required />
                                             </div>
 
                                             <button type="button" class="btn btn-sm btn-primary password-update-button">
@@ -507,7 +514,7 @@
 
         $(document).on("click", '.password-update-button', function(e) {
             e.preventDefault();
-            
+
             Swal.fire({
                 text: "Apakah Anda yakin ingin mengubah password?",
                 icon: "warning",
@@ -526,7 +533,7 @@
             });
         });
 
-        @if(session('success'))
+        @if (session('success'))
             Swal.fire({
                 text: "{{ session('success') }}",
                 icon: "success",
@@ -538,7 +545,7 @@
             });
         @endif
 
-        @if(session('error'))
+        @if (session('error'))
             Swal.fire({
                 text: "{{ session('error') }}",
                 icon: "error",
