@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
@@ -23,7 +24,9 @@ Route::get('/authentication/sign-in', [AuthController::class, 'showLoginForm'])-
 Route::post('/authentication/authenticated', [AuthController::class, 'login'])->name('login.submit');
 
 Route::middleware(['auth'])->group(function () {
-    route::get('/profile', function(){return view('dashboard.pages.profile');})->name('profile');
+    route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    // Route for fetching monthly data
+    Route::get('/profile/datatable', [ProfileController::class, 'monthly'])->name('profile.datatable');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 Route::get('/users/datatable', [UsersController::class, 'datatable'])->name('users.datatable');

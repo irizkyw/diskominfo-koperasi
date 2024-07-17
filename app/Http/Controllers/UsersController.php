@@ -7,10 +7,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Golongan;
+use App\Models\Tabungan;
+use App\Models\Transaksi;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TransaksiController;
@@ -20,8 +24,8 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::orderBy('status_active', 'desc')
-                    ->orderBy('created_at', 'desc')
-                    ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $roles = Role::all();
         $golongan = Golongan::all();
@@ -35,26 +39,26 @@ class UsersController extends Controller
 
         return DataTables::of($query)
             ->addIndexColumn()
-            ->addColumn('role', function($row) {
+            ->addColumn('role', function ($row) {
                 return $row->role->name;
             })
-            ->editColumn('num_member', function($row) {
+            ->editColumn('num_member', function ($row) {
                 return str_pad($row->num_member, 3, '0', STR_PAD_LEFT);
             })
-            ->addColumn('status', function($row) {
+            ->addColumn('status', function ($row) {
                 if ($row->status_active) {
                     return '<div class="badge badge-light-success">Anggota</div>';
                 } else {
                     return '<div class="badge badge-light-danger">Tidak Aktif</div>';
                 }
             })
-            ->editColumn('created_at', function($row) {
+            ->editColumn('created_at', function ($row) {
                 return $row->created_at->format('d M Y, h:i a');
             })
-            ->addColumn('actions', function($row) {
+            ->addColumn('actions', function ($row) {
                 $restoreUrl = route('users.restore', ['num_member' => $row->num_member]);
                 $actionButton = '<a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-edit"
-                                data-id="'. $row->num_member .'">
+                                data-id="' . $row->num_member . '">
                                 <span class="svg-icon svg-icon-2">
                                     <i class="fas fa-pen"></i>
                                 </span>
@@ -64,7 +68,7 @@ class UsersController extends Controller
                     // User is active
                     $actionButton .= '
                         <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-delete"
-                        data-id="'. $row->num_member .'">
+                        data-id="' . $row->num_member . '">
                         <span class="svg-icon svg-icon-2">
                             <i class="fas fa-trash"></i>
                         </span>
@@ -73,7 +77,7 @@ class UsersController extends Controller
                     // User is inactive
                     $actionButton .= '
                         <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-restore"
-                        data-id="'. $row->num_member .'">
+                        data-id="' . $row->num_member . '">
                         <span class="svg-icon svg-icon-2">
                             <i class="fas fa-undo"></i>
                         </span>
@@ -90,7 +94,7 @@ class UsersController extends Controller
 
                 return '
                     <div class="d-flex justify-content-end">
-                        '.$actionButton.'
+                        ' . $actionButton . '
                     </div>';
             })
 
@@ -101,8 +105,8 @@ class UsersController extends Controller
     public function getNewMemberNumber()
     {
         $lastMember = User::withTrashed()
-                        ->orderBy('num_member', 'desc')
-                        ->first();
+            ->orderBy('num_member', 'desc')
+            ->first();
 
         $newNumber = $lastMember ? $lastMember->num_member + 1 : 1;
 
@@ -163,7 +167,7 @@ class UsersController extends Controller
             do {
                 $words = explode(' ', $name);
                 $firstName = strtolower($words[0]);
-                $username = $firstName.str_pad($num_member, 3, '0', STR_PAD_LEFT);
+                $username = $firstName . str_pad($num_member, 3, '0', STR_PAD_LEFT);
                 $userExists = User::where('username', $username)->exists();
             } while ($userExists);
 
@@ -183,8 +187,7 @@ class UsersController extends Controller
             'status_active' => true
         ]);
 
-        if($user)
-        {
+        if ($user) {
             $tabunganController = new TabunganController();
             $transaksiController = new transaksiController();
             $tabunganController->createTabungan($request->merge(['user_id' => $user->id]));
@@ -192,7 +195,7 @@ class UsersController extends Controller
                 $transaksiController->createSimpanan($request->merge([
                     'user_id' => $user->id,
                     'transaction_type' => 'Simpanan Sukarela',
-                    'desc' => 'Pendaftaran anggota baru dengan membayar Simpanan Sukarela untuk bulan '. Carbon::now()->format('F') . '.',
+                    'desc' => 'Pendaftaran anggota baru dengan membayar Simpanan Sukarela untuk bulan ' . Carbon::now()->format('F') . '.',
                     'nominal' => $request->voluntary_savings,
                     'date_transaction' => now()->format('Y-m-d')
                 ]));
@@ -202,7 +205,7 @@ class UsersController extends Controller
                 $transaksiController->createSimpanan($request->merge([
                     'user_id' => $user->id,
                     'transaction_type' => 'Simpanan Pokok',
-                    'desc' => 'Pendaftaran anggota baru dengan membayar Simpanan Pokok untuk bulan '. Carbon::now()->format('F') . '.',
+                    'desc' => 'Pendaftaran anggota baru dengan membayar Simpanan Pokok untuk bulan ' . Carbon::now()->format('F') . '.',
                     'nominal' => $request->mandatory_savings,
                     'date_transaction' => now()->format('Y-m-d')
                 ]));
@@ -285,4 +288,5 @@ class UsersController extends Controller
         $user->update(['status_active' => true]);
         return response()->json(['message' => 'User restored successfully.']);
     }
+
 }
