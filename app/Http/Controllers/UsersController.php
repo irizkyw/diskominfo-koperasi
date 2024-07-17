@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Golongan;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\TabunganController;
+use App\Http\Controllers\TransaksiController;
 
 class UsersController extends Controller
 {
@@ -155,6 +157,32 @@ class UsersController extends Controller
             'status_active' => true
         ]);
 
+        if($user)
+        {
+            $tabunganController = new TabunganController();
+            $transaksiController = new transaksiController();
+            $tabunganController->createTabungan($request->merge(['user_id' => $user->id]));
+            if ($request->mandatory_savings != 0) {
+                $transaksiController->createSimpanan($request->merge([
+                    'user_id' => $user->id,
+                    'transaction_type' => 'Simpanan Sukarela',
+                    'desc' => 'Transaksi masuk pendaftaran anggota baru',
+                    'nominal' => $request->voluntary_savings,
+                    'date_transaction' => now()->format('Y-m-d')
+                ]));
+            }
+
+            if ($request->voluntary_savings != 0) {
+                $transaksiController->createSimpanan($request->merge([
+                    'user_id' => $user->id,
+                    'transaction_type' => 'Simpanan Pokok',
+                    'desc' => 'Transaksi masuk pendaftaran anggota baru',
+                    'nominal' => $request->mandatory_savings,
+                    'date_transaction' => now()->format('Y-m-d')
+                ]));
+            }
+        }
+
         $user = $user->load('role');
 
         return response()->json([
@@ -182,18 +210,13 @@ class UsersController extends Controller
         return response()->json($user);
     }
 
-    public function deleteTransaksi($id)
+    public function deleteUser($num_member)
     {
-        $transaksi = Transaksi::find($id);
-
-        if (!$transaksi) {
-            return response()->json(['message' => 'Transaksi not found.'], 404);
+        $user = User::where('num_member', $num_member)->first();
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
         }
-
-        $transaksi->delete();
-
-        return response()->json(['message' => 'Transaksi deleted successfully.']);
+        $user->delete();
+        return response()->json(['message' => 'User deleted successfully.']);
     }
-
-
 }
