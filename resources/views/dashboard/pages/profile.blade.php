@@ -185,10 +185,6 @@
                     <div class="card">
                         <!--begin::Card head-->
                         <div class="card-header card-header-stretch">
-                            <!--begin::Title-->
-                            <div class="card-title d-flex align-items-center">
-                            </div>
-                            <!--end::Title-->
                             <!--begin::Toolbar-->
                             <div class="card-toolbar m-0">
                                 <!--begin::Tab nav-->
@@ -324,48 +320,46 @@
                                 <!--begin::Tab panel-->
                                 <div id="kt_activity_week" class="card-body p-0 tab-pane fade" role="tabpanel"
                                     aria-labelledby="kt_activity_week_tab">
-                                    <div class="card">
-                                        <!--begin::Card header-->
-                                        <div class="card-header border-0 pt-6">
-                                            <div class="card-title">
-                                                <div class="d-flex align-items-center position-relative my-1">
-                                                    <h5 class="text-gray">History Simpanan</h5>
-                                                </div>
+                                    <!--begin::Card header-->
+                                    <div class="card-header border-0">
+                                        <div class="card-title">
+                                            <div class="d-flex align-items-center position-relative my-1">
+                                                <h5 class="text-gray">Data History Simpanan</h5>
                                             </div>
                                         </div>
-                                        <!--end::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body pt-0">
-                                            <!--begin::Table-->
-                                            <table class="table align-middle table-row-dashed fs-6 gy-5"
-                                                id="datatable_simpanan">
-                                                <thead>
-                                                    <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                                        <th class="min-w-75px">Tahun</th>
-                                                        <th class="min-w-125px">Januari</th>
-                                                        <th class="min-w-125px">Februari</th>
-                                                        <th class="min-w-125px">Maret</th>
-                                                        <th class="min-w-125px">April</th>
-                                                        <th class="min-w-125px">Mei</th>
-                                                        <th class="min-w-125px">Juni</th>
-                                                        <th class="min-w-125px">Juli</th>
-                                                        <th class="min-w-125px">Agustus</th>
-                                                        <th class="min-w-125px">September</th>
-                                                        <th class="min-w-125px">Oktober</th>
-                                                        <th class="min-w-125px">November</th>
-                                                        <th class="min-w-125px">Desember</th>
-                                                        <th class="min-w-125px">Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="fw-semibold text-gray-600">
-                                                </tbody>
-                                                <!--end::Table body-->
-                                            </table>
-
-                                            <!--end::Table-->
-                                        </div>
-                                        <!--end::Card body-->
                                     </div>
+                                    <!--end::Card header-->
+                                    <!--begin::Card body-->
+                                    <div class="card-body pt-0">
+                                        <!--begin::Table-->
+                                        <table class="table align-middle table-row-dashed fs-6 gy-5"
+                                            id="datatable_simpanan">
+                                            <thead>
+                                                <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                                    <th class="min-w-75px">Tahun</th>
+                                                    <th class="min-w-125px">Januari</th>
+                                                    <th class="min-w-125px">Februari</th>
+                                                    <th class="min-w-125px">Maret</th>
+                                                    <th class="min-w-125px">April</th>
+                                                    <th class="min-w-125px">Mei</th>
+                                                    <th class="min-w-125px">Juni</th>
+                                                    <th class="min-w-125px">Juli</th>
+                                                    <th class="min-w-125px">Agustus</th>
+                                                    <th class="min-w-125px">September</th>
+                                                    <th class="min-w-125px">Oktober</th>
+                                                    <th class="min-w-125px">November</th>
+                                                    <th class="min-w-125px">Desember</th>
+                                                    <th class="min-w-125px">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fw-semibold text-gray-600">
+                                            </tbody>
+                                            <!--end::Table body-->
+                                        </table>
+
+                                        <!--end::Table-->
+                                    </div>
+                                    <!--end::Card body-->
                                 </div>
                                 <!--end::Tab panel-->
 
