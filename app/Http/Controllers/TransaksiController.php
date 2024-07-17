@@ -115,7 +115,6 @@ class TransaksiController extends Controller
                                 ->sum('nominal');
             $tabungan->simp_sukarela = $nominal;
         }
-
         $tabungan->save();
 
         return response()->json([
@@ -156,6 +155,21 @@ class TransaksiController extends Controller
         ];
 
         $transaksi->update($data);
+
+        $tabungan = Tabungan::where('user_id', $request->user_id)->first();
+        if ($request->transaction_type == 'Simpanan Wajib') {
+            $nominal = Transaksi::where('user_id', $request->user_id)
+                                ->where('transaction_type', 'Simpanan Wajib')
+                                ->sum('nominal');
+            $tabungan->simp_wajib = $nominal;
+        } 
+        if ($request->transaction_type == 'Simpanan Sukarela') {
+            $nominal = Transaksi::where('user_id', $request->user_id)
+                                ->where('transaction_type', 'Simpanan Sukarela') 
+                                ->sum('nominal');
+            $tabungan->simp_sukarela = $nominal;
+        }
+        $tabungan->save();
 
         return response()->json([
             'message' => 'Simpanan telah dirubah!',
@@ -335,7 +349,24 @@ class TransaksiController extends Controller
     public function deleteSimpanan($id)
     {
         $simpanan = Transaksi::findOrFail($id);
+        $transaction_type = $simpanan->transaction_type;
+        $user_id = $simpanan->user_id;
         $simpanan->delete();
+        if ($transaction_type == 'Simpanan Wajib') {
+            $nominal = Transaksi::where('user_id', $user_id)
+                                ->where('transaction_type', 'Simpanan Wajib')
+                                ->sum('nominal');
+            $tabungan = Tabungan::where('user_id', $user_id)->first();
+            $tabungan->simp_wajib = $nominal;
+        }
+        if ($transaction_type == 'Simpanan Sukarela') {
+            $nominal = Transaksi::where('user_id', $user_id)
+                                ->where('transaction_type', 'Simpanan Sukarela')
+                                ->sum('nominal');
+            $tabungan = Tabungan::where('user_id', $user_id)->first();
+            $tabungan->simp_sukarela = $nominal;
+        }
+        $tabungan->save();
         return response()->json(['message' => 'Simpanan deleted successfully']);
     }
 
