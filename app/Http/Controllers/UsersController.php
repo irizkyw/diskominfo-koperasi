@@ -86,7 +86,7 @@ class UsersController extends Controller
 
                 // Common action for both active and inactive users
                 $actionButton .= '
-                    <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                    <a href="'. route('profile', ['user_id' => $row->id]) .'" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
                         <span class="svg-icon svg-icon-2">
                             <i class="fas fa-user"></i>
                         </span>

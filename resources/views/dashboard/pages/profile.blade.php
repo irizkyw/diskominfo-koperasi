@@ -74,10 +74,12 @@
                                             <div class="d-flex my-4">
                                                 <!--begin::Menu-->
                                                 <div class="me-0">
-                                                    <a href="{{ route('logout') }}"
-                                                        class="btn btn-icon btn-color-gray-500 btn-active-color-primary me-3">
-                                                        <i class="ki-outline ki-exit-right fs-2"></i>
-                                                    </a>
+                                                    @if (!Auth::user()->isAdmin())
+                                                        <a href="{{ route('logout') }}"
+                                                            class="btn btn-icon btn-color-gray-500 btn-active-color-primary me-3">
+                                                            <i class="ki-outline ki-exit-right fs-2"></i>
+                                                        </a>
+                                                    @endif
                                                     <button
                                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
                                                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
