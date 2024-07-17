@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 use App\Models\User;
 use App\Models\Role;
@@ -191,7 +192,7 @@ class UsersController extends Controller
                 $transaksiController->createSimpanan($request->merge([
                     'user_id' => $user->id,
                     'transaction_type' => 'Simpanan Sukarela',
-                    'desc' => 'Transaksi masuk pendaftaran anggota baru',
+                    'desc' => 'Pendaftaran anggota baru dengan membayar Simpanan Sukarela untuk bulan '. Carbon::now()->format('F') . '.',
                     'nominal' => $request->voluntary_savings,
                     'date_transaction' => now()->format('Y-m-d')
                 ]));
@@ -201,7 +202,7 @@ class UsersController extends Controller
                 $transaksiController->createSimpanan($request->merge([
                     'user_id' => $user->id,
                     'transaction_type' => 'Simpanan Pokok',
-                    'desc' => 'Transaksi masuk pendaftaran anggota baru',
+                    'desc' => 'Pendaftaran anggota baru dengan membayar Simpanan Pokok untuk bulan '. Carbon::now()->format('F') . '.',
                     'nominal' => $request->mandatory_savings,
                     'date_transaction' => now()->format('Y-m-d')
                 ]));
