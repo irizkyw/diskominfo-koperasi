@@ -65,7 +65,7 @@ class TransaksiController extends Controller
                             <i class="fas fa-trash"></i>
                         </span>
                     </a>
-                    <a href="#"
+                    <a href="'. route('profile', ['user_id' => $row->user_id]).'"
                         class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
                         <span class="svg-icon svg-icon-2">
                             <i class="fas fa-user"></i>
