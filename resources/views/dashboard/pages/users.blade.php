@@ -816,7 +816,7 @@
             e.preventDefault();
             n = $(this).data('id')
             Swal.fire({
-                text: "Apakah yakin ingin menghapus Nomor Anggota " + n +
+                text: "Apakah yakin ingin me-nonaktifkan Nomor Anggota " + n +
                     "?",
                 icon: "warning",
                 showCancelButton: true,
@@ -840,7 +840,7 @@
                         },
                         success: function(response) {
                             Swal.fire({
-                                text: "Berhasil menghapus Nomor Anggota " +
+                                text: "Berhasil me-nonaktifkan Nomor Anggota " +
                                     n + "!",
                                 icon: "success",
                                 buttonsStyling: false,
@@ -854,7 +854,7 @@
                         },
                         error: function(xhr, status, error) {
                             Swal.fire({
-                                text: "Gagal menghapus Nomor Anggota " +
+                                text: "Gagal me-nonaktifkan Nomor Anggota " +
                                     n +
                                     ". Silakan coba lagi.",
                                 icon: "error",
@@ -869,7 +869,7 @@
                 } else if (e.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire({
                         text: "Nomor Anggota " + n +
-                            " tidak dihapus.",
+                            " tidak dinon-aktifkan.",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "OK mengerti!",
@@ -907,6 +907,71 @@
                 }
             });
         })
+
+        $(document).on("click", '.user-restore', function(e) {
+            e.preventDefault();
+            let n = $(this).data('id');
+
+            Swal.fire({
+                text: "Apakah Anda yakin ingin mengaktifkan kembali Nomor Anggota " + n + "?",
+                icon: "warning",
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonText: "Ya, Restore!",
+                cancelButtonText: "Tidak",
+                customClass: {
+                    confirmButton: "btn fw-bold btn-success",
+                    cancelButton: "btn fw-bold btn-active-light-primary",
+                },
+            }).then(function(e) {
+                if (e.value) {
+                    $.ajax({
+                        url: "{{ route('users.restore', ['num_member' => ':num_member']) }}"
+                            .replace(':num_member', n),
+                        type: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                text: "Berhasil mengaktifkan kembali Nomor Anggota " +
+                                    n + "!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            }).then(function() {
+                                datatable.ajax.reload();
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                text: "Gagal mengaktifkan kembali Nomor Anggota " + n +
+                                    ". Silakan coba lagi.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            });
+                        }
+                    });
+                } else if (e.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        text: "Nomor Anggota " + n + " tidak diaktifkan kembali.",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-primary",
+                        },
+                    });
+                }
+            });
+        });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

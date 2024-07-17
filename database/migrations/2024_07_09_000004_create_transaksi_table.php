@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('transaction_type');
-            $table->string('description',255);
+            $table->string('description', 255);
             $table->date('date_transaction');
-            $table->Integer('nominal');
+            $table->integer('nominal');
             $table->timestamps();
         });
     }

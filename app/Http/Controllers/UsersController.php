@@ -18,63 +18,84 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('created_at', 'desc')->get();
-        $users = User::latest()->get();
+        $users = User::withTrashed()
+                    ->orderByRaw('status_active DESC, deleted_at DESC, created_at DESC')
+                    ->get();
+
         $roles = Role::all();
         $golongan = Golongan::all();
 
-        return view('dashboard.pages.users', compact('users','roles','golongan'));
+        return view('dashboard.pages.users', compact('users', 'roles', 'golongan'));
     }
+
 
     public function datatable()
-    {
-        $query = User::get();
+{
+    $query = User::with('role')->get();
 
-        return DataTables::of($query)
-            ->addIndexColumn()
-            ->addColumn('role', function($row) {
-                return $row->role->name;
-            })
-            ->editColumn('num_member', function($row) {
-                return str_pad($row->num_member, 3, '0', STR_PAD_LEFT);
-            })
-            ->addColumn('status', function($row) {
-                if ($row->status_active)
-                    return '<div class="badge badge-light-success">Anggota</div>';
-                else
-                    return '<div class="badge badge-light-danger">Tidak Aktif</div>';
-            })
-            ->editColumn('created_at', function($row) {
-                return $row->created_at->format('d M Y, h:i a');
-            })
-            ->addColumn('actions', function($row) {
-                return '
+    return DataTables::of($query)
+        ->addIndexColumn()
+        ->addColumn('role', function($row) {
+            return $row->role->name;
+        })
+        ->editColumn('num_member', function($row) {
+            return str_pad($row->num_member, 3, '0', STR_PAD_LEFT);
+        })
+        ->addColumn('status', function($row) {
+            if ($row->status_active) {
+                return '<div class="badge badge-light-success">Anggota</div>';
+            } else {
+                return '<div class="badge badge-light-danger">Tidak Aktif</div>';
+            }
+        })
+        ->editColumn('created_at', function($row) {
+            return $row->created_at->format('d M Y, h:i a');
+        })
+        ->addColumn('actions', function($row) {
+            if ($row->status_active) {
+                $restoreUrl = route('users.restore', ['num_member' => $row->num_member]);
+                $actionButton = '<a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-edit"
+                                   data-id="'. $row->num_member .'">
+                                   <span class="svg-icon svg-icon-2">
+                                       <i class="fas fa-pen"></i>
+                                   </span>
+                               </a>
+                               <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-delete"
+                                   data-id="'. $row->num_member .'">
+                                   <span class="svg-icon svg-icon-2">
+                                       <i class="fas fa-trash"></i>
+                                   </span>
+                               </a>';
+            } else {
+                $restoreUrl = route('users.restore', ['num_member' => $row->num_member]);
+                $actionButton = '<a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-restore"
+                                   data-id="'. $row->num_member .'">
+                                   <span class="svg-icon svg-icon-2">
+                                       <i class="fas fa-undo"></i>
+                                   </span>
+                               </a>
+                               <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-edit"
+                                   data-id="'. $row->num_member .'">
+                                   <span class="svg-icon svg-icon-2">
+                                       <i class="fas fa-pen"></i>
+                                   </span>
+                               </a>';
+            }
+
+            return '
                 <div class="d-flex justify-content-end">
-                <a href="#"
-                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-edit"
-                    data-id="'. $row->num_member .'">
-                    <span class="svg-icon svg-icon-2">
-                        <i class="fas fa-pen"></i>
-                    </span>
-                </a>
-                <a href="#"
-                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-delete"
-                    data-id="'. $row->num_member .'">
-                    <span class="svg-icon svg-icon-2">
-                        <i class="fas fa-trash"></i>
-                    </span>
-                </a>
-                <a href="#"
-                    class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
-                    <span class="svg-icon svg-icon-2">
-                        <i class="fas fa-user"></i>
-                    </span>
-                </a>
-            </div>';
-            })
-            ->rawColumns(['status', 'actions'])
-            ->make(true);
-    }
+                    '.$actionButton.'
+                    <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
+                        <span class="svg-icon svg-icon-2">
+                            <i class="fas fa-user"></i>
+                        </span>
+                    </a>
+                </div>';
+        })
+        ->rawColumns(['status', 'actions'])
+        ->make(true);
+}
+
 
     public function getNewMemberNumber()
     {
@@ -213,10 +234,30 @@ class UsersController extends Controller
     public function deleteUser($num_member)
     {
         $user = User::where('num_member', $num_member)->first();
+
         if (!$user) {
             return response()->json(['message' => 'User not found.'], 404);
         }
-        $user->delete();
+
+        $user->status_active = 0;
+        $user->save();
+
         return response()->json(['message' => 'User deleted successfully.']);
     }
+
+    public function restoreUser($num_member)
+    {
+        $user = User::withTrashed()->where('num_member', $num_member)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
+        $user->restore();
+        $user->update(['status_active' => true]);
+
+        return response()->json(['message' => 'User restored successfully.']);
+    }
+
+
 }
