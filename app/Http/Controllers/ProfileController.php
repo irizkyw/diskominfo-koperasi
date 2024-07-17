@@ -84,7 +84,7 @@ public function monthly()
             DB::raw('SUM(nominal) as total_nominal')
         )
         ->where('user_id', Auth::id())
-        ->where('transaction_type', 'Simpanan Wajib')
+        ->whereIn('transaction_type', ['Simpanan Wajib', 'Simpanan Sukarela'])
         ->groupBy(
             DB::raw('YEAR(date_transaction)'),
             DB::raw('MONTH(date_transaction)'),
