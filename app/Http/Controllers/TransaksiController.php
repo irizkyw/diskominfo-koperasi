@@ -102,6 +102,15 @@ class TransaksiController extends Controller
             'nominal' => $request->nominal,
         ]);
 
+        $tabungan = Tabungan::where('user_id', $request->user_id)->first();
+        if ($request->transaction_type == 'Simpanan Wajib') {
+            $tabungan->simp_wajib += $request->nominal;
+        }
+        if ($request->transaction_type == 'Simpanan Sukarela') {
+            $tabungan->simp_sukarela += $request->nominal;
+        }
+        $tabungan->save();
+
         return response()->json([
             'message' => 'Transaksi telah ditambahkan',
             'transaksi' => $transaksi
