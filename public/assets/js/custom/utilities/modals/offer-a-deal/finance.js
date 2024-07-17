@@ -15,7 +15,7 @@ var KTModalOfferADealFinance = (function () {
                     fields: {
                         finance_setup: {
                             validators: {
-                                notEmpty: { message: "Amount is required" },
+                                notEmpty: { message: "Amount tidak boleh kosong" },
                                 callback: {
                                     message:
                                         "The amount must be greater than $100",
@@ -32,13 +32,13 @@ var KTModalOfferADealFinance = (function () {
                         },
                         finance_usage: {
                             validators: {
-                                notEmpty: { message: "Usage type is required" },
+                                notEmpty: { message: "Usage type tidak boleh kosong" },
                             },
                         },
                         finance_allow: {
                             validators: {
                                 notEmpty: {
-                                    message: "Allowing budget is required",
+                                    message: "Allowing budget tidak boleh kosong",
                                 },
                             },
                         },

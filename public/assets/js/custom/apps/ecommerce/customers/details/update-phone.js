@@ -11,7 +11,7 @@ var KTUsersUpdateEmail = (function () {
                         profile_phone: {
                             validators: {
                                 notEmpty: {
-                                    message: "Phone number is required",
+                                    message: "Phone number tidak boleh kosong",
                                 },
                             },
                         },

@@ -9,13 +9,13 @@ var KTEcommerceUpdateProfile = (function () {
                     fields: {
                         name: {
                             validators: {
-                                notEmpty: { message: "Name is required" },
+                                notEmpty: { message: "Name tidak boleh kosong" },
                             },
                         },
                         gen_email: {
                             validators: {
                                 notEmpty: {
-                                    message: "General Email is required",
+                                    message: "General Email tidak boleh kosong",
                                 },
                             },
                         },

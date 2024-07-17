@@ -12,21 +12,21 @@
                             name: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Nama Anggota is required",
+                                        message: "Nama Anggota tidak boleh kosong",
                                     },
                                 },
                             },
                             num_member: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Nomor Anggota is required",
+                                        message: "Nomor Anggota tidak boleh kosong",
                                     },
                                 },
                             },
                             roles: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Posisi Anggota is required",
+                                        message: "Posisi Anggota tidak boleh kosong",
                                     },
                                 },
                             },

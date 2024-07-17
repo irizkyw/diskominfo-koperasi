@@ -47,7 +47,7 @@ var KTModalTwoFactorAuthentication = (function () {
                     fields: {
                         mobile: {
                             validators: {
-                                notEmpty: { message: "Mobile no is required" },
+                                notEmpty: { message: "Mobile no tidak boleh kosong" },
                             },
                         },
                     },
@@ -113,7 +113,7 @@ var KTModalTwoFactorAuthentication = (function () {
                     fields: {
                         code: {
                             validators: {
-                                notEmpty: { message: "Code is required" },
+                                notEmpty: { message: "Code tidak boleh kosong" },
                             },
                         },
                     },

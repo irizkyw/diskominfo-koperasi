@@ -11,7 +11,7 @@ var KTUsersAddOneTimePassword = (function () {
                         otp_mobile_number: {
                             validators: {
                                 notEmpty: {
-                                    message: "Valid mobile number is required",
+                                    message: "Valid mobile number tidak boleh kosong",
                                 },
                             },
                         },
@@ -19,7 +19,7 @@ var KTUsersAddOneTimePassword = (function () {
                             validators: {
                                 notEmpty: {
                                     message:
-                                        "Password confirmation is required",
+                                        "Password confirmation tidak boleh kosong",
                                 },
                             },
                         },

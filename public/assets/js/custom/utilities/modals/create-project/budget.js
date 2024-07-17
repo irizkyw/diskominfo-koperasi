@@ -16,7 +16,7 @@ var KTModalCreateProjectBudget = (function () {
                         budget_setup: {
                             validators: {
                                 notEmpty: {
-                                    message: "Budget amount is required",
+                                    message: "Budget amount tidak boleh kosong",
                                 },
                                 callback: {
                                     message:
@@ -35,14 +35,14 @@ var KTModalCreateProjectBudget = (function () {
                         budget_usage: {
                             validators: {
                                 notEmpty: {
-                                    message: "Budget usage type is required",
+                                    message: "Budget usage type tidak boleh kosong",
                                 },
                             },
                         },
                         budget_allow: {
                             validators: {
                                 notEmpty: {
-                                    message: "Allowing budget is required",
+                                    message: "Allowing budget tidak boleh kosong",
                                 },
                             },
                         },

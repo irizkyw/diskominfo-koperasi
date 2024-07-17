@@ -10,24 +10,24 @@ var KTProjectSettings = {
                 fields: {
                     name: {
                         validators: {
-                            notEmpty: { message: "Project name is required" },
+                            notEmpty: { message: "Project name tidak boleh kosong" },
                         },
                     },
                     type: {
                         validators: {
-                            notEmpty: { message: "Project type is required" },
+                            notEmpty: { message: "Project type tidak boleh kosong" },
                         },
                     },
                     description: {
                         validators: {
                             notEmpty: {
-                                message: "Project Description is required",
+                                message: "Project Description tidak boleh kosong",
                             },
                         },
                     },
                     date: {
                         validators: {
-                            notEmpty: { message: "Due Date is required" },
+                            notEmpty: { message: "Due Date tidak boleh kosong" },
                         },
                     },
                 },

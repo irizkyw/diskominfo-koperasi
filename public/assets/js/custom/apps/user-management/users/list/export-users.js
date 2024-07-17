@@ -11,7 +11,7 @@ var KTModalExportUsers = (function () {
                         format: {
                             validators: {
                                 notEmpty: {
-                                    message: "File format is required",
+                                    message: "File format tidak boleh kosong",
                                 },
                             },
                         },

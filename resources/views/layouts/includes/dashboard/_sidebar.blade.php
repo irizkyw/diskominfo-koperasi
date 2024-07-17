@@ -73,12 +73,6 @@
                                 </span>
                                 <span class="menu-title">Kelola Golongan</span>
                             </a>
-                            <a class="menu-link" href="{{ route('users.index') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title"><s>Data Bayar & Pinjam</s></span>
-                            </a>
                         </div>
                         <!--end:Menu item-->
                     </div>
@@ -89,11 +83,21 @@
                 <!--end:Menu item-->
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('savings.index') }}">
+                    <a class="menu-link" href="{{ route('simpanan.index') }}">
                         <span class="menu-icon">
                             <i class="ki-outline ki-folder fs-2"></i> <!-- Ganti dengan ikon ki-folder -->
                         </span>
                         <span class="menu-title">Data Simpanan</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                    <!--begin:Menu link-->
+                    <a class="menu-link" href="{{ route('simpanan.index') }}">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-folder fs-2"></i> <!-- Ganti dengan ikon ki-folder -->
+                        </span>
+                        <span class="menu-title">Data Pinjam & Bayar</span>
                     </a>
                     <!--end:Menu link-->
                 </div>

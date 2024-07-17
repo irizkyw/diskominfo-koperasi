@@ -248,7 +248,7 @@ var KTCreateCampaign = (function () {
                             campaign_name: {
                                 validators: {
                                     notEmpty: {
-                                        message: "App name is required",
+                                        message: "App name tidak boleh kosong",
                                     },
                                 },
                             },

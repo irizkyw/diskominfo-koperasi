@@ -12,7 +12,7 @@ var KTModalOfferADealType = (function () {
                     fields: {
                         offer_type: {
                             validators: {
-                                notEmpty: { message: "Offer type is required" },
+                                notEmpty: { message: "Offer type tidak boleh kosong" },
                             },
                         },
                     },

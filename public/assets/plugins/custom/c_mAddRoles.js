@@ -12,7 +12,7 @@
                             name: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Nama Role is required",
+                                        message: "Nama Role tidak boleh kosong",
                                     },
                                 },
                             },

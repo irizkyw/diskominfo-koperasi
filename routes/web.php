@@ -26,7 +26,9 @@ Route::middleware(['auth'])->group(function () {
     route::get('/profile', function(){return view('dashboard.pages.profile');})->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+Route::get('/users/datatable', [UsersController::class, 'datatable'])->name('users.datatable');
 
+Route::get('/roles/datatable', [RolesController::class, 'datatable'])->name('roles.datatable');
 Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
@@ -36,6 +38,8 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::post('/users/create', [UsersController::class, 'createUser'])->name('users.create');
     Route::post('/users/update/{id}', [UsersController::class, 'updateUser'])->name('users.update');
     Route::delete('/users/destory/{id}', [UsersController::class, 'deleteUser'])->name('users.destroy');
+    Route::delete('/users/forceDestroy/{id}', [UsersController::class, 'forceDeleteUser'])->name('users.forceDestroy');
+    Route::get('/users/restore/{num_member}', [UsersController::class, 'restoreUser'])->name('users.restore');
 
     Route::get('/roles', [RolesController::class, 'index'])->name('roles.index');
     Route::get('/roles/datatable', [RolesController::class, 'datatable'])->name('roles.datatable');
@@ -49,14 +53,17 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::get('/golongan/datatable', [GolonganController::class, 'datatable'])->name('golongan.datatable');
     Route::post('/golongan/create', [GolonganController::class, 'store'])->name('golongan.create');
     Route::post('/golongan/{id}/update', [GolonganController::class, 'update'])->name('golongan.update');
-    Route::delete('/golongan/{id}/delete', [GolonganController::class, 'destroy'])->name('golongan.destroy');
-    Route::get('/golongan/{id}/find', [GolonganController::class, 'findById'])->name('golongan.findById');
+    Route::delete('/golongan/delete/{id}', [GolonganController::class, 'destroy'])->name('golongan.destroy');
+    Route::get('/golongan/find/{id}', [GolonganController::class, 'findById'])->name('golongan.findById');
 
 
-    Route::get('/savings', function(){
-        return view('dashboard.pages.savings');
-    })->name('savings.index');
+    Route::get('/savings', [TransaksiController::class, 'index'])->name('simpanan.index');
+    Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('simpanan.datatable');
+    Route::post('/savings/create', [TransaksiController::class, 'createSimpanan'])->name('simpanan.create');
+    Route::delete('/savings/destroy/{id}', [TransaksiController::class, 'deleteSimpanan'])->name('simpanan.destroy');
 
+    Route::post('/savings/update/{id}', [TransaksiController::class, 'updateSimpanan'])->name('simpanan.update');
+    Route::get('/savings/detail/{id}', [TransaksiController::class, 'transaksiById'])->name('simpanan.findById');
 
     Route::get('/cekSemuaUser', [AdminContoller::class, 'cekSemuaUser']);
 

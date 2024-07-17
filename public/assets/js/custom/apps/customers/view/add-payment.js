@@ -14,21 +14,21 @@ var KTModalAddPayment = (function () {
                         invoice: {
                             validators: {
                                 notEmpty: {
-                                    message: "Invoice number is required",
+                                    message: "Invoice number tidak boleh kosong",
                                 },
                             },
                         },
                         status: {
                             validators: {
                                 notEmpty: {
-                                    message: "Invoice status is required",
+                                    message: "Invoice status tidak boleh kosong",
                                 },
                             },
                         },
                         amount: {
                             validators: {
                                 notEmpty: {
-                                    message: "Invoice amount is required",
+                                    message: "Invoice amount tidak boleh kosong",
                                 },
                             },
                         },

@@ -10,13 +10,13 @@ var KTUsersAddUser = (function () {
                     fields: {
                         user_name: {
                             validators: {
-                                notEmpty: { message: "Full name is required" },
+                                notEmpty: { message: "Full name tidak boleh kosong" },
                             },
                         },
                         user_email: {
                             validators: {
                                 notEmpty: {
-                                    message: "Valid email address is required",
+                                    message: "Valid email address tidak boleh kosong",
                                 },
                             },
                         },

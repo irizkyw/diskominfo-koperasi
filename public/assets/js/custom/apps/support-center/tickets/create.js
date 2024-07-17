@@ -35,28 +35,28 @@ var KTModalNewTicket = (function () {
                         subject: {
                             validators: {
                                 notEmpty: {
-                                    message: "Ticket subject is required",
+                                    message: "Ticket subject tidak boleh kosong",
                                 },
                             },
                         },
                         user: {
                             validators: {
                                 notEmpty: {
-                                    message: "Ticket user is required",
+                                    message: "Ticket user tidak boleh kosong",
                                 },
                             },
                         },
                         due_date: {
                             validators: {
                                 notEmpty: {
-                                    message: "Ticket due date is required",
+                                    message: "Ticket due date tidak boleh kosong",
                                 },
                             },
                         },
                         description: {
                             validators: {
                                 notEmpty: {
-                                    message: "Target description is required",
+                                    message: "Target description tidak boleh kosong",
                                 },
                             },
                         },

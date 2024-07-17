@@ -19,7 +19,7 @@ var KTAuthNewPassword = (function () {
                         password: {
                             validators: {
                                 notEmpty: {
-                                    message: "The password is required",
+                                    message: "The password tidak boleh kosong",
                                 },
                                 callback: {
                                     message: "Please enter valid password",
@@ -33,7 +33,7 @@ var KTAuthNewPassword = (function () {
                             validators: {
                                 notEmpty: {
                                     message:
-                                        "The password confirmation is required",
+                                        "The password confirmation tidak boleh kosong",
                                 },
                                 identical: {
                                     compare: function () {

@@ -13,7 +13,7 @@ var KTModalCreateProjectType = (function () {
                         project_type: {
                             validators: {
                                 notEmpty: {
-                                    message: "Project type is required",
+                                    message: "Project type tidak boleh kosong",
                                 },
                             },
                         },

@@ -123,7 +123,7 @@ var KTAppEcommerceSaveCategory = (function () {
                             category_name: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Category name is required",
+                                        message: "Category name tidak boleh kosong",
                                     },
                                 },
                             },

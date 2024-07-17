@@ -33,18 +33,18 @@ var KTModalCreateProjectTargets = (function () {
                         target_title: {
                             validators: {
                                 notEmpty: {
-                                    message: "Target title is required",
+                                    message: "Target title tidak boleh kosong",
                                 },
                             },
                         },
                         target_assign: {
                             validators: {
-                                notEmpty: { message: "Customer is required" },
+                                notEmpty: { message: "Customer tidak boleh kosong" },
                             },
                         },
                         target_due_date: {
                             validators: {
-                                notEmpty: { message: "Due date is required" },
+                                notEmpty: { message: "Due date tidak boleh kosong" },
                             },
                         },
                         target_tags: {
@@ -57,7 +57,7 @@ var KTModalCreateProjectTargets = (function () {
                         target_allow: {
                             validators: {
                                 notEmpty: {
-                                    message: "Allowing target is required",
+                                    message: "Allowing target tidak boleh kosong",
                                 },
                             },
                         },

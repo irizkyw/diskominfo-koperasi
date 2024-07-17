@@ -117,7 +117,7 @@
                             <table class="table align-middle table-row-dashed fs-6 gy-5" id="table_anggota">
                                 <thead>
                                     <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                        <th class="w-10px pe-2">
+                                        <th class="w-50px pe-2">
                                             No
                                         </th>
                                         <th class="min-w-125px">Nomor anggota</th>
@@ -211,7 +211,9 @@
                                                     class="form-select form-select-solid fw-bold">
                                                     <option value="">Pilih Golongan</option>
                                                     @foreach ($golongan as $data)
-                                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                                        <option value="{{ $data->id }}">{{ $data->nama_golongan }} :
+                                                            {{ 'Rp ' . number_format($data->simp_pokok, 0, ',', '.') }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                                 <!--end::Input-->
@@ -507,7 +509,9 @@
                                                     class="form-select form-select-solid fw-bold" id="group">
                                                     <option value="">Pilih Golongan</option>
                                                     @foreach ($golongan as $data)
-                                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                                        <option value="{{ $data->id }}">{{ $data->nama_golongan }} :
+                                                            {{ 'Rp ' . number_format($data->simp_pokok, 0, ',', '.') }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                                 <!--end::Input-->
@@ -573,6 +577,11 @@
                                                     <option value="1">Aktif</option>
                                                 </select>
                                                 <!--end::Input-->
+                                            </div>
+                                            <div class="d-flex flex-column mb-7 fv-row mt-3">
+                                                <a href="#" class="btn btn-danger btn-sm .delete-force"
+                                                    id="delete-force">Hapus
+                                                    Permanen!</a>
                                             </div>
                                             <!--end::Input group-->
                                         </div>
@@ -812,7 +821,7 @@
             e.preventDefault();
             n = $(this).data('id')
             Swal.fire({
-                text: "Apakah yakin ingin menghapus Nomor Anggota " + n +
+                text: "Apakah yakin ingin me-nonaktifkan Nomor Anggota " + n +
                     "?",
                 icon: "warning",
                 showCancelButton: true,
@@ -836,7 +845,7 @@
                         },
                         success: function(response) {
                             Swal.fire({
-                                text: "Berhasil menghapus Nomor Anggota " +
+                                text: "Berhasil me-nonaktifkan Nomor Anggota " +
                                     n + "!",
                                 icon: "success",
                                 buttonsStyling: false,
@@ -850,7 +859,78 @@
                         },
                         error: function(xhr, status, error) {
                             Swal.fire({
-                                text: "Gagal menghapus Nomor Anggota " +
+                                text: "Gagal me-nonaktifkan Nomor Anggota " +
+                                    n +
+                                    ". Silakan coba lagi.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK mengerti!",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            });
+                        }
+                    });
+                } else if (e.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        text: "Nomor Anggota " + n +
+                            " tidak dinon-aktifkan.",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK mengerti!",
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-primary",
+                        },
+                    });
+                }
+            });
+
+        });
+
+        $(document).on("click", '#delete-force', function(e) {
+            e.preventDefault();
+            n = $("#kt_modal_edit_users").find("[name='num_member']").val();
+            Swal.fire({
+                text: "Apakah yakin ingin menghapus permanen karena data yang dihapus termasuk tabungan dan transaksi dengan Nomor Anggota " + n +
+                    "?",
+                icon: "warning",
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Tidak",
+                customClass: {
+                    confirmButton: "btn fw-bold btn-danger",
+                    cancelButton: "btn fw-bold btn-active-light-primary",
+                },
+            }).then(function(e) {
+                if (e.value) {
+                    $.ajax({
+                        url: "{{ route('users.forceDestroy', ['id' => ':id']) }}"
+                            .replace(':id', n),
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': $(
+                                'meta[name="csrf-token"]').attr(
+                                'content')
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                text: "Berhasil hapus permanen Nomor Anggota " +
+                                    n + "!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK mengerti!",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            }).then(function() {
+                                $("#kt_modal_edit_users").modal('hide');
+                                datatable.ajax.reload();
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                text: "Gagal hapus permanen Nomor Anggota " +
                                     n +
                                     ". Silakan coba lagi.",
                                 icon: "error",
@@ -903,6 +983,71 @@
                 }
             });
         })
+
+        $(document).on("click", '.user-restore', function(e) {
+            e.preventDefault();
+            let n = $(this).data('id');
+
+            Swal.fire({
+                text: "Apakah Anda yakin ingin mengaktifkan kembali Nomor Anggota " + n + "?",
+                icon: "warning",
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonText: "Ya, Restore!",
+                cancelButtonText: "Tidak",
+                customClass: {
+                    confirmButton: "btn fw-bold btn-success",
+                    cancelButton: "btn fw-bold btn-active-light-primary",
+                },
+            }).then(function(e) {
+                if (e.value) {
+                    $.ajax({
+                        url: "{{ route('users.restore', ['num_member' => ':num_member']) }}"
+                            .replace(':num_member', n),
+                        type: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                text: "Berhasil mengaktifkan kembali Nomor Anggota " +
+                                    n + "!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            }).then(function() {
+                                datatable.ajax.reload();
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                text: "Gagal mengaktifkan kembali Nomor Anggota " + n +
+                                    ". Silakan coba lagi.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "OK",
+                                customClass: {
+                                    confirmButton: "btn fw-bold btn-primary",
+                                },
+                            });
+                        }
+                    });
+                } else if (e.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        text: "Nomor Anggota " + n + " tidak diaktifkan kembali.",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "OK",
+                        customClass: {
+                            confirmButton: "btn fw-bold btn-primary",
+                        },
+                    });
+                }
+            });
+        });
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

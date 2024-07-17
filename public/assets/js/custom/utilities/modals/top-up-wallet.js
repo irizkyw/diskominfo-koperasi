@@ -93,7 +93,7 @@ var KTModalTopUpWallet = (function () {
                             top_up_amount: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Top up amount is required",
+                                        message: "Top up amount tidak boleh kosong",
                                     },
                                 },
                             },
@@ -114,7 +114,7 @@ var KTModalTopUpWallet = (function () {
                             payment_methods: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Payment method is required",
+                                        message: "Payment method tidak boleh kosong",
                                     },
                                 },
                             },
@@ -135,7 +135,7 @@ var KTModalTopUpWallet = (function () {
                             top_up_password: {
                                 validators: {
                                     notEmpty: {
-                                        message: "Password is required",
+                                        message: "Password tidak boleh kosong",
                                     },
                                 },
                             },

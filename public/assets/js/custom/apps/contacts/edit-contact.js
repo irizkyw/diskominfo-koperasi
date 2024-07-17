@@ -28,7 +28,7 @@ var KTAppContactEdit = {
                 const i = n.getAttribute("name");
                 o.fields[i] = {
                     validators: {
-                        notEmpty: { message: t.innerText + " is required" },
+                        notEmpty: { message: t.innerText + " tidak boleh kosong" },
                     },
                 };
             });

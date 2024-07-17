@@ -45,13 +45,13 @@ var KTModalAdjustBalance = (function () {
                         adjustment: {
                             validators: {
                                 notEmpty: {
-                                    message: "Adjustment type is required",
+                                    message: "Adjustment type tidak boleh kosong",
                                 },
                             },
                         },
                         amount: {
                             validators: {
-                                notEmpty: { message: "Amount is required" },
+                                notEmpty: { message: "Amount tidak boleh kosong" },
                             },
                         },
                     },

@@ -24,18 +24,18 @@ var KTModalOfferADealDetails = (function () {
                     fields: {
                         details_customer: {
                             validators: {
-                                notEmpty: { message: "Customer is required" },
+                                notEmpty: { message: "Customer tidak boleh kosong" },
                             },
                         },
                         details_title: {
                             validators: {
-                                notEmpty: { message: "Deal title is required" },
+                                notEmpty: { message: "Deal title tidak boleh kosong" },
                             },
                         },
                         details_activation_date: {
                             validators: {
                                 notEmpty: {
-                                    message: "Activation date is required",
+                                    message: "Activation date tidak boleh kosong",
                                 },
                             },
                         },

@@ -172,7 +172,7 @@ var KTFileManagerList = (function () {
                 fields: {
                     rename_folder_name: {
                         validators: {
-                            notEmpty: { message: "Name is required" },
+                            notEmpty: { message: "Name tidak boleh kosong" },
                         },
                     },
                 },
@@ -420,7 +420,7 @@ var KTFileManagerList = (function () {
                                 new_folder_name: {
                                     validators: {
                                         notEmpty: {
-                                            message: "Folder name is required",
+                                            message: "Folder name tidak boleh kosong",
                                         },
                                     },
                                 },

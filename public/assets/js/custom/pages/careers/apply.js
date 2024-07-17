@@ -19,28 +19,28 @@ var KTCareersApply = (function () {
                     fields: {
                         first_name: {
                             validators: {
-                                notEmpty: { message: "First name is required" },
+                                notEmpty: { message: "First name tidak boleh kosong" },
                             },
                         },
                         last_name: {
                             validators: {
-                                notEmpty: { message: "Last name is required" },
+                                notEmpty: { message: "Last name tidak boleh kosong" },
                             },
                         },
                         age: {
                             validators: {
-                                notEmpty: { message: "Age is required" },
+                                notEmpty: { message: "Age tidak boleh kosong" },
                             },
                         },
                         city: {
                             validators: {
-                                notEmpty: { message: "City is required" },
+                                notEmpty: { message: "City tidak boleh kosong" },
                             },
                         },
                         email: {
                             validators: {
                                 notEmpty: {
-                                    message: "Email address is required",
+                                    message: "Email address tidak boleh kosong",
                                 },
                                 emailAddress: {
                                     message:
@@ -51,18 +51,18 @@ var KTCareersApply = (function () {
                         salary: {
                             validators: {
                                 notEmpty: {
-                                    message: "Expected salary is required",
+                                    message: "Expected salary tidak boleh kosong",
                                 },
                             },
                         },
                         position: {
                             validators: {
-                                notEmpty: { message: "Position is required" },
+                                notEmpty: { message: "Position tidak boleh kosong" },
                             },
                         },
                         start_date: {
                             validators: {
-                                notEmpty: { message: "Start date is required" },
+                                notEmpty: { message: "Start date tidak boleh kosong" },
                             },
                         },
                     },
