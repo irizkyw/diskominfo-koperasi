@@ -215,7 +215,7 @@
                         </div>
                         <!--end::Card head-->
                         <!--begin::Card body-->
-                        <div class="card-body">
+                        <div class="card-body" style="max-height: 50em; overflow-y: scroll;">
                             <!--begin::Tab Content-->
                             <div class="tab-content">
                                 <!--begin::Tab panel-->
