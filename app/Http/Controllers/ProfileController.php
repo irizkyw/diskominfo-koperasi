@@ -71,7 +71,7 @@ public function monthly(Request $request)
             DB::raw('SUM(nominal) as total_nominal')
         )
         ->where('user_id', $userId)
-        ->whereIn('transaction_type', ['Simpanan Wajib', 'Simpanan Sukarela'])
+        ->whereIn('transaction_type', ['Simpanan Wajib', 'Simpanan Sukarela','Simpanan Pokok'])
         ->groupBy(
             DB::raw('YEAR(date_transaction)'),
             DB::raw('MONTH(date_transaction)'),
@@ -79,14 +79,14 @@ public function monthly(Request $request)
         )
         ->get();
 
-    $pivotedData = [];
+   $pivotedData = [];
     foreach ($rawData as $entry) {
         $year = $entry->year;
         $month = $entry->month;
         $total_nominal = $entry->total_nominal;
 
         if (!isset($pivotedData[$year])) {
-            $pivotedData[$year] = array_fill(1, 12, 0);
+            $pivotedData[$year] = array_fill(1, 12, 0); // Fill months 1-12 with 0
             $pivotedData[$year]['total'] = 0;
         }
 
@@ -94,9 +94,6 @@ public function monthly(Request $request)
         $pivotedData[$year]['total'] += $total_nominal;
     }
 
-    \Log::info('Pivoted Data: ' . json_encode($pivotedData));
-
-    // Format data for DataTables
     $data = [];
     foreach ($pivotedData as $year => $months) {
         $row = [
@@ -118,9 +115,51 @@ public function monthly(Request $request)
         $data[] = $row;
     }
 
-    \Log::info('Formatted Data: ' . json_encode($data));
-
-    return DataTables::of($data)->make(true);
+return DataTables::of($data)
+    ->addIndexColumn()
+    ->addColumn('year', function($row){
+        return $row['year'];
+    })
+    ->addColumn('january', function($row){
+        return $row['january'] == 0 ? '-' : 'Rp' . number_format($row['january'], 0, ',', '.');
+    })
+    ->addColumn('february', function($row){
+        return $row['february'] == 0 ? '-' : 'Rp' . number_format($row['february'], 0, ',', '.');
+    })
+    ->addColumn('march', function($row){
+        return $row['march'] == 0 ? '-' : 'Rp' . number_format($row['march'], 0, ',', '.');
+    })
+    ->addColumn('april', function($row){
+        return $row['april'] == 0 ? '-' : 'Rp' . number_format($row['april'], 0, ',', '.');
+    })
+    ->addColumn('may', function($row){
+        return $row['may'] == 0 ? '-' : 'Rp' . number_format($row['may'], 0, ',', '.');
+    })
+    ->addColumn('june', function($row){
+        return $row['june'] == 0 ? '-' : 'Rp' . number_format($row['june'], 0, ',', '.');
+    })
+    ->addColumn('july', function($row){
+        return $row['july'] == 0 ? '-' : 'Rp' . number_format($row['july'], 0, ',', '.');
+    })
+    ->addColumn('august', function($row){
+        return $row['august'] == 0 ? '-' : 'Rp' . number_format($row['august'], 0, ',', '.');
+    })
+    ->addColumn('september', function($row){
+        return $row['september'] == 0 ? '-' : 'Rp' . number_format($row['september'], 0, ',', '.');
+    })
+    ->addColumn('october', function($row){
+        return $row['october'] == 0 ? '-' : 'Rp' . number_format($row['october'], 0, ',', '.');
+    })
+    ->addColumn('november', function($row){
+        return $row['november'] == 0 ? '-' : 'Rp' . number_format($row['november'], 0, ',', '.');
+    })
+    ->addColumn('december', function($row){
+        return $row['december'] == 0 ? '-' : 'Rp' . number_format($row['december'], 0, ',', '.');
+    })
+    ->addColumn('total', function($row){
+        return 'Rp' . number_format($row['total'], 0, ',', '.');
+    })
+    ->make(true);
 }
 
 
