@@ -16,32 +16,33 @@ class TabunganController extends Controller
 
     public function createTabungan(Request $request)
     {
-        $golongan = Golongan::find($request->group);
+        $golongan = Golongan::find($request->golongan_id);
         if (!$golongan) {
             return response()->json([
                 'message' => 'Golongan not found'
             ], 404);
         }
 
-        $savings = Tabungan::create([
+        $tabungan = Tabungan::create([
             'user_id' => $request->user_id,
             'simp_pokok' => $golongan->simp_pokok,
-            'simp_sukarela' => $request->voluntary_savings,
-            'simp_wajib' => $request->mandatory_savings,
-            'angsuran' => 0,
-            'golongan_id' => $request->group,
+            'simp_sukarela' => $request->simp_sukarela ?? 0,
+            'simp_wajib' => $request->simp_wajib ?? 0,
+            'golongan_id' => $request->golongan_id,
         ]);
 
-        if (!$savings) {
+        if (!$tabungan) {
             return response()->json([
                 'message' => 'Failed to create savings account'
             ], 500);
         }
 
         return response()->json([
-            'message' => 'Savings account created successfully'
+            'message' => 'Savings account created successfully',
+            'tabungan' => $tabungan
         ], 200);
     }
+
 
     public function cekTabunganAll()
     {

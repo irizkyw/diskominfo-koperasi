@@ -149,12 +149,14 @@ class UsersController extends Controller
         return response()->json($user);
     }
 
+
     public function createUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'num_member' => 'required|string|max:255',
-            'roles' => 'required'
+            'roles' => 'required',
+            'group' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -162,7 +164,6 @@ class UsersController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
-
         $generateUniqueUsername = function ($name, $num_member) {
             do {
                 $words = explode(' ', $name);
@@ -173,52 +174,61 @@ class UsersController extends Controller
 
             return $username;
         };
-
         $username = $generateUniqueUsername($request->name, $request->num_member);
-
-
-
         $user = User::create([
             'name' => $request->name,
             'num_member' => $request->num_member,
             'username' => $username,
-            'password' => Hash::make($username),
+            'password' => Hash::make($username), // Gunakan username sebagai password sementara
             'role_id' => $request->roles,
             'status_active' => true
         ]);
-
         if ($user) {
             $tabunganController = new TabunganController();
-            $transaksiController = new transaksiController();
-            $tabunganController->createTabungan($request->merge(['user_id' => $user->id]));
-            if ($request->mandatory_savings != 0) {
-                $transaksiController->createSimpanan($request->merge([
+            $transaksiController = new TransaksiController();
+            if ($request->voluntary_savings != 0) {
+                $requestSimpanan = new Request([
                     'user_id' => $user->id,
                     'transaction_type' => 'Simpanan Sukarela',
                     'desc' => 'Pendaftaran anggota baru dengan membayar Simpanan Sukarela untuk bulan ' . Carbon::now()->format('F') . '.',
                     'nominal' => $request->voluntary_savings,
                     'date_transaction' => now()->format('Y-m-d')
-                ]));
+                ]);
+
+                $transaksiController->createSimpanan($requestSimpanan);
             }
 
-            if ($request->voluntary_savings != 0) {
-                $transaksiController->createSimpanan($request->merge([
+            if ($request->mandatory_savings != 0) {
+                $requestSimpanan = new Request([
                     'user_id' => $user->id,
                     'transaction_type' => 'Simpanan Pokok',
                     'desc' => 'Pendaftaran anggota baru dengan membayar Simpanan Pokok untuk bulan ' . Carbon::now()->format('F') . '.',
                     'nominal' => $request->mandatory_savings,
                     'date_transaction' => now()->format('Y-m-d')
-                ]));
-            }
-        }
+                ]);
 
+                $transaksiController->createSimpanan($requestSimpanan);
+            }
+
+            $requestTabungan = new Request([
+                'user_id' => $user->id,
+                'simp_sukarela' => $request->voluntary_savings,
+                'simp_wajib' => $request->mandatory_savings,
+                'golongan_id' => $request->group,
+            ]);
+
+            $tabunganController->createTabungan($requestTabungan);
+
+        }
         $user = $user->load('role');
 
         return response()->json([
-            'message' => 'Data telah ditambahakan',
+            'message' => 'Data telah ditambahkan',
             'user' => $user
         ], 200);
     }
+
+
 
     public function updateUser(Request $request, $id)
     {
