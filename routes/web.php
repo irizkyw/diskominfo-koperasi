@@ -65,6 +65,7 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('dashboard')->group(
     Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('simpanan.datatable');
     Route::post('/savings/create', [TransaksiController::class, 'createSimpanan'])->name('simpanan.create');
     Route::delete('/savings/destroy/{id}', [TransaksiController::class, 'deleteSimpanan'])->name('simpanan.destroy');
+    Route::post('/savings/export', [TransaksiController::class, 'exportSimpanan'])->name('simpanan.export');
 
     Route::post('/savings/update/{id}', [TransaksiController::class, 'updateSimpanan'])->name('simpanan.update');
     Route::get('/savings/detail/{id}', [TransaksiController::class, 'transaksiById'])->name('simpanan.findById');
