@@ -271,13 +271,20 @@
                                                                         class="badge badge-light text-muted">{{ $data->transaction_type }}</span>
                                                                 </div>
                                                                 <div class="min-w-175px">
-                                                                    <span class="badge badge-light-success">
-                                                                        {{ 'Rp' . number_format($data->nominal, 0, ',', '.') }}
-                                                                    </span>
+                                                                    @if ($data->nominal < 0)
+                                                                        <span class="badge badge-light-danger">
+                                                                            {{ 'Rp' . number_format($data->nominal, 0, ',', '.') }}
+                                                                        </span>
+                                                                    @elseif ($data->nominal > 0)
+                                                                        <span class="badge badge-light-success">
+                                                                            {{ 'Rp' . number_format($data->nominal, 0, ',', '.') }}
+                                                                        </span>
+                                                                    @endif
+                                                                    
                                                                 </div>
 
                                                                 <div class="d-flex justify-content-end min-w-125px">
-                                                                    @if ($data->transaction_type != 'Pinjam')
+                                                                    @if ($data->transaction_type != 'Pinjam' && $data->nominal > 0)
                                                                         <span class="badge badge-light-success">IN</span>
                                                                     @else
                                                                         <span class="badge badge-light-danger">OUT</span>
