@@ -123,12 +123,22 @@ class UsersController extends Controller
     public function cekUserByNumMember($num_member)
     {
         $user = User::withTrashed()->where('num_member', $num_member)->first();
-
         if (!$user) {
             return response()->json(['message' => 'User not found.'], 404);
         }
-
-        return response()->json($user);
+        $user = $user->load('savings');
+        $data = [
+            "id" => $user->id,
+            "num_member" => $user->num_member,
+            "username" => $user->username,
+            "name" => $user->name,
+            "golongan" => $user->savings->first()->golongan_id,
+            "simp_wajib" => $user->savings->first()->simp_wajib,
+            "simp_sukarela" => $user->savings->first()->simp_sukarela,
+            "role_id" => $user->role_id,
+            "status_active" => $user->status_active
+        ];
+        return response()->json($data);
     }
 
     public function cekUserBynum_member($num_member)
