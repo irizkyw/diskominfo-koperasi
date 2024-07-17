@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\GolonganController;
+use App\Http\Controllers\ProfileController;
 
 use App\Http\Middleware\AdminMiddleware;
 
@@ -24,11 +24,11 @@ Route::get('/authentication/sign-in', [AuthController::class, 'showLoginForm'])-
 Route::post('/authentication/authenticated', [AuthController::class, 'login'])->name('login.submit');
 
 Route::middleware(['auth'])->group(function () {
-    route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    // Route for fetching monthly data
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/datatable', [ProfileController::class, 'monthly'])->name('profile.datatable');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
 Route::get('/users/datatable', [UsersController::class, 'datatable'])->name('users.datatable');
 
 Route::get('/roles/datatable', [RolesController::class, 'datatable'])->name('roles.datatable');

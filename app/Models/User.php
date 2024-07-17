@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Transaksi;
 use App\Models\Tabungan;
 use App\Models\Golongan;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -50,4 +51,12 @@ class User extends Authenticatable
 
         return response()->json(['message' => 'User restored successfully.']);
     }
+
+    public function isAdmin()
+    {
+        $adminRoleId = Role::where('name', 'Administrator')->value('id');
+        return $this->role_id === $adminRoleId;
+    }
+
+
 }

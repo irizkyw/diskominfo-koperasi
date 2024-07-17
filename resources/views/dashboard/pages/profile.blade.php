@@ -30,74 +30,83 @@
                                 <!--begin::Info-->
                                 <div class="flex-grow-1">
                                     <!--begin::Title-->
-                                    <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
-                                        <!--begin::User-->
-                                        <div class="d-flex flex-column">
-                                            <!--begin::Name-->
-                                            <div class="d-flex align-items-center mb-2">
-                                                <a href="#"
-                                                    class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ Auth::user()->name }}</a>
-                                                <a href="#">
-                                                    <i class="ki-outline ki-verify fs-1 text-primary"></i>
-                                                </a>
-                                            </div>
-                                            <!--end::Name-->
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
-                                                <div
-                                                    class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
-                                                    <i
-                                                        class="ki-outline ki-profile-circle fs-4 me-1"></i>{{ Auth::user()->username }}
+                                    <div class="flex-grow-1">
+                                        <!--begin::Title-->
+                                        <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                                            <!--begin::User-->
+                                            <div class="d-flex flex-column">
+                                                <!--begin::Name-->
+                                                <div class="d-flex align-items-center mb-2">
+                                                    @if (Auth::user()->isAdmin() || Auth::user()->id == $User->id)
+                                                        <a href="#"
+                                                            class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ $User->name }}</a>
+                                                    @else
+                                                        <span
+                                                            class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{ $User->name }}</span>
+                                                    @endif
+                                                    @if (Auth::user()->isAdmin())
+                                                        <a href="#"><i
+                                                                class="ki-outline ki-verify fs-1 text-primary"></i></a>
+                                                    @endif
                                                 </div>
+                                                <!--end::Name-->
+                                                <!--begin::Info-->
+                                                <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
+                                                    <div
+                                                        class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                                                        <i
+                                                            class="ki-outline ki-profile-circle fs-4 me-1"></i>{{ $User->username }}
+                                                    </div>
 
-                                                <div
-                                                    class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
-                                                    <i class="ki-outline ki-sms fs-4 me-1"></i>Nomor Anggota :
-                                                    {{ str_pad(Auth::user()->num_member, 3, '0', STR_PAD_LEFT) }}
-                                                </div>
+                                                    <div
+                                                        class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                                                        <i class="ki-outline ki-sms fs-4 me-1"></i>Nomor Anggota :
+                                                        {{ str_pad($User->num_member, 3, '0', STR_PAD_LEFT) }}
+                                                    </div>
 
-                                                <div
-                                                    class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
-                                                    <i class="ki-outline ki-geolocation fs-4 me-1"></i> GOLONGAN X
+                                                    <div
+                                                        class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
+                                                        <i class="ki-outline ki-geolocation fs-4 me-1"></i>
+                                                        {{ $User->savings->first()->golongan->nama_golongan ?? 'Belum ada golongan' }}
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <!--end::Info-->
-                                        </div>
-                                        <!--end::User-->
-                                        <!--begin::Actions-->
-                                        <div class="d-flex my-4">
-                                            <!--begin::Menu-->
-                                            <div class="me-0">
-                                                <a href="{{ route('logout') }}"
-                                                    class="btn btn-icon btn-color-gray-500 btn-active-color-primary me-3">
-                                                    <i class="ki-outline ki-exit-right fs-2"></i>
-                                                </a>
-                                                <button class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
-                                                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                                    <i class="ki-solid ki-dots-horizontal fs-2x"></i>
-                                                </button>
-                                                <!--begin::Menu 3-->
-                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
-                                                    data-kt-menu="true">
-                                                    <!--begin::Heading-->
-                                                    <div class="menu-item px-3">
-                                                        <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
-                                                            Downloads
+                                            <div class="d-flex my-4">
+                                                <!--begin::Menu-->
+                                                <div class="me-0">
+                                                    <a href="{{ route('logout') }}"
+                                                        class="btn btn-icon btn-color-gray-500 btn-active-color-primary me-3">
+                                                        <i class="ki-outline ki-exit-right fs-2"></i>
+                                                    </a>
+                                                    <button
+                                                        class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
+                                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                        <i class="ki-solid ki-dots-horizontal fs-2x"></i>
+                                                    </button>
+                                                    <!--begin::Menu 3-->
+                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
+                                                        data-kt-menu="true">
+                                                        <!--begin::Heading-->
+                                                        <div class="menu-item px-3">
+                                                            <div
+                                                                class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
+                                                                Downloads
+                                                            </div>
                                                         </div>
+                                                        <!--end::Heading-->
+                                                        <!--begin::Menu item-->
+                                                        <div class="menu-item px-3 my-1">
+                                                            <a href="#" class="menu-link px-3">Laporan Simpanan</a>
+                                                        </div>
+                                                        <!--end::Menu item-->
                                                     </div>
-                                                    <!--end::Heading-->
-                                                    <!--begin::Menu item-->
-                                                    <div class="menu-item px-3 my-1">
-                                                        <a href="#" class="menu-link px-3">Laporan Simpanan</a>
-                                                    </div>
-                                                    <!--end::Menu item-->
+                                                    <!--end::Menu 3-->
                                                 </div>
-                                                <!--end::Menu 3-->
+                                                <!--end::Menu-->
                                             </div>
-                                            <!--end::Menu-->
                                         </div>
-                                        <!--end::Actions-->
                                     </div>
+
                                     <!--end::Title-->
                                     <!--begin::Stats-->
                                     <div class="d-flex flex-wrap flex-stack">
@@ -176,9 +185,6 @@
                         <div class="card-header card-header-stretch">
                             <!--begin::Title-->
                             <div class="card-title d-flex align-items-center">
-                                {{-- <i class="ki-outline ki-calendar-8 fs-1 text-primary me-3 lh-0"></i> --}}
-                                <h5 class="fw-bold m-0 text-gray-800">Halo {{ Auth::user()->name }}👋, Selamat datang di
-                                    aplikasi Koperasi Diskominfo Jawabarat (Kodija)</h5>
                             </div>
                             <!--end::Title-->
                             <!--begin::Toolbar-->
@@ -452,8 +458,11 @@
                     left: 1
                 },
                 ajax: {
-                    url: "{{ route('profile.datatable') }}", // Replace with your route URL
+                    url: "{{ route('profile.datatable') }}?user_id={{ $User->id }}",
                     type: "GET",
+                    dataSrc: function(json) {
+                        return json.data;
+                    }
                 },
                 columns: [{
                         name: 'year',
@@ -515,6 +524,4 @@
             });
         });
     </script>
-
-
 @stop
