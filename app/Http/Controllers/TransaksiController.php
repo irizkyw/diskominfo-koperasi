@@ -10,6 +10,8 @@ use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TransaksiExport;
 
 class TransaksiController extends Controller
 {
@@ -370,4 +372,40 @@ class TransaksiController extends Controller
         return response()->json(['message' => 'Simpanan deleted successfully']);
     }
 
+    public function exportSimpanan(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'format' => 'required|in:xlsx,csv,pdf'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Query data transaksi sesuai filter yang diberikan
+        $query = Transaksi::orderBy('created_at', 'desc');
+
+        if ($request->has('filterAnggota') && $request->filterAnggota != '*') {
+            $query->where('user_id', $request->filterAnggota);
+        }
+
+        if ($request->has('filterTipeTransaksi') && $request->filterTipeTransaksi != '*') {
+            $query->where('transaction_type', $request->filterTipeTransaksi);
+        }
+
+        $transactions = $query->get();
+
+        // Tentukan format ekspor
+        $format = $request->format;
+
+        // Definisikan nama file dengan ekstensi berdasarkan format
+        $filename = 'transactions_' . date('YmdHis') . '.' . $format;
+
+        // Ekspor data sesuai format yang dipilih
+        return Excel::download(new TransaksiExport($transactions), $filename);
+    }
+
 }
+
+
+
