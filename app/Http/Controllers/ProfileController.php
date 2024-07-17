@@ -4,21 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Golongan;
+use App\Models\Transaksi;
+use App\Models\Tabungan;
+
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
     public function index()
     {
-        $User = User::Auth();
+        $User = Auth::user();
         $id = $User->id;
 
         $Role = Role::find($User->role_id);
         $Golongan = Golongan::find($User->golongan_id);
         $LogTransaksi = Transaksi::where('user_id', $User->id)->get();
-        $LogSimpananBulanan = Transaksi::where('user_id', $User->id)->where('jenis_transaksi', 'SIMPANAN-BULANAN')->get();
+        $LogSimpananBulanan = Transaksi::where('user_id', $User->id)->where('transaction_type', 'SIMPANAN-BULANAN')->get();
         
         
-        $SimpananWajibLast = Tabungan::where('user_id', $id)->first()->mandatory_savings; //Simpanan Wajib Terakhir
+        $SimpananWajibLast = Tabungan::where('user_id', $id)->first()->simp_pokok; //Simpanan Wajib Terakhir
         $SimpananWajib = Transaksi::where('user_id', $id)
                         ->where('transaction_type', 'SIMPANAN-BULANAN')
                         ->sum('nominal'); //Total Simpanan Wajib Bulanan
@@ -29,6 +35,6 @@ class ProfileController extends Controller
         $SimpananSukarela = Tabungan::where('user_id', $id)->first()->voluntary_savings;
         $SimpananAkhir = $SimpananWajib80 + $SimpananPokok + $SimpananSukarela;
 
-        return view('dashboard.pages.profile', compact('User','Role','Golongan','LogTransaksi','SimpananBulanan','SimpananWajib','SimpananPokok','SimpananSukarela','SimpananAkhir'));
+        return view('dashboard.pages.profile', compact('User','Role','Golongan','LogTransaksi','LogSimpananBulanan','SimpananWajib','SimpananPokok','SimpananSukarela','SimpananAkhir'));
     }
 }

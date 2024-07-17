@@ -59,7 +59,7 @@
 
                                                 <div
                                                     class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
-                                                    <i class="ki-outline ki-geolocation fs-4 me-1"></i> GOLONGAN X
+                                                    <i class="ki-outline ki-geolocation fs-4 me-1"></i> {{$Role->name}}
                                                 </div>
                                             </div>
                                             <!--end::Info-->
@@ -114,11 +114,11 @@
                                                         {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i> --}}
                                                         <div class="fs-2 fw-bold counted" data-kt-countup="true"
                                                             data-kt-countup-value="4500" data-kt-countup-prefix="$"
-                                                            data-kt-initialized="1">$4,500</div>
+                                                            data-kt-initialized="1">Rp. {{ $SimpananWajib }}</div>
                                                     </div>
                                                     <!--end::Number-->
                                                     <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">Simpanan</div>
+                                                    <div class="fw-semibold fs-6 text-gray-500">Simpanan Wajib</div>
                                                     <!--end::Label-->
                                                 </div>
                                                 <!--end::Stat-->
@@ -241,24 +241,33 @@
                                                 </div>
                                                 <!--end::Timeline heading-->
                                                 <!--begin::Timeline details-->
-                                                <div class="overflow-auto pb-5">
-                                                    <div
-                                                        class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
+                                                
+                                                @foreach ($LogTransaksi as $data)
+                                                    <div class="overflow-auto pb-5">
                                                         <div
-                                                            class="fs-5 text-gray-900 text-hover-primary fw-semibold w-375px min-w-200px">
-                                                            ....</div>
-                                                        <div class="min-w-175px">
-                                                            <span class="badge badge-light text-muted">Tipe
-                                                                Transaksi</span>
+                                                            class="d-flex align-items-center border border-dashed border-gray-300 rounded min-w-750px px-7 py-3 mb-0">
+                                                            <div
+                                                                class="fs-5 text-gray-900 text-hover-primary fw-semibold w-375px min-w-200px">
+                                                                {{$data->transaction_type}}
+                                                            </div>
+                                                            <div class="min-w-175px">
+                                                                <span class="badge badge-light text-muted">Tipe
+                                                                    Transaksi</span>
+                                                            </div>
+                                                            <div
+                                                                class="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px">
+                                                                <p>Rp {{$data->nominal}}</p>
+                                                            </div>
+                                                            <div class="min-w-125px">
+                                                                @if ($data->nominal < 0)
+                                                                    <span class="badge badge-light-danger">OUT</span>
+                                                                @else
+                                                                    <span class="badge badge-light-success">IN</span>
+                                                                @endif
+                                                            </div>
                                                         </div>
-                                                        <div
-                                                            class="symbol-group symbol-hover flex-nowrap flex-grow-1 min-w-100px">
-                                                            <p>Rp ....</p>
-                                                        </div>
-                                                        <div class="min-w-125px">
-                                                            <span class="badge badge-light-success">Completed</span>
-                                                        </div>
-                                                    </div>
+                                                @endforeach
+                                                
                                                     <!--end::Record-->
                                                 </div>
                                                 <!--end::Timeline details-->
@@ -367,7 +376,9 @@
                                                         <td>Rp 100.000</td>
                                                         <td>Rp 100.000</td>
                                                         <td>Rp 5.000.000</td>
+                                                        
                                                     </tr>
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>
