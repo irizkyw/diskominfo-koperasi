@@ -63,6 +63,16 @@
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#kt_modal_export_simpanan">
+                                        Export Transaksi
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="card-toolbar">
+                                <!--begin::Toolbar-->
+                                <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#kt_modal_add_simpanan">
                                         Tambahkan Simpanan
                                     </button>
@@ -98,6 +108,115 @@
                         <!--end::Card body-->
                     </div>
                     <!--end::Card-->
+
+
+                    <!--begin::Modal - Adjust Balance-->
+                    <div class="modal fade" id="kt_modal_export_simpanan" tabindex="-1" aria-hidden="true">
+                        <!--begin::Modal dialog-->
+                        <div class="modal-dialog modal-lg">
+                            <!--begin::Modal content-->
+                            <div class="modal-content">
+                                <!--begin::Modal header-->
+                                <div class="modal-header">
+                                    <!--begin::Modal title-->
+                                    <h2 class="fw-bold">Export Anggota</h2>
+                                    <!--end::Modal title-->
+                                    <!--begin::Close-->
+                                    <div id="kt_customers_export_close" class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                                        <i class="ki-outline ki-cross fs-1"></i>
+                                    </div>
+                                    <!--end::Close-->
+                                </div>
+                                <!--end::Modal header-->
+                                <!--begin::Modal body-->
+                                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                                    <!--begin::Form-->
+                                    <form id="kt_customers_export_form" class="form" action="{{ route('simpanan.export') }}" method="POST">
+                                        @csrf
+
+                                        <!--begin::Input group-->
+                                        <div class="fv-row mb-10">
+                                            <!--begin::Label-->
+                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Format Ekspor:</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <select data-control="select2" data-placeholder="Select a format" data-hide-search="true" name="format" class="form-select form-select-solid">
+                                                <option value="xlsx">Excel</option>
+                                                <option value="pdf">PDF</option>
+                                                <option value="csv">CSV</option>
+                                            </select>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                        <!--begin::Input group-->
+                                        <div class="fv-row mb-10">
+                                            <!--begin::Label-->
+                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Anggota:</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterAnggota" class="form-select form-select-solid">
+                                                <option value="*">Semua</option>
+                                                @foreach ($users as $data)
+                                                    <option value={{$data->id}}>{{$data->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                        <!--begin::Input group-->
+                                        <div class="fv-row mb-10">
+                                            <!--begin::Label-->
+                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Tipe Transaksi:</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTipeTransaksi" class="form-select form-select-solid">
+                                                <option value="*">Semua</option>
+                                                <option value="simp_wajib">Simpanan Wajib</option>
+                                                <option value="simp_sukarela">Simpanan Sukarela</option>
+                                            </select>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                        <!--begin::Input group-->
+                                        <div class="fv-row mb-10">
+                                            <!--begin::Label-->
+                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Tahun:</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTahun" class="form-select form-select-solid">
+                                                <option value="*">Semua</option>
+                                                <option value="2024">2024</option>
+                                                <option value="2023">2023</option>
+                                            </select>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                        <!--begin::Actions-->
+                                        <div class="text-center">
+                                            <button type="reset" id="kt_customers_export_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">
+                                                Buang
+                                            </button>
+                                            <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
+                                                <span class="indicator-label">Submit</span>
+                                                <span class="indicator-progress">Please wait...
+                                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                            </button>
+                                        </div>
+                                        <!--end::Actions-->
+                                    </form>
+                                    <!--end::Form-->
+                                </div>
+                                <!--end::Modal body-->
+                            </div>
+                            <!--end::Modal content-->
+                        </div>
+                        <!--end::Modal dialog-->
+                    </div>
+                    <!--end::Modal - Adjust Balance-->
 
 
                     <!--begin::Modals Create-->
@@ -493,5 +612,31 @@
                 }
             });
         })
+
+        $(document).on("click", '.transaksi-export', function(e) {
+            e.preventDefault();
+            $('#kt_modal_export_simpanan').modal('show');
+        });
+
+        $(document).on("submit", '#kt_customers_export_form', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                text: "Apakah Anda yakin ingin mengekspor data?",
+                icon: "warning",
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonText: "Ya, Ekspor!",
+                cancelButtonText: "Tidak",
+                customClass: {
+                    confirmButton: "btn fw-bold btn-primary",
+                    cancelButton: "btn fw-bold btn-active-light-primary",
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
     </script>
 @stop
