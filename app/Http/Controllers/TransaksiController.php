@@ -355,7 +355,7 @@ class TransaksiController extends Controller
         $format = $request->format;
 
         // Definisikan nama file dengan ekstensi berdasarkan format
-        $filename = 'simapanan_' . date('YmdHis') . '.' . $format;
+        $filename = 'simpanan_' . date('YmdHis') . '.' . $format;
 
         // Ekspor data sesuai format yang dipilih
         return Excel::download(new TransaksiExport($transactions), $filename);
