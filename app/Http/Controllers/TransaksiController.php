@@ -345,13 +345,17 @@ class TransaksiController extends Controller
             $query->where('transaction_type', $request->filterTipeTransaksi);
         }
 
+        if ($request->has('filterTahun') && $request->filterTahun != '*') {
+            $query->whereYear('date_transaction', $request->filterTahun);
+        }
+
         $transactions = $query->get();
 
         // Tentukan format ekspor
         $format = $request->format;
 
         // Definisikan nama file dengan ekstensi berdasarkan format
-        $filename = 'transactions_' . date('YmdHis') . '.' . $format;
+        $filename = 'simapanan_' . date('YmdHis') . '.' . $format;
 
         // Ekspor data sesuai format yang dipilih
         return Excel::download(new TransaksiExport($transactions), $filename);

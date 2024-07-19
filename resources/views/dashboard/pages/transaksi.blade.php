@@ -188,8 +188,9 @@
                                             <!--begin::Input-->
                                             <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTahun" class="form-select form-select-solid">
                                                 <option value="*">Semua</option>
-                                                <option value="2024">2024</option>
-                                                <option value="2023">2023</option>
+                                                @for ($i = 2018; $i <= date('Y'); $i++)
+                                                    <option value={{$i}}>{{$i}}</option>
+                                                @endfor
                                             </select>
                                             <!--end::Input-->
                                         </div>
