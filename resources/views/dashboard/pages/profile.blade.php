@@ -202,12 +202,15 @@
                                             data-bs-toggle="tab" role="tab" href="#kt_activity_week"
                                             aria-selected="false" tabindex="-1">Tabel Simpanan</a>
                                     </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a id="kt_activity_month_tab"
-                                            class="nav-link justify-content-center text-active-gray-800"
-                                            data-bs-toggle="tab" role="tab" href="#kt_activity_month"
-                                            aria-selected="false" tabindex="-1">Pengaturan</a>
-                                    </li>
+                                    @if (Auth::user()->id === $User->id || (Auth::user()->role->name !== 'Administrator' && $User->role->name !== 'Member'))
+                                        <li class="nav-item" role="presentation">
+                                            <a id="kt_activity_month_tab"
+                                                class="nav-link justify-content-center text-active-gray-800"
+                                                data-bs-toggle="tab" role="tab" href="#kt_activity_month"
+                                                aria-selected="false" tabindex="-1">Pengaturan</a>
+                                        </li>
+                                    @endif
+
                                 </ul>
                                 <!--end::Tab nav-->
                             </div>

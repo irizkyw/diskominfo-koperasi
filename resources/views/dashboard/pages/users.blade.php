@@ -82,10 +82,10 @@
                                     </div>
                                     <!--end::Filter-->
                                     <!--begin::Export-->
-                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
+                                    {{-- <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
                                         data-bs-target="#kt_customers_export_modal">
                                         <i class="ki-outline ki-exit-up fs-2"></i>Export
-                                    </button>
+                                    </button> --}}
                                     <!--end::Export-->
                                     <!--begin::Add customer-->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
