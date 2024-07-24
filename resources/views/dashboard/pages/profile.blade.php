@@ -88,6 +88,67 @@
                                                     <!--begin::Menu 3-->
                                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
                                                         data-kt-menu="true">
+                                                        @if (Auth::user()->role->name !== 'Administrator')
+                                                            <div class="menu-item px-3">
+                                                                <div
+                                                                    class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
+                                                                    Mode Tampilan </div>
+                                                            </div>
+                                                            <div class="menu-item px-5"
+                                                                data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                                                data-kt-menu-placement="left-start"
+                                                                data-kt-menu-offset="-15px, 0">
+                                                                <a href="#" class="menu-link p-2">
+                                                                    <span class="menu-title position-relative">Mode
+                                                                        <span
+                                                                            class="ms-5 position-absolute translate-middle-y top-50 end-0">
+                                                                            <i
+                                                                                class="ki-outline ki-night-day theme-light-show fs-2"></i>
+                                                                            <i
+                                                                                class="ki-outline ki-moon theme-dark-show fs-2"></i>
+                                                                        </span></span>
+                                                                </a>
+                                                                <!--begin::Menu-->
+                                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-gray-500 menu-active-bg menu-state-color fw-semibold py-4 fs-base w-150px"
+                                                                    data-kt-menu="true" data-kt-element="theme-mode-menu">
+                                                                    <!--begin::Menu item-->
+                                                                    <div class="menu-item px-3 my-0">
+                                                                        <a href="#" class="menu-link px-3 py-2"
+                                                                            data-kt-element="mode" data-kt-value="light">
+                                                                            <span class="menu-icon" data-kt-element="icon">
+                                                                                <i class="ki-outline ki-night-day fs-2"></i>
+                                                                            </span>
+                                                                            <span class="menu-title">Light</span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <!--end::Menu item-->
+                                                                    <!--begin::Menu item-->
+                                                                    <div class="menu-item px-3 my-0">
+                                                                        <a href="#" class="menu-link px-3 py-2"
+                                                                            data-kt-element="mode" data-kt-value="dark">
+                                                                            <span class="menu-icon" data-kt-element="icon">
+                                                                                <i class="ki-outline ki-moon fs-2"></i>
+                                                                            </span>
+                                                                            <span class="menu-title">Dark</span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <!--end::Menu item-->
+                                                                    <!--begin::Menu item-->
+                                                                    <div class="menu-item px-3 my-0">
+                                                                        <a href="#" class="menu-link px-3 py-2"
+                                                                            data-kt-element="mode" data-kt-value="system">
+                                                                            <span class="menu-icon" data-kt-element="icon">
+                                                                                <i class="ki-outline ki-screen fs-2"></i>
+                                                                            </span>
+                                                                            <span class="menu-title">System</span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <!--end::Menu item-->
+                                                                </div>
+                                                                <!--end::Menu-->
+                                                            </div>
+                                                        @endif
+
                                                         <!--end::Menu item-->
                                                         <!--begin::Heading-->
                                                         <div class="menu-item px-3">
@@ -131,7 +192,8 @@
                                                     </div>
                                                     <!--end::Number-->
                                                     <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">Simpanan</div>
+                                                    <div class="fw-semibold fs-6 text-gray-500">Jumlah Simpanan <br>
+                                                    </div>
                                                     <!--end::Label-->
                                                 </div>
                                                 <!--end::Stat-->
@@ -144,11 +206,11 @@
                                                         {{-- <i class="ki-outline ki-arrow-down fs-3 text-danger me-2"></i>
                                                     --}}
                                                         <div class="fs-2 fw-bold counted" data-kt-countup="true"
-                                                            data-kt-countup-value="80" data-kt-initialized="1">80</div>
+                                                            data-kt-countup-value="80" data-kt-initialized="1">-</div>
                                                     </div>
                                                     <!--end::Number-->
                                                     <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">Hutang</div>
+                                                    <div class="fw-semibold fs-6 text-gray-500">-</div>
                                                     <!--end::Label-->
                                                 </div>
                                                 <!--end::Stat-->
@@ -161,11 +223,11 @@
                                                     --}}
                                                         <div class="fs-2 fw-bold counted" data-kt-countup="true"
                                                             data-kt-countup-value="60" data-kt-countup-prefix="%"
-                                                            data-kt-initialized="1">%60</div>
+                                                            data-kt-initialized="1">-</div>
                                                     </div>
                                                     <!--end::Number-->
                                                     <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">Success Rate</div>
+                                                    <div class="fw-semibold fs-6 text-gray-500">-</div>
                                                     <!--end::Label-->
                                                 </div>
                                                 <!--end::Stat-->
@@ -202,12 +264,14 @@
                                             data-bs-toggle="tab" role="tab" href="#kt_activity_week"
                                             aria-selected="false" tabindex="-1">Tabel Simpanan</a>
                                     </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a id="kt_activity_month_tab"
-                                            class="nav-link justify-content-center text-active-gray-800"
-                                            data-bs-toggle="tab" role="tab" href="#kt_activity_month"
-                                            aria-selected="false" tabindex="-1">Pengaturan</a>
-                                    </li>
+                                    @if (Auth::user()->id === $User->id || (Auth::user()->role->name !== 'Administrator' && $User->role->name !== 'Member'))
+                                        <li class="nav-item" role="presentation">
+                                            <a id="kt_activity_month_tab"
+                                                class="nav-link justify-content-center text-active-gray-800"
+                                                data-bs-toggle="tab" role="tab" href="#kt_activity_month"
+                                                aria-selected="false" tabindex="-1">Pengaturan</a>
+                                        </li>
+                                    @endif
                                 </ul>
                                 <!--end::Tab nav-->
                             </div>
@@ -280,7 +344,7 @@
                                                                             {{ 'Rp' . number_format($data->nominal, 0, ',', '.') }}
                                                                         </span>
                                                                     @endif
-                                                                    
+
                                                                 </div>
 
                                                                 <div class="d-flex justify-content-end min-w-125px">
@@ -354,21 +418,28 @@
                                     aria-labelledby="kt_activity_month_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
-                                        <form id="password-update-form" action="{{ route('profile.updatePassword') }}" method="POST">
+                                        <form id="password-update-form" action="{{ route('profile.updatePassword') }}"
+                                            method="POST">
                                             @csrf
                                             <div class="mb-10">
-                                                <label for="old_password" class="required form-label">Password Lama</label>
-                                                <input type="password" class="form-control form-control-solid" name="old_password" placeholder="Password lama" required />
+                                                <label for="old_password" class="required form-label">Password
+                                                    Lama</label>
+                                                <input type="password" class="form-control form-control-solid"
+                                                    name="old_password" placeholder="Password lama" required />
                                             </div>
 
                                             <div class="mb-10">
                                                 <label for="password" class="required form-label">Password Baru</label>
-                                                <input type="password" class="form-control form-control-solid" name="password" placeholder="Password baru" required />
+                                                <input type="password" class="form-control form-control-solid"
+                                                    name="password" placeholder="Password baru" required />
                                             </div>
 
                                             <div class="mb-10">
-                                                <label for="password_confirmation" class="required form-label">Konfirmasi Password Baru</label>
-                                                <input type="password" class="form-control form-control-solid" name="password_confirmation" placeholder="Konfirmasi password baru" required />
+                                                <label for="password_confirmation" class="required form-label">Konfirmasi
+                                                    Password Baru</label>
+                                                <input type="password" class="form-control form-control-solid"
+                                                    name="password_confirmation" placeholder="Konfirmasi password baru"
+                                                    required />
                                             </div>
 
                                             <button type="button" class="btn btn-sm btn-primary password-update-button">
@@ -400,8 +471,8 @@
                 <!--begin::Copyright-->
                 <div class="text-gray-900 order-2 order-md-1">
                     <span class="text-muted fw-semibold me-1">2024©</span>
-                    <a href="https://keenthemes.com" target="_blank"
-                        class="text-gray-800 text-hover-primary">Keenthemes</a>
+                    <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">IRWAPAW
+                        🐾</a>
                 </div>
                 <!--end::Copyright-->
                 <!--begin::Menu-->
@@ -507,7 +578,7 @@
 
         $(document).on("click", '.password-update-button', function(e) {
             e.preventDefault();
-            
+
             Swal.fire({
                 text: "Apakah Anda yakin ingin mengubah password?",
                 icon: "warning",
@@ -526,7 +597,7 @@
             });
         });
 
-        @if(session('success'))
+        @if (session('success'))
             Swal.fire({
                 text: "{{ session('success') }}",
                 icon: "success",
@@ -538,7 +609,7 @@
             });
         @endif
 
-        @if(session('error'))
+        @if (session('error'))
             Swal.fire({
                 text: "{{ session('error') }}",
                 icon: "error",

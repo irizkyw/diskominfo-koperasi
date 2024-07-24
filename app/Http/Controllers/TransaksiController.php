@@ -48,7 +48,7 @@ class TransaksiController extends Controller
                 return Carbon::parse($row->date_transaction)->translatedFormat('d F Y');
             })
             ->editColumn('nominal', function($row) {
-                return 'Rp. ' . number_format($row->nominal, 0, ',', '.');
+                return 'Rp' . number_format($row->nominal, 0, ',', '.');
             })
             ->addColumn('actions', function($row) {
                 return '
@@ -110,10 +110,10 @@ class TransaksiController extends Controller
                                 ->where('transaction_type', 'Simpanan Wajib')
                                 ->sum('nominal');
             $tabungan->simp_wajib = $nominal;
-        } 
+        }
         if ($request->transaction_type == 'Simpanan Sukarela') {
             $nominal = Transaksi::where('user_id', $request->user_id)
-                                ->where('transaction_type', 'Simpanan Sukarela') 
+                                ->where('transaction_type', 'Simpanan Sukarela')
                                 ->sum('nominal');
             $tabungan->simp_sukarela = $nominal;
         }
@@ -164,10 +164,10 @@ class TransaksiController extends Controller
                                 ->where('transaction_type', 'Simpanan Wajib')
                                 ->sum('nominal');
             $tabungan->simp_wajib = $nominal;
-        } 
+        }
         if ($request->transaction_type == 'Simpanan Sukarela') {
             $nominal = Transaksi::where('user_id', $request->user_id)
-                                ->where('transaction_type', 'Simpanan Sukarela') 
+                                ->where('transaction_type', 'Simpanan Sukarela')
                                 ->sum('nominal');
             $tabungan->simp_sukarela = $nominal;
         }
@@ -405,6 +405,22 @@ class TransaksiController extends Controller
         return Excel::download(new TransaksiExport($transactions), $filename);
     }
 
+    public function importSimpanan(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,csv',
+            'year' => 'required|integer|min:2018|max:2024'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $year = $request->input('year');
+        Excel::import(new SimpananImport($year), $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data simpanan has been imported successfully.');
+    }
 }
 
 

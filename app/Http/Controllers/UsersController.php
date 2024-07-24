@@ -132,7 +132,7 @@ class UsersController extends Controller
             "num_member" => $user->num_member,
             "username" => $user->username,
             "name" => $user->name,
-            "golongan" => $user->savings->first()->golongan_id,
+            "golongan" => $user->savings->first()->golongan_id ?? null,
             "role_id" => $user->role_id,
             "status_active" => $user->status_active
         ];
@@ -187,13 +187,23 @@ class UsersController extends Controller
             'name' => $request->name,
             'num_member' => $request->num_member,
             'username' => $username,
-            'password' => Hash::make($username), // Gunakan username sebagai password sementara
+            'password' => Hash::make($username),
             'role_id' => $request->roles,
             'status_active' => true
         ]);
         if ($user) {
             $tabunganController = new TabunganController();
             $transaksiController = new TransaksiController();
+
+            $requestTabungan = new Request([
+                'user_id' => $user->id,
+                'simp_sukarela' => $request->voluntary_savings,
+                'simp_wajib' => $request->mandatory_savings,
+                'golongan_id' => $request->group,
+            ]);
+
+            $tabunganController->createTabungan($requestTabungan);
+
             if ($request->voluntary_savings != 0) {
                 $requestSimpanan = new Request([
                     'user_id' => $user->id,
@@ -217,16 +227,6 @@ class UsersController extends Controller
 
                 $transaksiController->createSimpanan($requestSimpanan);
             }
-
-            $requestTabungan = new Request([
-                'user_id' => $user->id,
-                'simp_sukarela' => $request->voluntary_savings,
-                'simp_wajib' => $request->mandatory_savings,
-                'golongan_id' => $request->group,
-            ]);
-
-            $tabunganController->createTabungan($requestTabungan);
-
         }
         $user = $user->load('role');
 
@@ -252,7 +252,8 @@ class UsersController extends Controller
             $data['password'] = Hash::make($request->password);
 
         $tabungan = Tabungan::where('user_id', $user->id)->first();
-        $tabungan->update(['golongan_id' => $request->group]);
+        if($tabungan)
+            $tabungan->update(['golongan_id' => $request->group]);
 
         $user->update($data);
         return response()->json([

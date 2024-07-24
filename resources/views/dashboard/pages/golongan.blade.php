@@ -19,7 +19,7 @@
                             <!--begin::Title-->
                             <h1
                                 class="page-heading d-flex flex-column justify-content-center text-gray-900 fw-bold fs-3 m-0">
-                                Anggota
+                                Golongan
                             </h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
@@ -33,7 +33,7 @@
                                 <li class="breadcrumb-item">
                                     <span class="bullet bg-gray-500 w-5px h-2px"></span>
                                 </li>
-                                <li class="breadcrumb-item text-muted">Anggota</li>
+                                <li class="breadcrumb-item text-muted">Golongan</li>
                             </ul>
                             <!--end::Breadcrumb-->
                         </div>
@@ -263,8 +263,8 @@
                 <!--begin::Copyright-->
                 <div class="text-gray-900 order-2 order-md-1">
                     <span class="text-muted fw-semibold me-1">2024&copy;</span>
-                    <a href="https://keenthemes.com" target="_blank"
-                        class="text-gray-800 text-hover-primary">Keenthemes</a>
+                    <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">IRWAPAW
+                        🐾</a>
                 </div>
                 <!--end::Copyright-->
                 <!--begin::Menu-->

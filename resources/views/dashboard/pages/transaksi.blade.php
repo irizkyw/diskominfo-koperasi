@@ -19,7 +19,7 @@
                             <!--begin::Title-->
                             <h1
                                 class="page-heading d-flex flex-column justify-content-center text-gray-900 fw-bold fs-3 m-0">
-                                Anggota
+                                Simpanan
                             </h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
@@ -33,7 +33,7 @@
                                 <li class="breadcrumb-item">
                                     <span class="bullet bg-gray-500 w-5px h-2px"></span>
                                 </li>
-                                <li class="breadcrumb-item text-muted">Anggota</li>
+                                <li class="breadcrumb-item text-muted">Simpanan</li>
                             </ul>
                             <!--end::Breadcrumb-->
                         </div>
@@ -59,17 +59,23 @@
                                         class="form-control form-control-solid w-250px ps-13" placeholder="Pencarian" />
                                 </div>
                             </div>
+
                             <div class="card-toolbar">
-                                <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
                                         data-bs-target="#kt_modal_export_simpanan">
-                                        Export Transaksi
+                                        <i class="ki-outline ki-exit-up fs-2"></i>Export
                                     </button>
                                 </div>
-                            </div>
-                            
-                            <div class="card-toolbar">
+
+                                <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
+                                        data-bs-target="#kt_modal_export_simpanan">
+                                        <i class="bi bi-download fs-2"></i>Import
+                                    </button>
+                                </div>
+
+
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -100,12 +106,8 @@
                                 </thead>
                                 <tbody class="fw-semibold text-gray-600">
                                 </tbody>
-                                <!--end::Table body-->
                             </table>
-
-                            <!--end::Table-->
                         </div>
-                        <!--end::Card body-->
                     </div>
                     <!--end::Card-->
 
@@ -122,7 +124,8 @@
                                     <h2 class="fw-bold">Export Anggota</h2>
                                     <!--end::Modal title-->
                                     <!--begin::Close-->
-                                    <div id="kt_customers_export_close" class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                                    <div id="kt_customers_export_close" class="btn btn-icon btn-sm btn-active-icon-primary"
+                                        data-bs-dismiss="modal">
                                         <i class="ki-outline ki-cross fs-1"></i>
                                     </div>
                                     <!--end::Close-->
@@ -131,7 +134,8 @@
                                 <!--begin::Modal body-->
                                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                     <!--begin::Form-->
-                                    <form id="kt_customers_export_form" class="form" action="{{ route('simpanan.export') }}" method="POST">
+                                    <form id="kt_customers_export_form" class="form"
+                                        action="{{ route('simpanan.export') }}" method="POST">
                                         @csrf
 
                                         <!--begin::Input group-->
@@ -140,7 +144,9 @@
                                             <label class="fs-5 fw-semibold form-label mb-5">Pilih Format Ekspor:</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
-                                            <select data-control="select2" data-placeholder="Select a format" data-hide-search="true" name="format" class="form-select form-select-solid">
+                                            <select data-control="select2" data-placeholder="Select a format"
+                                                data-hide-search="true" name="format"
+                                                class="form-select form-select-solid">
                                                 <option value="xlsx">Excel</option>
                                                 <option value="pdf">PDF</option>
                                                 <option value="csv">CSV</option>
@@ -155,10 +161,12 @@
                                             <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Anggota:</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
-                                            <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterAnggota" class="form-select form-select-solid">
+                                            <select data-control="select2" data-placeholder="Select a filter"
+                                                data-hide-search="true" name="filterAnggota"
+                                                class="form-select form-select-solid">
                                                 <option value="*">Semua</option>
                                                 @foreach ($users as $data)
-                                                    <option value={{$data->id}}>{{$data->name}}</option>
+                                                    <option value={{ $data->id }}>{{ $data->name }}</option>
                                                 @endforeach
                                             </select>
                                             <!--end::Input-->
@@ -168,10 +176,13 @@
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->
-                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Tipe Transaksi:</label>
+                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Tipe
+                                                Transaksi:</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
-                                            <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTipeTransaksi" class="form-select form-select-solid">
+                                            <select data-control="select2" data-placeholder="Select a filter"
+                                                data-hide-search="true" name="filterTipeTransaksi"
+                                                class="form-select form-select-solid">
                                                 <option value="*">Semua</option>
                                                 <option value="simp_wajib">Simpanan Wajib</option>
                                                 <option value="simp_sukarela">Simpanan Sukarela</option>
@@ -186,7 +197,9 @@
                                             <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Tahun:</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
-                                            <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTahun" class="form-select form-select-solid">
+                                            <select data-control="select2" data-placeholder="Select a filter"
+                                                data-hide-search="true" name="filterTahun"
+                                                class="form-select form-select-solid">
                                                 <option value="*">Semua</option>
                                                 <option value="2024">2024</option>
                                                 <option value="2023">2023</option>
@@ -197,13 +210,16 @@
 
                                         <!--begin::Actions-->
                                         <div class="text-center">
-                                            <button type="reset" id="kt_customers_export_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">
+                                            <button type="reset" id="kt_customers_export_cancel"
+                                                class="btn btn-light me-3" data-bs-dismiss="modal">
                                                 Buang
                                             </button>
-                                            <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
+                                            <button type="submit" id="kt_customers_export_submit"
+                                                class="btn btn-primary">
                                                 <span class="indicator-label">Submit</span>
                                                 <span class="indicator-progress">Please wait...
-                                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                                    <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                             </button>
                                         </div>
                                         <!--end::Actions-->
@@ -226,8 +242,8 @@
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                <form class="form" action="{{ route('simpanan.create') }}" id="kt_modal_add_simpanan_form"
-                                    data-kt-redirect="{{ route('simpanan.index') }}">
+                                <form class="form" action="{{ route('simpanan.create') }}"
+                                    id="kt_modal_add_simpanan_form" data-kt-redirect="{{ route('simpanan.index') }}">
                                     @csrf
                                     <!--begin::Modal header-->
                                     <div class="modal-header" id="kt_modal_add_simpanan_header">
@@ -444,8 +460,8 @@
                 <!--begin::Copyright-->
                 <div class="text-gray-900 order-2 order-md-1">
                     <span class="text-muted fw-semibold me-1">2024&copy;</span>
-                    <a href="https://keenthemes.com" target="_blank"
-                        class="text-gray-800 text-hover-primary">Keenthemes</a>
+                    <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">IRWAPAW
+                        🐾</a>
                 </div>
                 <!--end::Copyright-->
                 <!--begin::Menu-->
