@@ -1,4 +1,4 @@
-@extends('layouts.dashboard.master')
+@extends('layouts.master')
 @section('styles')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -60,13 +60,13 @@
 
                                                     <div
                                                         class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
-                                                        <i class="ki-outline ki-sms fs-4 me-1"></i>Nomor Anggota :
+                                                        <i class="ki-outline ki-user-tick fs-4 me-1"></i>Nomor Anggota :
                                                         {{ str_pad($User->num_member, 3, '0', STR_PAD_LEFT) }}
                                                     </div>
 
                                                     <div
                                                         class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
-                                                        <i class="ki-outline ki-sms fs-4 me-1"></i>
+                                                        <i class="ki-outline ki-medal-star fs-4 me-1"></i>
                                                         {{ $User->savings->first()->golongan->nama_golongan ?? 'Belum ada golongan' }}
                                                     </div>
                                                 </div>
@@ -197,40 +197,6 @@
                                                     <!--end::Label-->
                                                 </div>
                                                 <!--end::Stat-->
-
-                                                <!--begin::Stat-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
-                                                    <!--begin::Number-->
-                                                    <div class="d-flex align-items-center">
-                                                        {{-- <i class="ki-outline ki-arrow-down fs-3 text-danger me-2"></i>
-                                                    --}}
-                                                        <div class="fs-2 fw-bold counted" data-kt-countup="true"
-                                                            data-kt-countup-value="80" data-kt-initialized="1">-</div>
-                                                    </div>
-                                                    <!--end::Number-->
-                                                    <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">-</div>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Stat-->
-                                                <!--begin::Stat-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
-                                                    <!--begin::Number-->
-                                                    <div class="d-flex align-items-center">
-                                                        {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i>
-                                                    --}}
-                                                        <div class="fs-2 fw-bold counted" data-kt-countup="true"
-                                                            data-kt-countup-value="60" data-kt-countup-prefix="%"
-                                                            data-kt-initialized="1">-</div>
-                                                    </div>
-                                                    <!--end::Number-->
-                                                    <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">-</div>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Stat-->
                                             </div>
                                             <!--end::Stats-->
                                         </div>
@@ -253,22 +219,22 @@
                                 <!--begin::Tab nav-->
                                 <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bold" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <a id="kt_activity_today_tab"
+                                        <a id="profile_activity_tab"
                                             class="nav-link justify-content-center text-active-gray-800 active"
-                                            data-bs-toggle="tab" role="tab" href="#kt_activity_today"
+                                            data-bs-toggle="tab" role="tab" href="#profile_activity"
                                             aria-selected="true">Log Transaksi</a>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <a id="kt_activity_week_tab"
+                                        <a id="data_simpanan_tab"
                                             class="nav-link justify-content-center text-active-gray-800"
-                                            data-bs-toggle="tab" role="tab" href="#kt_activity_week"
+                                            data-bs-toggle="tab" role="tab" href="#data_simpanan"
                                             aria-selected="false" tabindex="-1">Tabel Simpanan</a>
                                     </li>
                                     @if (Auth::user()->id === $User->id || (Auth::user()->role->name !== 'Administrator' && $User->role->name !== 'Member'))
                                         <li class="nav-item" role="presentation">
-                                            <a id="kt_activity_month_tab"
+                                            <a id="profile_setting_tab"
                                                 class="nav-link justify-content-center text-active-gray-800"
-                                                data-bs-toggle="tab" role="tab" href="#kt_activity_month"
+                                                data-bs-toggle="tab" role="tab" href="#profile_setting"
                                                 aria-selected="false" tabindex="-1">Pengaturan</a>
                                         </li>
                                     @endif
@@ -283,8 +249,8 @@
                             <!--begin::Tab Content-->
                             <div class="tab-content">
                                 <!--begin::Tab panel-->
-                                <div id="kt_activity_today" class="card-body p-0 tab-pane fade active show"
-                                    role="tabpanel" aria-labelledby="kt_activity_today_tab">
+                                <div id="profile_activity" class="card-body p-0 tab-pane fade active show"
+                                    role="tabpanel" aria-labelledby="profile_activity_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
                                         @if ($LogTransaksi->isEmpty())
@@ -368,8 +334,8 @@
                                 </div>
                                 <!--end::Tab panel-->
                                 <!--begin::Tab panel-->
-                                <div id="kt_activity_week" class="card-body p-0 tab-pane fade" role="tabpanel"
-                                    aria-labelledby="kt_activity_week_tab">
+                                <div id="data_simpanan" class="card-body p-0 tab-pane fade" role="tabpanel"
+                                    aria-labelledby="data_simpanan_tab">
                                     <!--begin::Card header-->
                                     <div class="card-header border-0">
                                         <div class="card-title">
@@ -414,13 +380,21 @@
                                 <!--end::Tab panel-->
 
                                 <!--begin::Tab panel-->
-                                <div id="kt_activity_month" class="card-body p-0 tab-pane fade" role="tabpanel"
-                                    aria-labelledby="kt_activity_month_tab">
+                                <div id="profile_setting" class="card-body p-0 tab-pane fade" role="tabpanel"
+                                    aria-labelledby="profile_setting_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
                                         <form id="password-update-form" action="{{ route('profile.updatePassword') }}"
                                             method="POST">
                                             @csrf
+
+                                            <div class="mb-10">
+                                                <label for="username" class="required form-label">Username</label>
+                                                <input type="text" class="form-control form-control-solid"
+                                                    name="username" placeholder="Username"
+                                                    value="{{ Auth::user()->username }}" required />
+                                            </div>
+
                                             <div class="mb-10">
                                                 <label for="old_password" class="required form-label">Password
                                                     Lama</label>

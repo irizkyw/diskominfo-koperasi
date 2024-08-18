@@ -91,17 +91,6 @@
                     </a>
                     <!--end:Menu link-->
                 </div>
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                    <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('simpanan.index') }}">
-                        <span class="menu-icon">
-                            <i class="ki-outline ki-folder fs-2"></i> <!-- Ganti dengan ikon ki-folder -->
-                        </span>
-                        <span class="menu-title">Data Pinjam & Bayar</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-
             </div>
             <!--end::Primary menu-->
         </div>

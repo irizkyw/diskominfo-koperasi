@@ -1,4 +1,4 @@
-@extends('layouts.dashboard.master') @section('styles')
+@extends('layouts.master') @section('styles')
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('assets/plugins/custom/vis-timeline/vis-timeline.bundle.css') }}" rel="stylesheet" type="text/css" />
