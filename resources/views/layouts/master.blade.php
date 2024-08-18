@@ -12,7 +12,7 @@
 </head>
 
 <body id="kt_app_body"
-    @if (Auth::user()->role->name !== 'Administrator') data-kt-app-sidebar-enabled="true"
+    @if (Auth::check() && Auth::user()->role->name !== 'Administrator') data-kt-app-sidebar-enabled="true"
     data-kt-app-sidebar-enabled="false"
     @else
     data-kt-app-sidebar-fixed="true"
@@ -51,7 +51,7 @@
         <!--begin::Page-->
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             <!--begin::Header-->
-            @if (Auth::user()->role->name !== 'Member' && (request()->is('dashboard/*')||request()->is('dashboard') || request()->is('profile/*')))
+            @if (Auth::check() && Auth::user()->role->name !== 'Member' && (request()->is('dashboard/*')||request()->is('dashboard') || request()->is('profile/*') || request()->is('profile')))
                 <div id="kt_app_header" class="app-header d-flex d-lg-none border-bottom">
                     <!--begin::Header container-->
                     <div class="app-container container-fluid d-flex flex-stack" id="kt_app_header_container">

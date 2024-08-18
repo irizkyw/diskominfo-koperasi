@@ -232,9 +232,9 @@
                                     </li>
                                     @if (Auth::user()->id === $User->id || (Auth::user()->role->name !== 'Administrator' && $User->role->name !== 'Member'))
                                         <li class="nav-item" role="presentation">
-                                            <a id="profile_setting_tab"
+                                            <a id="settings_tab"
                                                 class="nav-link justify-content-center text-active-gray-800"
-                                                data-bs-toggle="tab" role="tab" href="#profile_setting"
+                                                data-bs-toggle="tab" role="tab" href="#settings"
                                                 aria-selected="false" tabindex="-1">Pengaturan</a>
                                         </li>
                                     @endif
@@ -380,8 +380,8 @@
                                 <!--end::Tab panel-->
 
                                 <!--begin::Tab panel-->
-                                <div id="profile_setting" class="card-body p-0 tab-pane fade" role="tabpanel"
-                                    aria-labelledby="profile_setting_tab">
+                                <div id="settings" class="card-body p-0 tab-pane fade" role="tabpanel"
+                                    aria-labelledby="settings_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
                                         <form id="password-update-form" action="{{ route('profile.updatePassword') }}"
@@ -445,22 +445,13 @@
                 <!--begin::Copyright-->
                 <div class="text-gray-900 order-2 order-md-1">
                     <span class="text-muted fw-semibold me-1">2024©</span>
-                    <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">IRWAPAW
+                    <a href="https://github.com/IRWAPAW-Group" target="_blank"
+                        class="text-gray-800 text-hover-primary">IRWAPAW
                         🐾</a>
                 </div>
                 <!--end::Copyright-->
                 <!--begin::Menu-->
-                <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-                    <li class="menu-item">
-                        <a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="https://1.envato.market/EA4JP" target="_blank" class="menu-link px-2">Purchase</a>
-                    </li>
-                </ul>
+
                 <!--end::Menu-->
             </div>
             <!--end::Footer container-->
@@ -594,5 +585,34 @@
                 },
             });
         @endif
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlFragment = window.location.hash;
+            if (urlFragment) {
+                const targetTab = document.querySelector(`a[href="${urlFragment}"]`);
+
+                if (targetTab) {
+                    const activeTab = document.querySelector('.nav-link.active');
+                    if (activeTab) {
+                        activeTab.classList.remove('active');
+                    }
+
+                    targetTab.classList.add('active');
+
+                    const activeTabContent = document.querySelector('.tab-pane.active.show');
+                    if (activeTabContent) {
+                        activeTabContent.classList.remove('active', 'show');
+                    }
+
+                    const targetTabContent = document.querySelector(urlFragment);
+                    if (targetTabContent) {
+                        targetTabContent.classList.add('active', 'show');
+                    }
+                }
+            }
+        });
+    </script>
+
     </script>
 @stop

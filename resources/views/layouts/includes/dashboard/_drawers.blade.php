@@ -821,7 +821,7 @@
                           <div class="p-5 rounded bg-light-info text-gray-900 fw-semibold mw-lg-400px text-start"
                               data-kt-element="message-text">You can unwatch this repository immediately by clicking
                               here:
-                              <a href="https://keenthemes.com">IRWAPAW 🐾.com</a>
+                              <a href="https://github.com/IRWAPAW-Group">IRWAPAW 🐾.com</a>
                           </div>
                           <!--end::Text-->
                       </div>

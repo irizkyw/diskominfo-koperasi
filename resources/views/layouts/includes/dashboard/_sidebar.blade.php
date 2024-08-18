@@ -91,6 +91,18 @@
                     </a>
                     <!--end:Menu link-->
                 </div>
+
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                    <!--begin:Menu link-->
+                    <a class="menu-link" href="{{ route('simpanan.index') }}">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-notification-on fs-2"></i>
+                        </span>
+                        <span class="menu-title">Boardcast Events</span>
+                    </a>
+                    <!--end:Menu link-->
+                </div>
+
             </div>
             <!--end::Primary menu-->
         </div>
@@ -203,7 +215,7 @@
                     <!--end::Menu-->
                 </div>
                 <div class="menu-item px-5 my-1">
-                    <a href="account/settings.html" class="menu-link px-5">Pengaturan Akun</a>
+                    <a href="{{ route('profile') }}#settings" class="menu-link px-5">Pengaturan Akun</a>
                 </div>
                 <!--end::Menu item-->
                 <!--begin::Menu item-->
