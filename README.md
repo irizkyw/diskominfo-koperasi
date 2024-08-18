@@ -15,7 +15,7 @@ This project is built with Laravel, a powerful and elegant PHP framework. To get
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/kodija.git
+   git clone https://github.com/irizkyw/diskominfo-koperasi.git
    cd kodija```
 2. **Set Up Environment Variables**\
    Copy the .env.example file to .env and configure it according to your environment.
