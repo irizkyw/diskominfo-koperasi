@@ -43,7 +43,10 @@ This project is built with Laravel, a powerful and elegant PHP framework. To get
     After the setup is complete, you can access the application at ```http://localhost:8080``` for access aplication, ```http://localhost:8888``` for access web phpmyadmin in your web browser
 
 ### Additional Commands
-docker-compose down
-```bash
-docker-compose down
-```
+- **Stop the Containers**
+
+    To stop the running Docker containers, use the following command:
+
+    ```bash
+    docker-compose down
+    ```
