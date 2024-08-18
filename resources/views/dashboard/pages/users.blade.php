@@ -1,4 +1,4 @@
-@extends('layouts.dashboard.master')
+@extends('layouts.master')
 @section('styles')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -82,8 +82,8 @@
                                     </div>
                                     <!--end::Filter-->
                                     <!--begin::Export-->
-                                    {{-- <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
-                                        data-bs-target="#kt_customers_export_modal">
+                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
+                                        data-bs-target="#users_export">
                                         <i class="ki-outline ki-exit-up fs-2"></i>Export
                                     </button> --}}
                                     <!--end::Export-->
@@ -287,7 +287,7 @@
                     </div>
                     <!--end::Modal - Customers - Add-->
                     <!--begin::Modal - Adjust Balance-->
-                    <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="users_export" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-lg">
                             <!--begin::Modal content-->
@@ -596,7 +596,7 @@
                     </div>
                     <!--end::Modal - Customers - Add-->
                     <!--begin::Modal - Adjust Balance-->
-                    <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="users_export" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-lg">
                             <!--begin::Modal content-->
@@ -728,22 +728,12 @@
                 <!--begin::Copyright-->
                 <div class="text-gray-900 order-2 order-md-1">
                     <span class="text-muted fw-semibold me-1">2024&copy;</span>
-                    <a href="https://keenthemes.com" target="_blank"
-                        class="text-gray-800 text-hover-primary">Keenthemes</a>
+                    <a href="https://github.com/IRWAPAW-Group" target="_blank"
+                        class="text-gray-800 text-hover-primary">IRWAPAW
+                        🐾</a>
                 </div>
                 <!--end::Copyright-->
                 <!--begin::Menu-->
-                <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-                    <li class="menu-item">
-                        <a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="https://1.envato.market/EA4JP" target="_blank" class="menu-link px-2">Purchase</a>
-                    </li>
-                </ul>
                 <!--end::Menu-->
             </div>
             <!--end::Footer container-->

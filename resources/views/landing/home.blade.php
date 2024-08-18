@@ -1,4 +1,4 @@
-@extends('layouts.landing.master')
+@extends('layouts.master')
 @section('root')
 
     <div class="d-flex flex-column flex-root" id="kt_app_root">
@@ -28,15 +28,15 @@
 
 			<!--end::How It Works Section-->
 			<!--begin::Statistics Section-->
-			
+
 			<!--end::Statistics Section-->
 
-            
+
 			<!--begin::Footer Section-->
 				@include('layouts.includes.landing._footer')
 			<!--end::Footer Section-->
 
-            
+
 			<!--begin::Scrolltop-->
 			<div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
 				<i class="ki-outline ki-arrow-up"></i>

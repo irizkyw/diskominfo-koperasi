@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
-    && docker-php-ext-install zip pdo_mysql
+    libpng-dev \
+    && docker-php-ext-install zip pdo_mysql gd
 
 RUN a2enmod rewrite
 
@@ -16,7 +17,8 @@ COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN composer install --no-interaction
+RUN composer install --no-interaction --ignore-platform-req=ext-gd || \
+    (composer require maatwebsite/excel:^3.1 && composer install --no-interaction)
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage

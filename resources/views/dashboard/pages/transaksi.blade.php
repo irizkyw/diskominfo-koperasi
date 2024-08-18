@@ -1,4 +1,4 @@
-@extends('layouts.dashboard.master')
+@extends('layouts.master')
 @section('styles')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -19,7 +19,7 @@
                             <!--begin::Title-->
                             <h1
                                 class="page-heading d-flex flex-column justify-content-center text-gray-900 fw-bold fs-3 m-0">
-                                Anggota
+                                Simpanan
                             </h1>
                             <!--end::Title-->
                             <!--begin::Breadcrumb-->
@@ -33,7 +33,7 @@
                                 <li class="breadcrumb-item">
                                     <span class="bullet bg-gray-500 w-5px h-2px"></span>
                                 </li>
-                                <li class="breadcrumb-item text-muted">Anggota</li>
+                                <li class="breadcrumb-item text-muted">Simpanan</li>
                             </ul>
                             <!--end::Breadcrumb-->
                         </div>
@@ -67,6 +67,14 @@
                                         <i class="ki-outline ki-exit-up fs-2"></i>Export
                                     </button>
                                 </div>
+
+                                <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
+                                        data-bs-target="#kt_modal_export_simpanan">
+                                        <i class="bi bi-download fs-2"></i>Import
+                                    </button>
+                                </div>
+
 
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
@@ -452,22 +460,13 @@
                 <!--begin::Copyright-->
                 <div class="text-gray-900 order-2 order-md-1">
                     <span class="text-muted fw-semibold me-1">2024&copy;</span>
-                    <a href="https://keenthemes.com" target="_blank"
-                        class="text-gray-800 text-hover-primary">Keenthemes</a>
+                    <a href="https://github.com/IRWAPAW-Group" target="_blank"
+                        class="text-gray-800 text-hover-primary">IRWAPAW
+                        🐾</a>
                 </div>
                 <!--end::Copyright-->
                 <!--begin::Menu-->
-                <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-                    <li class="menu-item">
-                        <a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="https://1.envato.market/EA4JP" target="_blank" class="menu-link px-2">Purchase</a>
-                    </li>
-                </ul>
+
                 <!--end::Menu-->
             </div>
             <!--end::Footer container-->
