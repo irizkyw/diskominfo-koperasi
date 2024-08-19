@@ -16,7 +16,7 @@ class TabunganController extends Controller
 
     public function createTabungan(Request $request)
     {
-        $golongan = Golongan::find($request->golongan_id);
+        $golongan = Golongan::find($request->group);
         if (!$golongan) {
             return response()->json(
                 [
@@ -31,7 +31,6 @@ class TabunganController extends Controller
             "simp_pokok" => $golongan->simp_pokok,
             "simp_sukarela" => $request->simp_sukarela ?? 0,
             "simp_wajib" => $request->simp_wajib ?? 0,
-            "golongan_id" => $request->golongan_id,
         ]);
 
         if (!$tabungan) {

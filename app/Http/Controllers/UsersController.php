@@ -143,7 +143,7 @@ class UsersController extends Controller
             "num_member" => $user->num_member,
             "username" => $user->username,
             "name" => $user->name,
-            "golongan" => $user->savings->first()->golongan_id ?? null,
+            "golongan" => $user->golongan_id ?? null,
             "role_id" => $user->role_id,
             "status_active" => $user->status_active,
         ];
@@ -156,7 +156,7 @@ class UsersController extends Controller
             "name" => "required|string|max:255",
             "num_member" => "required|string|max:255",
             "roles" => "required",
-            "group" => "required",
+            "group" => "required"
         ]);
 
         if ($validator->fails()) {
@@ -189,6 +189,7 @@ class UsersController extends Controller
             "password" => Hash::make($username),
             "role_id" => $request->roles,
             "status_active" => true,
+            "golongan_id" => $request->group,
         ]);
         if ($user) {
             $tabunganController = new TabunganController();
@@ -198,7 +199,7 @@ class UsersController extends Controller
                 "user_id" => $user->id,
                 "simp_sukarela" => $request->voluntary_savings,
                 "simp_wajib" => $request->mandatory_savings,
-                "golongan_id" => $request->group,
+                "group" => $request->group,
             ]);
 
             $tabunganController->createTabungan($requestTabungan);
@@ -252,22 +253,17 @@ class UsersController extends Controller
             "username" => $request->username,
             "role_id" => $request->roles,
             "status_active" => $request->status,
+            "golongan_id" => $request->group,
         ];
 
         if (!empty($request->password)) {
             $data["password"] = Hash::make($request->password);
         }
 
-        $tabungan = Tabungan::where("user_id", $user->id)->first();
-        if ($tabungan) {
-            $tabungan->update(["golongan_id" => $request->group]);
-        }
-
         $user->update($data);
         return response()->json([
             "message" => "Data user telah diubah",
             "user" => $user,
-            "tabungan" => $tabungan,
         ]);
     }
 

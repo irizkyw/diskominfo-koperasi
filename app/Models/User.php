@@ -19,7 +19,8 @@ class User extends Authenticatable
         'num_member',
         'username',
         'password',
-        'role_id', 'status_active'
+        'role_id', 'status_active',
+        'golongan_id'
     ];
 
     protected $dates = ['deleted_at'];
@@ -58,5 +59,8 @@ class User extends Authenticatable
         return $this->role_id === $adminRoleId;
     }
 
-
+    public function golongan()
+    {
+        return $this->belongsTo(Golongan::class, 'golongan_id');
+    }
 }

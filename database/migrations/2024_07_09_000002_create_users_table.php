@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->foreignId('role_id')->constrained()->onDelete('cascade');
             $table->boolean('status_active')->default(true);
+            $table->foreignId('golongan_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

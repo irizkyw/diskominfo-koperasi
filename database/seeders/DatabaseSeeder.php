@@ -29,6 +29,28 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::where('name', 'Administrator')->first();
         $memberRole = Role::where('name', 'Member')->first();
 
+        $golongans = [
+            [
+                'nama_golongan' => 'PNS',
+                'desc' => 'PNS',
+                'simp_pokok' => 150000,
+            ],
+            [
+                'nama_golongan' => 'Non-PNS',
+                'desc' => 'Non-PNS',
+                'simp_pokok' => 100000,
+            ],
+            [
+                'nama_golongan' => 'Pensiunan',
+                'desc' => 'Pensiunan',
+                'simp_pokok' => 50000,
+            ],
+        ];
+
+        foreach ($golongans as $golongan) {
+            Golongan::create($golongan);
+        }
+
         $users = [
             [
                 'name' => 'John Doe',
@@ -37,6 +59,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('Password#321'),
                 'status_active' => false,
                 'role_id' => $adminRole->id,
+                'golongan_id' => 1,
             ],
             [
                 'name' => 'Jane Doe',
@@ -45,6 +68,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('Password#321'),
                 'status_active' => true,
                 'role_id' => $memberRole->id,
+                'golongan_id' => 2,
             ],
             [
                 'name' => 'Admin Kodija',
@@ -53,6 +77,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('Admin#123'),
                 'status_active' => true,
                 'role_id' => $adminRole->id,
+                'golongan_id' => 1,
             ],
         ];
 
@@ -170,26 +195,6 @@ class DatabaseSeeder extends Seeder
             Transaksi::create($transaction);
         }
 
-        $golongans = [
-            [
-                'nama_golongan' => 'PNS',
-                'desc' => 'PNS',
-                'simp_pokok' => 150000,
-            ],
-            [
-                'nama_golongan' => 'Non-PNS',
-                'desc' => 'Non-PNS',
-                'simp_pokok' => 100000,
-            ],
-            [
-                'nama_golongan' => 'Pensiunan',
-                'desc' => 'Pensiunan',
-                'simp_pokok' => 50000,
-            ],
-        ];
 
-        foreach ($golongans as $golongan) {
-            Golongan::create($golongan);
-        }
     }
 }
