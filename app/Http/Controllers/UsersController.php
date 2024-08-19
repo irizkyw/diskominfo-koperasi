@@ -247,6 +247,10 @@ class UsersController extends Controller
     {
         $user = User::where("num_member", $id)->first();
 
+        if (!$user) {
+            return response()->json(["message" => "User not found"], 404);
+        }
+
         $data = [
             "name" => $request->name,
             "username" => $request->username,
@@ -261,28 +265,47 @@ class UsersController extends Controller
 
         $user->update($data);
 
-        $tabunganController = new TabunganController();
-        $tabungan = $tabunganController->getTabunganByUserId($user->id);
+        $tabungan = Tabungan::where("user_id", $user->id)->first();
 
         $isSimpWajibChanged =
             $request->has("simp_wajib") &&
-            $request->simp_wajib !== $tabungan->simp_wajib;
+            $request->simp_wajib != $tabungan->simp_wajib;
         $isGroupChanged =
-            $request->has("group") &&
-            $request->group !== $tabungan->golongan_id;
+            $request->has("group") && $request->group != $tabungan->golongan_id;
 
         if ($isSimpWajibChanged || $isGroupChanged) {
-            $requestTabungan = new Request([
-                "user_id" => $user->id,
+            $newGolongan = Golongan::find($request->group);
+            $tabungan->update([
                 "simp_sukarela" => $tabungan->simp_sukarela,
                 "simp_wajib" => $request->simp_wajib ?? $tabungan->simp_wajib,
-                "group" => $request->group ?? $tabungan->golongan_id,
+                "golongan_id" => $request->group,
+                "simp_pokok" => $newGolongan->simp_pokok,
             ]);
+        }
 
-            $tabunganController->updateTabungan(
-                $requestTabungan,
-                $tabungan->id
-            );
+        if ($isGroupChanged) {
+            $transaksi = Transaksi::where("user_id", $user->id)
+                ->where("transaction_type", "Simpanan Pokok")
+                ->first();
+
+            $transactionData = [
+                "user_id" => $user->id,
+                "transaction_type" => "Simpanan Pokok",
+                "description" =>
+                    "Perubahan golongan ke " .
+                    $newGolongan->nama_golongan .
+                    " pada " .
+                    Carbon::now()->format("F Y") .
+                    ".",
+                "nominal" => $newGolongan->simp_pokok,
+                "date_transaction" => now()->format("Y-m-d"),
+            ];
+
+            if ($transaksi) {
+                $transaksi->update($transactionData);
+            } else {
+                Transaksi::create($transactionData);
+            }
         }
 
         return response()->json([
