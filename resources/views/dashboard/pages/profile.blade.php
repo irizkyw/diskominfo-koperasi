@@ -273,7 +273,7 @@
                                                         <!--begin::Timeline heading-->
                                                         <div class="pe-3 mb-5">
                                                             <!--begin::Title-->
-                                                            <div class="fs-5 fw-semibold mb-2">Informasi transaksi untuk
+                                                            <div class="fs-5 fw-semibold mb-2">Transaksi berhasil untuk
                                                                 {{ $data->transaction_type }}</div>
                                                             <!--end::Title-->
                                                             <!--begin::Description-->
