@@ -73,7 +73,6 @@ class UsersController extends Controller
                             </a>';
 
                 if ($row->status_active) {
-                    // User is active
                     $actionButton .=
                         '
                         <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-delete"
@@ -85,7 +84,6 @@ class UsersController extends Controller
                         </span>
                     </a>';
                 } else {
-                    // User is inactive
                     $actionButton .=
                         '
                         <a href="#" class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 user-restore"
@@ -156,7 +154,7 @@ class UsersController extends Controller
             "name" => "required|string|max:255",
             "num_member" => "required|string|max:255",
             "roles" => "required",
-            "group" => "required"
+            "group" => "required",
         ]);
 
         if ($validator->fails()) {
@@ -248,6 +246,7 @@ class UsersController extends Controller
     public function updateUser(Request $request, $id)
     {
         $user = User::where("num_member", $id)->first();
+
         $data = [
             "name" => $request->name,
             "username" => $request->username,
@@ -261,6 +260,31 @@ class UsersController extends Controller
         }
 
         $user->update($data);
+
+        $tabunganController = new TabunganController();
+        $tabungan = $tabunganController->getTabunganByUserId($user->id);
+
+        $isSimpWajibChanged =
+            $request->has("simp_wajib") &&
+            $request->simp_wajib !== $tabungan->simp_wajib;
+        $isGroupChanged =
+            $request->has("group") &&
+            $request->group !== $tabungan->golongan_id;
+
+        if ($isSimpWajibChanged || $isGroupChanged) {
+            $requestTabungan = new Request([
+                "user_id" => $user->id,
+                "simp_sukarela" => $tabungan->simp_sukarela,
+                "simp_wajib" => $request->simp_wajib ?? $tabungan->simp_wajib,
+                "group" => $request->group ?? $tabungan->golongan_id,
+            ]);
+
+            $tabunganController->updateTabungan(
+                $requestTabungan,
+                $tabungan->id
+            );
+        }
+
         return response()->json([
             "message" => "Data user telah diubah",
             "user" => $user,
