@@ -50,4 +50,45 @@ class TabunganController extends Controller
             200
         );
     }
+
+    public function getTabunganByUserId($user_id)
+    {
+        $tabungan = Tabungan::where("user_id", $user_id)->first();
+        if (!$tabungan) {
+            return response()->json(["message" => "Tabungan not found"], 404);
+        }
+        return $tabungan;
+    }
+
+    public function updateTabungan(Request $request, $id)
+    {
+        $tabungan = Tabungan::find($id);
+        $golongan = Golongan::find($request->group);
+        if (!$tabungan || !$golongan) {
+            return $golongan
+                ? response()->json(
+                    [
+                        "message" => "Golongan not found",
+                    ],
+                    404
+                )
+                : response()->json(
+                    [
+                        "message" => "Tabungan not found",
+                    ],
+                    404
+                );
+        }
+
+        $tabungan->update([
+            "simp_pokok" => $golongan->simp_pokok,
+            "simp_sukarela" => $request->simp_sukarela,
+            "simp_wajib" => $request->simp_wajib,
+        ]);
+
+        return response()->json([
+            "message" => "Tabungan updated successfully",
+            "tabungan" => $tabungan,
+        ]);
+    }
 }
