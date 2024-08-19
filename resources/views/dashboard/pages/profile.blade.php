@@ -67,7 +67,7 @@
                                                     <div
                                                         class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
                                                         <i class="ki-outline ki-medal-star fs-4 me-1"></i>
-                                                        {{ $User->savings->first()->golongan->nama_golongan ?? 'Belum ada golongan' }}
+                                                        {{ $User->golongan->nama_golongan ?? 'Belum ada golongan' }}
                                                     </div>
                                                 </div>
                                             </div>
