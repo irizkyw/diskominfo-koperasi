@@ -15,15 +15,16 @@ class User extends Authenticatable
     use Notifiable, SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'num_member',
-        'username',
-        'password',
-        'role_id', 'status_active',
-        'golongan_id'
+        "name",
+        "num_member",
+        "username",
+        "password",
+        "role_id",
+        "status_active",
+        "golongan_id",
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ["deleted_at"];
 
     public function role()
     {
@@ -37,30 +38,37 @@ class User extends Authenticatable
 
     public function savings()
     {
-        return $this->hasMany(Tabungan::class, 'user_id');
+        return $this->hasMany(Tabungan::class, "user_id");
     }
 
     public static function restoreUser($num_member)
     {
-        $user = static::withTrashed()->where('num_member', $num_member)->first();
+        $user = static::withTrashed()
+            ->where("num_member", $num_member)
+            ->first();
 
         if (!$user) {
-            return response()->json(['message' => 'User not found.'], 404);
+            return response()->json(["message" => "User not found."], 404);
         }
 
         $user->restore();
 
-        return response()->json(['message' => 'User restored successfully.']);
+        return response()->json(["message" => "User restored successfully."]);
     }
 
     public function isAdmin()
     {
-        $adminRoleId = Role::where('name', 'Administrator')->value('id');
+        $adminRoleId = Role::where("name", "Administrator")->value("id");
         return $this->role_id === $adminRoleId;
     }
 
     public function golongan()
     {
-        return $this->belongsTo(Golongan::class, 'golongan_id');
+        return $this->belongsTo(Golongan::class, "golongan_id");
+    }
+
+    public function transaksi()
+    {
+        return $this->hasMany(Transaksi::class);
     }
 }

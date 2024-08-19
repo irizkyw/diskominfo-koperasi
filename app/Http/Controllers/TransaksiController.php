@@ -38,9 +38,7 @@ class TransaksiController extends Controller
             })
             ->addColumn("user_id", function ($row) {
                 $name = $row->user->name;
-                $golongan =
-                    $row->user->savings->first()->golongan->nama_golongan ??
-                    "Error";
+                $golongan = $row->user->golongan->nama_golongan ?? "Error";
                 return "{$name} ({$golongan})";
             })
             ->editColumn("transaction_type", function ($row) {
@@ -185,13 +183,13 @@ class TransaksiController extends Controller
                 ->where("transaction_type", "Simpanan Wajib")
                 ->sum("nominal");
             $tabungan->simp_wajib = $nominal;
-        }
-        if ($request->transaction_type == "Simpanan Sukarela") {
+        } elseif ($request->transaction_type == "Simpanan Sukarela") {
             $nominal = Transaksi::where("user_id", $request->user_id)
                 ->where("transaction_type", "Simpanan Sukarela")
                 ->sum("nominal");
             $tabungan->simp_sukarela = $nominal;
         }
+
         $tabungan->save();
 
         return response()->json(
