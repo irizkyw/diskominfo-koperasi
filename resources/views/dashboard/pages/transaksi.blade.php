@@ -281,11 +281,7 @@
                                                     class="form-select form-select-solid fw-bold">
                                                     <option value="">Pilih Anggota</option>
                                                     @foreach ($users as $data)
-                                                        @foreach ($data->savings as $tabungan)
-                                                            <option value="{{ $data->id }}">{{ $data->name }} (
-                                                                {{ $tabungan->golongan->nama_golongan }} )
-                                                            </option>
-                                                        @endforeach
+                                                            <option value="{{ $data->id }}">{{ $data->name }} ( {{ $data->golongan->nama_golongan }} )</option>
                                                     @endforeach
                                                 </select>
 
