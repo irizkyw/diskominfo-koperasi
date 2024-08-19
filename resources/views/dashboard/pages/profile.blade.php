@@ -388,6 +388,24 @@
                                             method="POST">
                                             @csrf
 
+                                            <!-- 1 row ada 2 text input -->
+                                            <div class="mb-10">
+                                                <div class="d-flex flex-wrap">
+                                                    <div class="col-md-6">
+                                                        <label for="nomor_anggota" class="required form-label">Nomor Anggota</label>
+                                                        <input type="text" class="form-control form-control-solid me-3" name="nomor_anggota"
+                                                               placeholder="Nomor Anggota" value="{{ Auth::user()->num_member }}" disabled />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="golongan" class="required form-label">Golongan</label>
+                                                        <input type="text" class="form-control form-control-solid ms-3" name="golongan"
+                                                               placeholder="Golongan" value="{{ Auth::user()->golongan->nama_golongan }}" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
                                             <div class="mb-10">
                                                 <label for="username" class="required form-label">Username</label>
                                                 <input type="text" class="form-control form-control-solid"
