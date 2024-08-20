@@ -63,6 +63,15 @@
                                 <!--begin::Toolbar-->
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#kt_modal_import_simpanan">
+                                        Import Transaksi
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-toolbar">
+                                <!--begin::Toolbar-->
+                                <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#kt_modal_export_simpanan">
                                         Export Transaksi
                                     </button>
@@ -218,6 +227,76 @@
                     </div>
                     <!--end::Modal - Adjust Balance-->
 
+                     <!--begin::Modal - Adjust Balance-->
+                     <div class="modal fade" id="kt_modal_import_simpanan" tabindex="-1" aria-hidden="true">
+                        <!--begin::Modal dialog-->
+                        <div class="modal-dialog modal-lg">
+                            <!--begin::Modal content-->
+                            <div class="modal-content">
+                                <!--begin::Modal header-->
+                                <div class="modal-header">
+                                    <!--begin::Modal title-->
+                                    <h2 class="fw-bold">Export Anggota</h2>
+                                    <!--end::Modal title-->
+                                    <!--begin::Close-->
+                                    <div id="kt_customers_import_close" class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                                        <i class="ki-outline ki-cross fs-1"></i>
+                                    </div>
+                                    <!--end::Close-->
+                                </div>
+                                <!--end::Modal header-->
+                                <!--begin::Modal body-->
+                                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                                    <!--begin::Form-->
+                                    <form id="kt_customers_export_form" class="form" action="{{ route('simpanan.export') }}" method="POST">
+                                        @csrf
+
+                                        <!--begin::Input group-->
+                                        <div class="fv-row mb-10">
+                                            <!--begin::Label-->
+                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Format Import:</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <select data-control="select2" data-placeholder="Select a format" data-hide-search="true" name="format" class="form-select form-select-solid">
+                                                <option value="xlsx">Tahun</option>
+                                                <option value="pdf">Bulan</option>
+                                            </select>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                        <!--begin::Input group-->
+                                        <div class="fv-row mb-10">
+                                            <!--begin::Label-->
+                                            <label class="fs-5 fw-semibold form-label mb-5">Template Import :</label><br>
+                                            <label class="fs-5 fw-semibold form-label mb-5">Template Tahunan <a href="google.com" target="_blank">Link</a></label><br>
+                                            <label class="fs-5 fw-semibold form-label mb-5">Template Bulanan <a href="google.com" target="_blank">Link</a></label><br>
+                                            <!--end::Label-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                        <!--begin::Actions-->
+                                        <div class="text-center">
+                                            <button type="reset" id="kt_customers_export_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">
+                                                Buang
+                                            </button>
+                                            <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
+                                                <span class="indicator-label">Submit</span>
+                                                <span class="indicator-progress">Please wait...
+                                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                            </button>
+                                        </div>
+                                        <!--end::Actions-->
+                                    </form>
+                                    <!--end::Form-->
+                                </div>
+                                <!--end::Modal body-->
+                            </div>
+                            <!--end::Modal content-->
+                        </div>
+                        <!--end::Modal dialog-->
+                    </div>
+                    <!--end::Modal - Adjust Balance-->
 
                     <!--begin::Modals Create-->
                     <div class="modal fade" id="kt_modal_add_simpanan" tabindex="-1" aria-hidden="true">
@@ -627,6 +706,33 @@
                 showCancelButton: true,
                 buttonsStyling: false,
                 confirmButtonText: "Ya, Ekspor!",
+                cancelButtonText: "Tidak",
+                customClass: {
+                    confirmButton: "btn fw-bold btn-primary",
+                    cancelButton: "btn fw-bold btn-active-light-primary",
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+
+
+        $(document).on("click", '.transaksi-import', function(e) {
+            e.preventDefault();
+            $('#kt_modal_import_simpanan').modal('show');
+        });
+
+        $(document).on("submit", '#kt_customers_import_form', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                text: "Apakah Anda yakin ingin mengimport data? Data sekarang akan ditindih",
+                icon: "warning",
+                showCancelButton: true,
+                buttonsStyling: false,
+                confirmButtonText: "Ya, Import!",
                 cancelButtonText: "Tidak",
                 customClass: {
                     confirmButton: "btn fw-bold btn-primary",
