@@ -12,15 +12,10 @@ class Tabungan extends Model
     use HasFactory;
 
     protected $table = 'tabungan';
-    protected $fillable = ['user_id','simp_pokok','simp_sukarela','simp_wajib','golongan_id'];
+    protected $fillable = ['user_id','simp_pokok','simp_sukarela','simp_wajib'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function golongan()
-    {
-        return $this->belongsTo(Golongan::class, 'golongan_id');
     }
 }

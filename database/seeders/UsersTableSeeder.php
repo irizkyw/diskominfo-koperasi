@@ -23,6 +23,7 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('Password#321'),
                 'status_active' => false,
                 'role_id' => $adminRole->id,
+                'golongan_id' => 1,
             ],
             [
                 'name' => 'Jane Doe',
@@ -31,6 +32,7 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('Password#321'),
                 'status_active' => true,
                 'role_id' => $memberRole->id,
+                'golongan_id' => 2,
             ],
             [
                 'name' => 'Admin Kodija',
@@ -39,6 +41,7 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make('Admin#123'),
                 'status_active' => true,
                 'role_id' => $adminRole->id,
+                'golongan_id' => 1,
             ],
         ];
 

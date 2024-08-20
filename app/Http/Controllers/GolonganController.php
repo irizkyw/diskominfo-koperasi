@@ -70,17 +70,6 @@ class GolonganController extends Controller
         return response()->json(['message' => 'Golongan berhasil dibuat.']);
     }
 
-
-    public function show(Golongan $golongan)
-    {
-        return view('golongans.show', compact('golongan'));
-    }
-
-    public function edit(Golongan $golongan)
-    {
-        return view('golongans.edit', compact('golongan'));
-    }
-
     public function findById($id)
     {
         $golongan = Golongan::find($id);

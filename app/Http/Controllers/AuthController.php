@@ -10,60 +10,74 @@ class AuthController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
-            if (Auth::user()->role->name === 'Member') {
-                return redirect()->intended('/profile');
+            if (Auth::user()->role->name === "Member") {
+                return redirect()->intended("/profile");
             } else {
-                return redirect()->intended('/dashboard');
+                return redirect()->intended("/dashboard");
             }
         }
-        return view('landing.sign_in');
+        return view("landing.sign_in");
     }
-
-
 
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => 'required',
-            'password' => 'required',
+            "username" => "required",
+            "password" => "required",
         ]);
 
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+        if (
+            Auth::attempt([
+                "username" => $request->username,
+                "password" => $request->password,
+            ])
+        ) {
             if (Auth::user()->status_active) {
                 $request->session()->regenerate();
 
-                // Cek role pengguna dan atur redirect sesuai dengan role
-                if (Auth::user()->role->name === 'Member') {
-                    return response()->json([
-                        'message' => 'You have successfully logged in!',
-                        'redirect' => '/profile',
-                    ], 200);
+                if (Auth::user()->role->name === "Member") {
+                    return response()->json(
+                        [
+                            "message" => "You have successfully logged in!",
+                            "redirect" => "/profile",
+                        ],
+                        200
+                    );
                 } else {
-                    return response()->json([
-                        'message' => 'You have successfully logged in!',
-                        'redirect' => '/dashboard',
-                    ], 200);
+                    return response()->json(
+                        [
+                            "message" => "You have successfully logged in!",
+                            "redirect" => "/dashboard",
+                        ],
+                        200
+                    );
                 }
             } else {
                 Auth::logout();
-                return response()->json([
-                    'error' => 'Akun Anda tidak aktif. Silakan hubungi administrator.',
-                ], 422);
+                return response()->json(
+                    [
+                        "error" =>
+                            "Akun Anda tidak aktif. Silakan hubungi administrator.",
+                    ],
+                    422
+                );
             }
         } else {
-            return response()->json([
-                'error' => 'Username atau password yang anda masukan salah!'
-            ], 422);
+            return response()->json(
+                [
+                    "error" =>
+                        "Username atau password yang anda masukan salah!",
+                ],
+                422
+            );
         }
     }
-
-
 
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect("/");
     }
 }

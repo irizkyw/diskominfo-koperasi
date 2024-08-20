@@ -1,4 +1,4 @@
-@extends('layouts.dashboard.master')
+@extends('layouts.master')
 @section('styles')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
@@ -11,7 +11,7 @@
             <!--begin::Content-->
             <div id="kt_app_content" class="app-content flex-column-fluid">
                 <!--begin::Content container-->
-                <div id="kt_app_content_container" class="app-container container-xxl">
+                <div id="kt_app_content_container" class="app-container container-xxl" {!! Auth::user()->role->name !== 'Administrator' ? 'style="padding: 0px!important;"' : '' !!}>
                     <!--begin::Navbar-->
                     <div class="card mb-6">
                         <div class="card-body pt-9 pb-0">
@@ -60,14 +60,14 @@
 
                                                     <div
                                                         class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
-                                                        <i class="ki-outline ki-sms fs-4 me-1"></i>Nomor Anggota :
+                                                        <i class="ki-outline ki-user-tick fs-4 me-1"></i>Nomor Anggota :
                                                         {{ str_pad($User->num_member, 3, '0', STR_PAD_LEFT) }}
                                                     </div>
 
                                                     <div
                                                         class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
-                                                        <i class="ki-outline ki-sms fs-4 me-1"></i>
-                                                        {{ $User->savings->first()->golongan->nama_golongan ?? 'Belum ada golongan' }}
+                                                        <i class="ki-outline ki-medal-star fs-4 me-1"></i>
+                                                        {{ $User->golongan->nama_golongan ?? 'Belum ada golongan' }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -88,6 +88,67 @@
                                                     <!--begin::Menu 3-->
                                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
                                                         data-kt-menu="true">
+                                                        @if (Auth::user()->role->name !== 'Administrator')
+                                                            <div class="menu-item px-3">
+                                                                <div
+                                                                    class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
+                                                                    Mode Tampilan </div>
+                                                            </div>
+                                                            <div class="menu-item px-5"
+                                                                data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+                                                                data-kt-menu-placement="left-start"
+                                                                data-kt-menu-offset="-15px, 0">
+                                                                <a href="#" class="menu-link p-2">
+                                                                    <span class="menu-title position-relative">Mode
+                                                                        <span
+                                                                            class="ms-5 position-absolute translate-middle-y top-50 end-0">
+                                                                            <i
+                                                                                class="ki-outline ki-night-day theme-light-show fs-2"></i>
+                                                                            <i
+                                                                                class="ki-outline ki-moon theme-dark-show fs-2"></i>
+                                                                        </span></span>
+                                                                </a>
+                                                                <!--begin::Menu-->
+                                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-gray-500 menu-active-bg menu-state-color fw-semibold py-4 fs-base w-150px"
+                                                                    data-kt-menu="true" data-kt-element="theme-mode-menu">
+                                                                    <!--begin::Menu item-->
+                                                                    <div class="menu-item px-3 my-0">
+                                                                        <a href="#" class="menu-link px-3 py-2"
+                                                                            data-kt-element="mode" data-kt-value="light">
+                                                                            <span class="menu-icon" data-kt-element="icon">
+                                                                                <i class="ki-outline ki-night-day fs-2"></i>
+                                                                            </span>
+                                                                            <span class="menu-title">Light</span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <!--end::Menu item-->
+                                                                    <!--begin::Menu item-->
+                                                                    <div class="menu-item px-3 my-0">
+                                                                        <a href="#" class="menu-link px-3 py-2"
+                                                                            data-kt-element="mode" data-kt-value="dark">
+                                                                            <span class="menu-icon" data-kt-element="icon">
+                                                                                <i class="ki-outline ki-moon fs-2"></i>
+                                                                            </span>
+                                                                            <span class="menu-title">Dark</span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <!--end::Menu item-->
+                                                                    <!--begin::Menu item-->
+                                                                    <div class="menu-item px-3 my-0">
+                                                                        <a href="#" class="menu-link px-3 py-2"
+                                                                            data-kt-element="mode" data-kt-value="system">
+                                                                            <span class="menu-icon" data-kt-element="icon">
+                                                                                <i class="ki-outline ki-screen fs-2"></i>
+                                                                            </span>
+                                                                            <span class="menu-title">System</span>
+                                                                        </a>
+                                                                    </div>
+                                                                    <!--end::Menu item-->
+                                                                </div>
+                                                                <!--end::Menu-->
+                                                            </div>
+                                                        @endif
+
                                                         <!--end::Menu item-->
                                                         <!--begin::Heading-->
                                                         <div class="menu-item px-3">
@@ -131,41 +192,8 @@
                                                     </div>
                                                     <!--end::Number-->
                                                     <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">Simpanan</div>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Stat-->
-
-                                                <!--begin::Stat-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
-                                                    <!--begin::Number-->
-                                                    <div class="d-flex align-items-center">
-                                                        {{-- <i class="ki-outline ki-arrow-down fs-3 text-danger me-2"></i>
-                                                    --}}
-                                                        <div class="fs-2 fw-bold counted" data-kt-countup="true"
-                                                            data-kt-countup-value="80" data-kt-initialized="1">80</div>
+                                                    <div class="fw-semibold fs-6 text-gray-500">Jumlah Simpanan <br>
                                                     </div>
-                                                    <!--end::Number-->
-                                                    <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">Hutang</div>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Stat-->
-                                                <!--begin::Stat-->
-                                                <div
-                                                    class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
-                                                    <!--begin::Number-->
-                                                    <div class="d-flex align-items-center">
-                                                        {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i>
-                                                    --}}
-                                                        <div class="fs-2 fw-bold counted" data-kt-countup="true"
-                                                            data-kt-countup-value="60" data-kt-countup-prefix="%"
-                                                            data-kt-initialized="1">%60</div>
-                                                    </div>
-                                                    <!--end::Number-->
-                                                    <!--begin::Label-->
-                                                    <div class="fw-semibold fs-6 text-gray-500">Success Rate</div>
                                                     <!--end::Label-->
                                                 </div>
                                                 <!--end::Stat-->
@@ -191,23 +219,25 @@
                                 <!--begin::Tab nav-->
                                 <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0 fw-bold" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <a id="kt_activity_today_tab"
+                                        <a id="profile_activity_tab"
                                             class="nav-link justify-content-center text-active-gray-800 active"
-                                            data-bs-toggle="tab" role="tab" href="#kt_activity_today"
+                                            data-bs-toggle="tab" role="tab" href="#profile_activity"
                                             aria-selected="true">Log Transaksi</a>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <a id="kt_activity_week_tab"
+                                        <a id="data_simpanan_tab"
                                             class="nav-link justify-content-center text-active-gray-800"
-                                            data-bs-toggle="tab" role="tab" href="#kt_activity_week"
+                                            data-bs-toggle="tab" role="tab" href="#data_simpanan"
                                             aria-selected="false" tabindex="-1">Tabel Simpanan</a>
                                     </li>
-                                    <li class="nav-item" role="presentation">
-                                        <a id="kt_activity_month_tab"
-                                            class="nav-link justify-content-center text-active-gray-800"
-                                            data-bs-toggle="tab" role="tab" href="#kt_activity_month"
-                                            aria-selected="false" tabindex="-1">Pengaturan</a>
-                                    </li>
+                                    @if (Auth::user()->id === $User->id || (Auth::user()->role->name !== 'Administrator' && $User->role->name !== 'Member'))
+                                        <li class="nav-item" role="presentation">
+                                            <a id="settings_tab"
+                                                class="nav-link justify-content-center text-active-gray-800"
+                                                data-bs-toggle="tab" role="tab" href="#settings"
+                                                aria-selected="false" tabindex="-1">Pengaturan</a>
+                                        </li>
+                                    @endif
                                 </ul>
                                 <!--end::Tab nav-->
                             </div>
@@ -219,8 +249,8 @@
                             <!--begin::Tab Content-->
                             <div class="tab-content">
                                 <!--begin::Tab panel-->
-                                <div id="kt_activity_today" class="card-body p-0 tab-pane fade active show"
-                                    role="tabpanel" aria-labelledby="kt_activity_today_tab">
+                                <div id="profile_activity" class="card-body p-0 tab-pane fade active show"
+                                    role="tabpanel" aria-labelledby="profile_activity_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
                                         @if ($LogTransaksi->isEmpty())
@@ -280,7 +310,7 @@
                                                                             {{ 'Rp' . number_format($data->nominal, 0, ',', '.') }}
                                                                         </span>
                                                                     @endif
-                                                                    
+
                                                                 </div>
 
                                                                 <div class="d-flex justify-content-end min-w-125px">
@@ -304,8 +334,8 @@
                                 </div>
                                 <!--end::Tab panel-->
                                 <!--begin::Tab panel-->
-                                <div id="kt_activity_week" class="card-body p-0 tab-pane fade" role="tabpanel"
-                                    aria-labelledby="kt_activity_week_tab">
+                                <div id="data_simpanan" class="card-body p-0 tab-pane fade" role="tabpanel"
+                                    aria-labelledby="data_simpanan_tab">
                                     <!--begin::Card header-->
                                     <div class="card-header border-0">
                                         <div class="card-title">
@@ -350,25 +380,58 @@
                                 <!--end::Tab panel-->
 
                                 <!--begin::Tab panel-->
-                                <div id="kt_activity_month" class="card-body p-0 tab-pane fade" role="tabpanel"
-                                    aria-labelledby="kt_activity_month_tab">
+                                <div id="settings" class="card-body p-0 tab-pane fade" role="tabpanel"
+                                    aria-labelledby="settings_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
-                                        <form id="password-update-form" action="{{ route('profile.updatePassword') }}" method="POST">
+                                        <form id="password-update-form" action="{{ route('profile.updatePassword') }}"
+                                            method="POST">
                                             @csrf
+
+                                            <!-- 1 row ada 2 text input -->
                                             <div class="mb-10">
-                                                <label for="old_password" class="required form-label">Password Lama</label>
-                                                <input type="password" class="form-control form-control-solid" name="old_password" placeholder="Password lama" required />
+                                                <div class="d-flex flex-wrap">
+                                                    <div class="col-md-6">
+                                                        <label for="nomor_anggota" class="required form-label">Nomor Anggota</label>
+                                                        <input type="text" class="form-control form-control-solid me-3" name="nomor_anggota"
+                                                               placeholder="Nomor Anggota" value="{{ Auth::user()->num_member }}" disabled />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="golongan" class="required form-label">Golongan</label>
+                                                        <input type="text" class="form-control form-control-solid ms-3" name="golongan"
+                                                               placeholder="Golongan" value="{{ Auth::user()->golongan->nama_golongan }}" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="mb-10">
+                                                <label for="username" class="required form-label">Username</label>
+                                                <input type="text" class="form-control form-control-solid"
+                                                    name="username" placeholder="Username"
+                                                    value="{{ Auth::user()->username }}" required />
+                                            </div>
+
+                                            <div class="mb-10">
+                                                <label for="old_password" class="required form-label">Password
+                                                    Lama</label>
+                                                <input type="password" class="form-control form-control-solid"
+                                                    name="old_password" placeholder="Password lama" required />
                                             </div>
 
                                             <div class="mb-10">
                                                 <label for="password" class="required form-label">Password Baru</label>
-                                                <input type="password" class="form-control form-control-solid" name="password" placeholder="Password baru" required />
+                                                <input type="password" class="form-control form-control-solid"
+                                                    name="password" placeholder="Password baru" required />
                                             </div>
 
                                             <div class="mb-10">
-                                                <label for="password_confirmation" class="required form-label">Konfirmasi Password Baru</label>
-                                                <input type="password" class="form-control form-control-solid" name="password_confirmation" placeholder="Konfirmasi password baru" required />
+                                                <label for="password_confirmation" class="required form-label">Konfirmasi
+                                                    Password Baru</label>
+                                                <input type="password" class="form-control form-control-solid"
+                                                    name="password_confirmation" placeholder="Konfirmasi password baru"
+                                                    required />
                                             </div>
 
                                             <button type="button" class="btn btn-sm btn-primary password-update-button">
@@ -400,22 +463,13 @@
                 <!--begin::Copyright-->
                 <div class="text-gray-900 order-2 order-md-1">
                     <span class="text-muted fw-semibold me-1">2024©</span>
-                    <a href="https://keenthemes.com" target="_blank"
-                        class="text-gray-800 text-hover-primary">Keenthemes</a>
+                    <a href="https://github.com/IRWAPAW-Group" target="_blank"
+                        class="text-gray-800 text-hover-primary">IRWAPAW
+                        🐾</a>
                 </div>
                 <!--end::Copyright-->
                 <!--begin::Menu-->
-                <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-                    <li class="menu-item">
-                        <a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="https://1.envato.market/EA4JP" target="_blank" class="menu-link px-2">Purchase</a>
-                    </li>
-                </ul>
+
                 <!--end::Menu-->
             </div>
             <!--end::Footer container-->
@@ -507,7 +561,7 @@
 
         $(document).on("click", '.password-update-button', function(e) {
             e.preventDefault();
-            
+
             Swal.fire({
                 text: "Apakah Anda yakin ingin mengubah password?",
                 icon: "warning",
@@ -526,7 +580,7 @@
             });
         });
 
-        @if(session('success'))
+        @if (session('success'))
             Swal.fire({
                 text: "{{ session('success') }}",
                 icon: "success",
@@ -538,7 +592,7 @@
             });
         @endif
 
-        @if(session('error'))
+        @if (session('error'))
             Swal.fire({
                 text: "{{ session('error') }}",
                 icon: "error",
@@ -549,5 +603,34 @@
                 },
             });
         @endif
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlFragment = window.location.hash;
+            if (urlFragment) {
+                const targetTab = document.querySelector(`a[href="${urlFragment}"]`);
+
+                if (targetTab) {
+                    const activeTab = document.querySelector('.nav-link.active');
+                    if (activeTab) {
+                        activeTab.classList.remove('active');
+                    }
+
+                    targetTab.classList.add('active');
+
+                    const activeTabContent = document.querySelector('.tab-pane.active.show');
+                    if (activeTabContent) {
+                        activeTabContent.classList.remove('active', 'show');
+                    }
+
+                    const targetTabContent = document.querySelector(urlFragment);
+                    if (targetTabContent) {
+                        targetTabContent.classList.add('active', 'show');
+                    }
+                }
+            }
+        });
+    </script>
+
     </script>
 @stop

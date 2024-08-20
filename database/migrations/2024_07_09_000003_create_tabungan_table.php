@@ -17,8 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('simp_pokok'); // simpanan pokok
             $table->unsignedInteger('simp_sukarela')->default(0); // simpanan sukarela
             $table->unsignedInteger('simp_wajib')->default(0); // simpanan wajib
-            $table->decimal('angsuran', 15, 2)->default(0);
-            $table->foreignId('golongan_id')->constrained()->onDelete('cascade');
+            $table->decimal('angsuran', 15, 2)->default(0);         
             $table->timestamp('lastUpdate_principal')->nullable(); // last update simpanan wajib
             $table->timestamps();
         });

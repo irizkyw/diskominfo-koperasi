@@ -12,7 +12,7 @@
 </head>
 
 <body id="kt_app_body"
-    @if (Auth::user()->role->name !== 'Administrator') data-kt-app-sidebar-enabled="true"
+    @if (Auth::check() && Auth::user()->role->name !== 'Administrator') data-kt-app-sidebar-enabled="true"
     data-kt-app-sidebar-enabled="false"
     @else
     data-kt-app-sidebar-fixed="true"
@@ -21,6 +21,13 @@
     data-kt-app-sidebar-push-footer="true" @endif
     data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-toolbar-enabled="true"
     class="app-default">
+
+	<div class="page-loader">
+		<span class="spinner-border text-primary" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</span>
+	</div>
+
     <script>
         var defaultThemeMode = "light";
         var themeMode;
@@ -44,7 +51,7 @@
         <!--begin::Page-->
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             <!--begin::Header-->
-            @if (Auth::user()->role->name !== 'Member')
+            @if (Auth::check() && Auth::user()->role->name !== 'Member' && (request()->is('dashboard/*')||request()->is('dashboard') || request()->is('profile/*') || request()->is('profile')))
                 <div id="kt_app_header" class="app-header d-flex d-lg-none border-bottom">
                     <!--begin::Header container-->
                     <div class="app-container container-fluid d-flex flex-stack" id="kt_app_header_container">
@@ -68,7 +75,6 @@
                     </div>
                     <!--end::Header container-->
                 </div>
-            @endif
             <!--end::Header-->
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
@@ -80,17 +86,18 @@
                 <!--begin::Main-->
                 @yield('content')
                 <!--end:::Main-->
-
             </div>
-            <!--end::Wrapper-->
+            @else
+                @yield('root')
+            @endif
         </div>
-        <!--end::Page-->
     </div>
 
     @include('layouts.includes.dashboard._drawers')
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
         <i class="ki-outline ki-arrow-up"></i>
     </div>
+
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     @yield('scripts')

@@ -1,4 +1,4 @@
-@extends('layouts.landing.master')
+@extends('layouts.master')
 @section('root')
 @if($errors->has('error'))
             <div class="alert alert-danger">
@@ -52,27 +52,20 @@
 									</div>
 									<div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
 										<div></div>
-										<a href="authentication/layouts/overlay/reset-password.html" class="link-primary">Lupa Password ?</a>
+										<a href="https://web.whatsapp.com" class="link-primary">Lupa Password ?</a>
 									</div>
 									<div class="d-grid mb-10">
 										<button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
 											<span class="indicator-label">Masuk</span>
-											<span class="indicator-progress">Please wait... 
+											<span class="indicator-progress">Please wait...
 											<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
 										</button>
 									</div>
-									<div class="text-gray-500 text-center fw-semibold fs-6">Belum menjadi Anggota? 
-									<a href="authentication/layouts/overlay/sign-up.html" class="link-primary">Daftar</a></div>
+									<div class="text-gray-500 text-center fw-semibold fs-6">Ingin menjadi Anggota?
+									<a href="https://web.whatsapp.com/" class="link-primary">Daftar</a></div>
 								</form>
 							</div>
                                 <div class="d-flex justify-content-end">
-                                    <!--begin::Links-->
-                                    <div class="d-flex fw-semibold text-primary fs-base gap-5">
-                                        <a href="pages/team.html" target="_blank">Terms</a>
-                                        <a href="pages/pricing/column.html" target="_blank">Plans</a>
-                                        <a href="pages/contact.html" target="_blank">Contact Us</a>
-                                    </div>
-                                    <!--end::Links-->
                                 </div>
 
 							<!--end::Footer-->
