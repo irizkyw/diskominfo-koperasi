@@ -1,49 +1,119 @@
 <?php
 namespace App\Exports;
 
+use App\Models\Tabungan;
 use App\Models\Transaksi;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
-    protected $transactions;
+    protected $users;
 
-    public function __construct($transactions)
+    public function __construct($users)
     {
-        $this->transactions = $transactions;
+        $this->users = $users instanceof \Illuminate\Database\Eloquent\Builder ? $users : Transaksi::query()->with('user')->get()->groupBy('user_id');
     }
 
     public function collection()
     {
-        return $this->transactions->map(function ($transaction) {
+        return $this->users->map(function ($transactions, $tahun) {
+            if ($tahun === null) {
+                $tahun = 2024; // Tahun default
+            }
+            $tahun = 2024; // Tahun default
+            $user = $transactions->first()->user;
+            $tabungan = Tabungan::where('user_id', $user->id)->first();
+
+            $monthlyTotals = array_fill(1, 12, '-');
+
+            foreach ($transactions as $transaction) {
+                $date = Carbon::parse($transaction->date_transaction);
+                $month = $date->format('n');
+
+                if ($monthlyTotals[$month] === '-') {
+                    $monthlyTotals[$month] = 0;
+                }
+                $monthlyTotals[$month] += $transaction->nominal;
+            }
+
+            foreach ($monthlyTotals as $key => $value) {
+                $monthlyTotals[$key] = $value === 0 ? '-' : $value;
+            }
+
+            $simpananWajibTahunIni = 0;
+            for ($i = 1; $i <= 12; $i++) {
+                if ($monthlyTotals[$i] === '-') {
+                    $monthlyTotals[$i] = 0;
+                }
+                $simpananWajibTahunIni += $monthlyTotals[$i];
+            }
+
+            $formatTabungan = function ($value) {
+                return $value === null ? '-' : ($value === 0 ? '0' : $value);
+            };
+
             return [
-                'ID' => $transaction->id,
-                'Nama User' => $transaction->user->name, // Akses nama user melalui relasi
-                'Nomor Anggota' => $transaction->user->num_member, // Akses nomor anggota melalui relasi
-                'Transaction Type' => $transaction->transaction_type,
-                'Description' => $transaction->description,
-                'Date Transaction' => $transaction->date_transaction,
-                'Nominal' => $transaction->nominal,
-                'Created At' => $transaction->created_at,
-                'Updated At' => $transaction->updated_at,
+                'No Anggota' => $user->num_member,
+                'Nama User' => $user->name,
+                'Simpanan Pokok' => $tabungan ? $formatTabungan($tabungan->simp_pokok) : '-',
+                'Simpanan Sukarela' => $tabungan ? $formatTabungan($tabungan->simp_sukarela) : '-',
+                'Simpanan Wajib s/d Desember '.($tahun-1) => $tabungan ? $formatTabungan($tabungan->simp_wajib) : '-',
+                'Jan' => $monthlyTotals[1],
+                'Feb' => $monthlyTotals[2],
+                'Mar' => $monthlyTotals[3],
+                'Apr' => $monthlyTotals[4],
+                'May' => $monthlyTotals[5],
+                'Jun' => $monthlyTotals[6],
+                'Jul' => $monthlyTotals[7],
+                'Aug' => $monthlyTotals[8],
+                'Sep' => $monthlyTotals[9],
+                'Oct' => $monthlyTotals[10],
+                'Nov' => $monthlyTotals[11],
+                'Dec' => $monthlyTotals[12],
+                'Simpanan Wajib Januari s/d Desember '.$tahun => $simpananWajibTahunIni,
+                'Simpanan Wajib s/d Desember '.$tahun => $tabungan ? $tabungan->simp_wajib + $simpananWajibTahunIni : '-',
+                'Setelah dikuranngi 20%' => $tabungan ? ($tabungan->simp_wajib + $simpananWajibTahunIni) * 0.8 : '-',
+                'Jumlah Simpanan '.$tahun => $tabungan ? $tabungan->simp_pokok + $tabungan->simp_sukarela + ($tabungan->simp_wajib + $simpananWajibTahunIni) * 0.8 : '-'
             ];
         });
     }
 
     public function headings(): array
     {
-        return [
-            'No Transaksi',
-            'Nama User',
-            'Nomor Anggota',
-            'Tipe Transaksi',
-            'Description',
-            'Date Transaction',
-            'Nominal',
-            'Created At',
-            'Updated At',
-        ];
+        // Get the first item from the collection and extract keys from it
+        $firstRow = $this->collection()->first();
+        
+        // If the first row is null, return empty array or default headings
+        if (!$firstRow) {
+            return [
+                'No Anggota',
+                'Nama User',
+                'Simpanan Pokok',
+                'Simpanan Sukarela',
+                'Simpanan Wajib Tahun Lalu',
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec',
+                'Simpanan Wajib Januari s/d Desember Tahun Ini',
+                'Simpanan Wajib s/d Desember Tahun Ini',
+                'Setelah dikuranngi 20%',
+                'Jumlah Simpanan Tahun Ini'
+            ];
+        }
+
+        // Return the keys as headings
+        return array_keys($firstRow);
     }
 }

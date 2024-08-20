@@ -157,8 +157,8 @@
                                             <!--end::Input-->
                                         </div>
                                         <!--end::Input group-->
-
-                                        <!--begin::Input group-->
+                                        
+                                        <!-- begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->
                                             <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Anggota:</label>
@@ -177,26 +177,10 @@
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->
-                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Tipe Transaksi:</label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTipeTransaksi" class="form-select form-select-solid">
-                                                <option value="*">Semua</option>
-                                                <option value="simp_wajib">Simpanan Wajib</option>
-                                                <option value="simp_sukarela">Simpanan Sukarela</option>
-                                            </select>
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
-
-                                        <!--begin::Input group-->
-                                        <div class="fv-row mb-10">
-                                            <!--begin::Label-->
                                             <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Tahun:</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTahun" class="form-select form-select-solid">
-                                                <option value="*">Semua</option>
                                                 <option value="2024">2024</option>
                                                 <option value="2023">2023</option>
                                             </select>
@@ -236,7 +220,7 @@
                                 <!--begin::Modal header-->
                                 <div class="modal-header">
                                     <!--begin::Modal title-->
-                                    <h2 class="fw-bold">Export Anggota</h2>
+                                    <h2 class="fw-bold">Import Anggota</h2>
                                     <!--end::Modal title-->
                                     <!--begin::Close-->
                                     <div id="kt_customers_import_close" class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
@@ -265,6 +249,8 @@
                                         </div>
                                         <!--end::Input group-->
 
+                                        <input type="file" name="file" />
+                                            
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->

@@ -393,6 +393,12 @@ class TransaksiController extends Controller
             $query->where('transaction_type', $request->filterTipeTransaksi);
         }
 
+        $tahun = null;
+
+        if ($request->has('filterTahun') && $request->filterTahun != '*') {
+            $tahun = $request->filterTahun;
+        }
+
         $transactions = $query->get();
 
         // Tentukan format ekspor
@@ -402,7 +408,23 @@ class TransaksiController extends Controller
         $filename = 'transactions_' . date('YmdHis') . '.' . $format;
 
         // Ekspor data sesuai format yang dipilih
-        return Excel::download(new TransaksiExport($transactions), $filename);
+        return Excel::download(new TransaksiExport($transactions, $tahun), $filename);
+    }
+
+    public function importForm()
+    {
+        return view('import'); // Provide a view with a form for uploading files
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv'
+        ]);
+
+        Excel::import(new TransaksiImport, $request->file('file'));
+
+        return Redirect::back()->with('success', 'Data imported successfully.');
     }
 
 }
