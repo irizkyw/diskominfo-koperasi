@@ -140,26 +140,14 @@ Route::middleware(["auth", AdminMiddleware::class])
             "findById",
         ])->name("golongan.findById");
 
-        Route::get("/savings", [TransaksiController::class, "index"])->name(
-            "simpanan.index"
-        );
-        Route::get("/savings/datatable", [
-            TransaksiController::class,
-            "datatable",
-        ])->name("simpanan.datatable");
-        Route::post("/savings/create", [
-            TransaksiController::class,
-            "createSimpanan",
-        ])->name("simpanan.create");
-        Route::delete("/savings/destroy/{id}", [
-            TransaksiController::class,
-            "deleteSimpanan",
-        ])->name("simpanan.destroy");
-        Route::post("/savings/export", [
-            TransaksiController::class,
-            "exportSimpanan",
-        ])->name("simpanan.export");
 
+    Route::get('/savings', [TransaksiController::class, 'index'])->name('simpanan.index');
+    Route::get('/savings/datatable', [TransaksiController::class, 'datatable'])->name('simpanan.datatable');
+    Route::post('/savings/create', [TransaksiController::class, 'createSimpanan'])->name('simpanan.create');
+    Route::delete('/savings/destroy/{id}', [TransaksiController::class, 'deleteSimpanan'])->name('simpanan.destroy');
+    Route::post('/savings/export', [TransaksiController::class, 'exportSimpanan'])->name('simpanan.export');
+    Route::post('/savings/import', [TransaksiController::class, 'importSimpanan'])->name('simpanan.import');
+    Route::get('/savings/export-template', [TransaksiController::class, 'exportTemplate'])->name('simpanan.export-template');
         Route::post("/savings/update/{id}", [
             TransaksiController::class,
             "updateSimpanan",

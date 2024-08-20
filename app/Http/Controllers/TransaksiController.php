@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TransaksiExport;
+use App\Exports\TransaksiTemplate;
+use Maatwebsite\Excel\HeadingRowImport;
+use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 
 class TransaksiController extends Controller
 {
@@ -268,6 +276,18 @@ class TransaksiController extends Controller
         $tabungan->save();
         return response()->json(["message" => "Simpanan deleted successfully"]);
     }
+    // Controller method
+    public function exportTemplate(Request $request)
+    {
+        $tahun = $request->query('year', date('Y')); // Get the year from the query parameter or default to the current year
+
+        $filename = "transactions_" . date("YmdHis") . ".xlsx";
+
+        // Export data for the selected year
+        return Excel::download(new TransaksiTemplate($tahun), $filename);
+    }
+
+
 
     public function exportSimpanan(Request $request)
     {
@@ -285,11 +305,18 @@ class TransaksiController extends Controller
             $query->where("user_id", $request->filterAnggota);
         }
 
-        if (
-            $request->has("filterTipeTransaksi") &&
-            $request->filterTipeTransaksi != "*"
-        ) {
-            $query->where("transaction_type", $request->filterTipeTransaksi);
+        if ($request->has('filterTipeTransaksi') && $request->filterTipeTransaksi != '*') {
+            $query->where('transaction_type', $request->filterTipeTransaksi);
+        }
+
+        if ($request->has('filterTahun')) {
+            $query->whereYear('date_transaction', $request->filterTahun);
+        }
+
+        $tahun = null;
+
+        if ($request->has('filterTahun') && $request->filterTahun != '*') {
+            $tahun = $request->filterTahun;
         }
 
         $transactions = $query->get();
@@ -298,25 +325,120 @@ class TransaksiController extends Controller
 
         $filename = "transactions_" . date("YmdHis") . "." . $format;
 
-        return Excel::download(new TransaksiExport($transactions), $filename);
+        // Ekspor data sesuai format yang dipilih
+        return Excel::download(new TransaksiExport($transactions, $tahun), $filename);
     }
 
     public function importSimpanan(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            "file" => "required|mimes:xlsx,csv",
-            "year" => "required|integer|min:2018|max:2024",
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,csv',
         ]);
+    
+        $tahun = $request->input('FilterTahunImport'); // Fetch the year from request
+    
+        $file = $request->file('file');
+    
+        // Import data
+        Excel::import(new class($tahun) implements ToCollection, WithHeadingRow {
+            private $tahun;
+    
+            public function __construct($tahun)
+            {
+                $this->tahun = $tahun;
+            }
+    
+            public function collection(Collection $rows)
+            {
+                foreach ($rows as $row) {
+                    // Fetch the user based on 'No Anggota'
+                    $user = User::where('num_member', $row['no_anggota'])->first();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+                    if (!$user) {
+                        if ($row['nama_user'] == null || $row['no_anggota'] == null) {
+                            continue;
+                        }
+                        $user = User::create([
+                            'num_member' => $row['no_anggota'],
+                            'name'       => $row['nama_user'],
+                            'role_id'    => 2,
+                            'status_active' => 1,
+                            'golongan_id' => 1,
+                            'username'   => $row['nama_user']."@".$row['no_anggota'],
+                            'password'   => Hash::make(12345678),
+                        ]);
 
-        $year = $request->input("year");
-        Excel::import(new SimpananImport($year), $request->file("file"));
+                        // Update or create Tabungan record
+                        $tabungan = Tabungan::updateOrCreate(
+                            ['user_id' => $user->id],
+                            [
+                                'simp_pokok'    => $row['simpanan_pokok'] ?? 0,
+                                'simp_sukarela' => $row['simpanan_sukarela'] ?? 0,
+                                'simp_wajib'    => $row['simpanan_wajib_s_d_desember_'.$this->tahun-1] ?? 0
 
-        return redirect()
-            ->back()
-            ->with("success", "Data simpanan has been imported successfully.");
+                            ]
+                        );
+    
+                        // Handle the monthly transactions
+                        foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $index => $month) {
+                            if ($row[strtolower($month)] !== '-') {
+                                if ($row[strtolower($month)] == null) {
+                                    continue;
+                                }
+                                Transaksi::updateOrCreate(
+                                    [
+                                        'user_id'          => $user->id,
+                                        'date_transaction' => Carbon::create($this->tahun, $index + 1, 1)->format('Y-m-d')
+                                    ],
+                                    [
+                                        'transaction_type' => 'Simpanan Wajib', // Define or fetch appropriate type
+                                        'description'      => 'Monthly transaction for '.$month,
+                                        'nominal'          => $row[strtolower($month)]
+                                    ]
+                                );
+                            }
+                        }
+                    }
+    
+                    if ($user) {
+                        // Update or create Tabungan record
+                        $tabungan = Tabungan::updateOrCreate(
+                            ['user_id' => $user->id],
+                            [
+                                'simp_pokok'    => $row['simpanan_pokok'] ?? 0,
+                                'simp_sukarela' => $row['simpanan_sukarela'] ?? 0,
+                                'simp_wajib'    => $row['simpanan_wajib_s_d_desember_'.$this->tahun-1] ?? 0
+
+                            ]
+                        );
+    
+                        // Handle the monthly transactions
+                        foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $index => $month) {
+                            if ($row[strtolower($month)] !== '-') {
+                                if ($row[strtolower($month)] == null) {
+                                    continue;
+                                }
+                                Transaksi::updateOrCreate(
+                                    [
+                                        'user_id'          => $user->id,
+                                        'date_transaction' => Carbon::create($this->tahun, $index + 1, 1)->format('Y-m-d')
+                                    ],
+                                    [
+                                        'transaction_type' => 'Simpanan Wajib', // Define or fetch appropriate type
+                                        'description'      => 'Monthly transaction for '.$month,
+                                        'nominal'          => $row[strtolower($month)]
+                                    ]
+                                );
+                            }
+                        }
+                    } 
+                }
+            }
+        }, $file);
+    
+        return redirect()->back()->with('success', 'Data imported successfully!');
     }
+
+    
 }
