@@ -67,7 +67,7 @@ class TransaksiController extends Controller
                             <i class="fas fa-trash"></i>
                         </span>
                     </a>
-                    <a href="#"
+                    <a href="'. route('profile', ['user_id' => $row->user_id]).'"
                         class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm">
                         <span class="svg-icon svg-icon-2">
                             <i class="fas fa-user"></i>
@@ -104,9 +104,25 @@ class TransaksiController extends Controller
             'nominal' => $request->nominal,
         ]);
 
+        $tabungan = Tabungan::where('user_id', $request->user_id)->first();
+        if ($request->transaction_type == 'Simpanan Wajib') {
+            $nominal = Transaksi::where('user_id', $request->user_id)
+                                ->where('transaction_type', 'Simpanan Wajib')
+                                ->sum('nominal');
+            $tabungan->simp_wajib = $nominal;
+        } 
+        if ($request->transaction_type == 'Simpanan Sukarela') {
+            $nominal = Transaksi::where('user_id', $request->user_id)
+                                ->where('transaction_type', 'Simpanan Sukarela') 
+                                ->sum('nominal');
+            $tabungan->simp_sukarela = $nominal;
+        }
+        $tabungan->save();
+
         return response()->json([
             'message' => 'Transaksi telah ditambahkan',
-            'transaksi' => $transaksi
+            'transaksi' => $transaksi,
+            'tabungan' => $tabungan
         ], 200);
     }
 
@@ -141,6 +157,21 @@ class TransaksiController extends Controller
         ];
 
         $transaksi->update($data);
+
+        $tabungan = Tabungan::where('user_id', $request->user_id)->first();
+        if ($request->transaction_type == 'Simpanan Wajib') {
+            $nominal = Transaksi::where('user_id', $request->user_id)
+                                ->where('transaction_type', 'Simpanan Wajib')
+                                ->sum('nominal');
+            $tabungan->simp_wajib = $nominal;
+        } 
+        if ($request->transaction_type == 'Simpanan Sukarela') {
+            $nominal = Transaksi::where('user_id', $request->user_id)
+                                ->where('transaction_type', 'Simpanan Sukarela') 
+                                ->sum('nominal');
+            $tabungan->simp_sukarela = $nominal;
+        }
+        $tabungan->save();
 
         return response()->json([
             'message' => 'Simpanan telah dirubah!',
@@ -320,7 +351,24 @@ class TransaksiController extends Controller
     public function deleteSimpanan($id)
     {
         $simpanan = Transaksi::findOrFail($id);
+        $transaction_type = $simpanan->transaction_type;
+        $user_id = $simpanan->user_id;
         $simpanan->delete();
+        if ($transaction_type == 'Simpanan Wajib') {
+            $nominal = Transaksi::where('user_id', $user_id)
+                                ->where('transaction_type', 'Simpanan Wajib')
+                                ->sum('nominal');
+            $tabungan = Tabungan::where('user_id', $user_id)->first();
+            $tabungan->simp_wajib = $nominal;
+        }
+        if ($transaction_type == 'Simpanan Sukarela') {
+            $nominal = Transaksi::where('user_id', $user_id)
+                                ->where('transaction_type', 'Simpanan Sukarela')
+                                ->sum('nominal');
+            $tabungan = Tabungan::where('user_id', $user_id)->first();
+            $tabungan->simp_sukarela = $nominal;
+        }
+        $tabungan->save();
         return response()->json(['message' => 'Simpanan deleted successfully']);
     }
 
@@ -345,17 +393,13 @@ class TransaksiController extends Controller
             $query->where('transaction_type', $request->filterTipeTransaksi);
         }
 
-        if ($request->has('filterTahun') && $request->filterTahun != '*') {
-            $query->whereYear('date_transaction', $request->filterTahun);
-        }
-
         $transactions = $query->get();
 
         // Tentukan format ekspor
         $format = $request->format;
 
         // Definisikan nama file dengan ekstensi berdasarkan format
-        $filename = 'simpanan_' . date('YmdHis') . '.' . $format;
+        $filename = 'transactions_' . date('YmdHis') . '.' . $format;
 
         // Ekspor data sesuai format yang dipilih
         return Excel::download(new TransaksiExport($transactions), $filename);
