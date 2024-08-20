@@ -356,6 +356,9 @@ class TransaksiController extends Controller
                     $user = User::where('num_member', $row['no_anggota'])->first();
 
                     if (!$user) {
+                        if ($row['nama_user'] == null || $row['no_anggota'] == null) {
+                            continue;
+                        }
                         $user = User::create([
                             'num_member' => $row['no_anggota'],
                             'name'       => $row['nama_user'],
