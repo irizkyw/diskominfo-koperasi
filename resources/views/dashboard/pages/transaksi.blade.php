@@ -232,7 +232,7 @@
                                 <!--begin::Modal body-->
                                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                     <!--begin::Form-->
-                                    <form id="kt_customers_export_form" class="form" action="{{ route('simpanan.import') }}" method="POST">
+                                    <form id="kt_customers_import_form" class="form" action="{{ route('simpanan.import') }}" method="POST">
                                         @csrf
 
                                         <!--begin::Input group-->
@@ -250,7 +250,11 @@
                                         <!--end::Input group-->
 
                                         
+                                        <form action="{{ route('simpanan.import') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
                                             <input type="file" name="file" />
+                                            <button type="submit">Import</button>
+                                        </form>
                                             
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
@@ -264,10 +268,10 @@
 
                                         <!--begin::Actions-->
                                         <div class="text-center">
-                                            <button type="reset" id="kt_customers_export_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">
+                                            <button type="reset" id="kt_customers_import_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">
                                                 Buang
                                             </button>
-                                            <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
+                                            <button type="submit" id="kt_customers_import_submit" class="btn btn-primary">
                                                 <span class="indicator-label">Submit</span>
                                                 <span class="indicator-progress">Please wait...
                                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
