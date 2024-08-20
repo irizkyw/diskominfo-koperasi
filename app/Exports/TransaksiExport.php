@@ -23,7 +23,6 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
             if ($tahun === null) {
                 $tahun = 2024; // Tahun default
             }
-            $tahun = 2024; // Tahun default
             $user = $transactions->first()->user;
             $tabungan = Tabungan::where('user_id', $user->id)->first();
 

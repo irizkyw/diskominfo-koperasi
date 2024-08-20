@@ -181,6 +181,7 @@
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTahun" class="form-select form-select-solid">
+                                                <option value="2025">2025</option>
                                                 <option value="2024">2024</option>
                                                 <option value="2023">2023</option>
                                             </select>
@@ -232,36 +233,40 @@
                                 <!--begin::Modal body-->
                                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                     <!--begin::Form-->
-                                    <form id="kt_customers_import_form" class="form" action="{{ route('simpanan.import') }}" method="POST">
+                                    <form id="kt_customers_import_form" class="form" action="{{ route('simpanan.import') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
 
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->
-                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Format Import:</label>
+                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Tahun Data Import:</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
-                                            <select data-control="select2" data-placeholder="Select a format" data-hide-search="true" name="format" class="form-select form-select-solid">
-                                                <option value="xlsx">Tahun</option>
-                                                <option value="pdf">Bulan</option>
+                                            <select data-control="select2" data-placeholder="Select a Year" data-hide-search="true" name="FilterTahunImport" class="form-select form-select-solid">
+                                                <option value=2025>2025</option>
+                                                <option value=2024>2024</option>
+                                                <option value=2023>2023</option>
                                             </select>
                                             <!--end::Input-->
                                         </div>
                                         <!--end::Input group-->
-
                                         
-                                        <form action="{{ route('simpanan.import') }}" method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="file" name="file" />
-                                            <button type="submit">Import</button>
-                                        </form>
+                                         <!--begin::Input group-->
+                                        <div class="fv-row mb-10">
+                                            <!--begin::Label-->
+                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih File Import:</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="file" name="file" class="form-control" required>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
                                             
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->
-                                            <label class="fs-5 fw-semibold form-label mb-5">Template Import :</label><br>
-                                            <label class="fs-5 fw-semibold form-label mb-5">Template Tahunan <a href="google.com" target="_blank">Link</a></label><br>
-                                            <label class="fs-5 fw-semibold form-label mb-5">Template Bulanan <a href="google.com" target="_blank">Link</a></label><br>
+                                            <label class="fs-5 fw-semibold form-label mb-5">Template Import : <a href="google.com" target="_blank">Link</a></label><br>
+                                            
                                             <!--end::Label-->
                                         </div>
                                         <!--end::Input group-->
