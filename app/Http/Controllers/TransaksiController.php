@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TransaksiExport;
+use App\Imports\TransaksiImport;
 
 class TransaksiController extends Controller
 {
@@ -411,12 +412,9 @@ class TransaksiController extends Controller
         return Excel::download(new TransaksiExport($transactions, $tahun), $filename);
     }
 
-    public function importForm()
-    {
-        return view('import'); // Provide a view with a form for uploading files
-    }
 
-    public function import(Request $request)
+
+    public function importSimpanan(Request $request)
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,csv'

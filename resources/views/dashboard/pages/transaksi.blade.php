@@ -232,7 +232,7 @@
                                 <!--begin::Modal body-->
                                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                     <!--begin::Form-->
-                                    <form id="kt_customers_export_form" class="form" action="{{ route('simpanan.export') }}" method="POST">
+                                    <form id="kt_customers_export_form" class="form" action="{{ route('simpanan.import') }}" method="POST">
                                         @csrf
 
                                         <!--begin::Input group-->
@@ -249,7 +249,8 @@
                                         </div>
                                         <!--end::Input group-->
 
-                                        <input type="file" name="file" />
+                                        
+                                            <input type="file" name="file" />
                                             
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
