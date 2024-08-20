@@ -157,22 +157,6 @@
                                             <!--end::Input-->
                                         </div>
                                         <!--end::Input group-->
-                                        
-                                        <!-- begin::Input group-->
-                                        <div class="fv-row mb-10">
-                                            <!--begin::Label-->
-                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Anggota:</label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterAnggota" class="form-select form-select-solid">
-                                                <option value="*">Semua</option>
-                                                @foreach ($users as $data)
-                                                    <option value={{$data->id}}>{{$data->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
 
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">

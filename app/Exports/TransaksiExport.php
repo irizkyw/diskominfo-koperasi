@@ -11,35 +11,44 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
     protected $users;
+    protected $tahun;
 
-    public function __construct($users)
+    public function __construct($users, $tahun)
     {
-        $this->users = $users instanceof \Illuminate\Database\Eloquent\Builder ? $users : Transaksi::query()->with('user')->get()->groupBy('user_id');
+        $this->users = $users instanceof \Illuminate\Database\Eloquent\Builder
+            ? $users
+            : Transaksi::query()->with('user')->get()->groupBy('user_id');
+        $this->tahun = $tahun;
     }
 
     public function collection()
     {
-        return $this->users->map(function ($transactions, $tahun) {
-            
+        return $this->users->map(function ($transactions) {
             $user = $transactions->first()->user;
             $tabungan = Tabungan::where('user_id', $user->id)->first();
 
+            // Initialize monthly totals
             $monthlyTotals = array_fill(1, 12, '-');
 
+            // Aggregate totals for the specified year
             foreach ($transactions as $transaction) {
                 $date = Carbon::parse($transaction->date_transaction);
-                $month = $date->format('n');
+                if ($date->year == $this->tahun) {
+                    $month = $date->format('n');
 
-                if ($monthlyTotals[$month] === '-') {
-                    $monthlyTotals[$month] = 0;
+                    if ($monthlyTotals[$month] === '-') {
+                        $monthlyTotals[$month] = 0;
+                    }
+                    $monthlyTotals[$month] += $transaction->nominal;
                 }
-                $monthlyTotals[$month] += $transaction->nominal;
             }
 
+            // Replace zero values with '-'
             foreach ($monthlyTotals as $key => $value) {
                 $monthlyTotals[$key] = $value === 0 ? '-' : $value;
             }
 
+            // Calculate total savings for the year
             $simpananWajibTahunIni = 0;
             for ($i = 1; $i <= 12; $i++) {
                 if ($monthlyTotals[$i] === '-') {
@@ -57,7 +66,7 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Nama User' => $user->name,
                 'Simpanan Pokok' => $tabungan ? $formatTabungan($tabungan->simp_pokok) : '-',
                 'Simpanan Sukarela' => $tabungan ? $formatTabungan($tabungan->simp_sukarela) : '-',
-                'Simpanan Wajib s/d Desember '.($tahun-1) => $tabungan ? $formatTabungan($tabungan->simp_wajib) : '-',
+                'Simpanan Wajib s/d Desember '.($this->tahun-1) => $tabungan ? $formatTabungan($tabungan->simp_wajib) : '-',
                 'Jan' => $monthlyTotals[1],
                 'Feb' => $monthlyTotals[2],
                 'Mar' => $monthlyTotals[3],
@@ -70,10 +79,10 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Oct' => $monthlyTotals[10],
                 'Nov' => $monthlyTotals[11],
                 'Dec' => $monthlyTotals[12],
-                'Simpanan Wajib Januari s/d Desember '.$tahun => $simpananWajibTahunIni,
-                'Simpanan Wajib s/d Desember '.$tahun => $tabungan ? $tabungan->simp_wajib + $simpananWajibTahunIni : '-',
+                'Simpanan Wajib Januari s/d Desember '.$this->tahun => $simpananWajibTahunIni,
+                'Simpanan Wajib s/d Desember '.$this->tahun => $tabungan ? $tabungan->simp_wajib + $simpananWajibTahunIni : '-',
                 'Setelah dikuranngi 20%' => $tabungan ? ($tabungan->simp_wajib + $simpananWajibTahunIni) * 0.8 : '-',
-                'Jumlah Simpanan '.$tahun => $tabungan ? $tabungan->simp_pokok + $tabungan->simp_sukarela + ($tabungan->simp_wajib + $simpananWajibTahunIni) * 0.8 : '-'
+                'Jumlah Simpanan '.$this->tahun => $tabungan ? $tabungan->simp_pokok + $tabungan->simp_sukarela + ($tabungan->simp_wajib + $simpananWajibTahunIni) * 0.8 : '-'
             ];
         });
     }
