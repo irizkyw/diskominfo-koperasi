@@ -147,7 +147,7 @@ Route::middleware(["auth", AdminMiddleware::class])
     Route::delete('/savings/destroy/{id}', [TransaksiController::class, 'deleteSimpanan'])->name('simpanan.destroy');
     Route::post('/savings/export', [TransaksiController::class, 'exportSimpanan'])->name('simpanan.export');
     Route::post('/savings/import', [TransaksiController::class, 'importSimpanan'])->name('simpanan.import');
-
+    Route::get('/savings/export-template', [TransaksiController::class, 'exportTemplate'])->name('simpanan.export-template');
         Route::post("/savings/update/{id}", [
             TransaksiController::class,
             "updateSimpanan",

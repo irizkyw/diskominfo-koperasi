@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TransaksiExport;
+use App\Exports\TransaksiTemplate;
 use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -274,6 +275,18 @@ class TransaksiController extends Controller
         $tabungan->save();
         return response()->json(["message" => "Simpanan deleted successfully"]);
     }
+    // Controller method
+    public function exportTemplate(Request $request)
+    {
+        $tahun = $request->query('year', date('Y')); // Get the year from the query parameter or default to the current year
+
+        $filename = "transactions_" . date("YmdHis") . ".xlsx";
+
+        // Export data for the selected year
+        return Excel::download(new TransaksiTemplate($tahun), $filename);
+    }
+
+
 
     public function exportSimpanan(Request $request)
     {
@@ -356,6 +369,9 @@ class TransaksiController extends Controller
                         // Handle the monthly transactions
                         foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $index => $month) {
                             if ($row[strtolower($month)] !== '-') {
+                                if ($row[strtolower($month)] == null) {
+                                    continue;
+                                }
                                 Transaksi::updateOrCreate(
                                     [
                                         'user_id'          => $user->id,
@@ -377,22 +393,5 @@ class TransaksiController extends Controller
         return redirect()->back()->with('success', 'Data imported successfully!');
     }
 
-    public function importSimpanan(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            "file" => "required|mimes:xlsx,csv",
-            "year" => "required|integer|min:2018|max:2024",
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $year = $request->input("year");
-        Excel::import(new SimpananImport($year), $request->file("file"));
-
-        return redirect()
-            ->back()
-            ->with("success", "Data simpanan has been imported successfully.");
-    }
+    
 }

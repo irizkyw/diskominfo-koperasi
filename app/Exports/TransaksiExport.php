@@ -1,6 +1,5 @@
 <?php
 namespace App\Exports;
-
 use App\Models\Tabungan;
 use App\Models\Transaksi;
 use Carbon\Carbon;
@@ -61,12 +60,20 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 return $value === null ? '-' : ($value === 0 ? '0' : $value);
             };
 
+            $previousYear = $this->tahun - 1;
+            $totalSimpananWajib = Transaksi::where('user_id', $user->id)
+                ->whereYear('date_transaction', $previousYear)
+                ->sum('nominal');
+                
+            $simpananPokok = $user->savings->first()->simp_pokok;
+            $simpananSukarela = $user->savings->first()->simp_sukarela;
+
             return [
                 'No Anggota' => $user->num_member,
                 'Nama User' => $user->name,
-                'Simpanan Pokok' => $tabungan ? $formatTabungan($tabungan->simp_pokok) : '-',
-                'Simpanan Sukarela' => $tabungan ? $formatTabungan($tabungan->simp_sukarela) : '-',
-                'Simpanan Wajib s/d Desember '.($this->tahun-1) => $tabungan ? $formatTabungan($tabungan->simp_wajib) : '-',
+                'Simpanan Pokok' => $simpananPokok,
+                'Simpanan Sukarela' => $simpananSukarela,
+                'Simpanan Wajib s/d Desember '.($this->tahun-1) => $totalSimpananWajib,
                 'Jan' => $monthlyTotals[1],
                 'Feb' => $monthlyTotals[2],
                 'Mar' => $monthlyTotals[3],
@@ -80,9 +87,9 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Nov' => $monthlyTotals[11],
                 'Dec' => $monthlyTotals[12],
                 'Simpanan Wajib Januari s/d Desember '.$this->tahun => $simpananWajibTahunIni,
-                'Simpanan Wajib s/d Desember '.$this->tahun => $tabungan ? $tabungan->simp_wajib + $simpananWajibTahunIni : '-',
-                'Setelah dikuranngi 20%' => $tabungan ? ($tabungan->simp_wajib + $simpananWajibTahunIni) * 0.8 : '-',
-                'Jumlah Simpanan '.$this->tahun => $tabungan ? $tabungan->simp_pokok + $tabungan->simp_sukarela + ($tabungan->simp_wajib + $simpananWajibTahunIni) * 0.8 : '-'
+                'Simpanan Wajib s/d Desember '.$this->tahun => $totalSimpananWajib + $simpananWajibTahunIni,
+                'Setelah dikuranngi 20%' => ($totalSimpananWajib + $simpananWajibTahunIni) * 0.8,
+                'Jumlah Simpanan '.$this->tahun => $simpananPokok + $simpananSukarela + ($totalSimpananWajib + $simpananWajibTahunIni) * 0.8
             ];
         });
     }
@@ -118,8 +125,6 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Jumlah Simpanan Tahun Ini'
             ];
         }
-
-        // Return the keys as headings
-        return array_keys($firstRow);
     }
+
 }

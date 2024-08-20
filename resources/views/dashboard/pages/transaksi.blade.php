@@ -60,15 +60,6 @@
                                 </div>
                             </div>
                             <div class="card-toolbar">
-                                <!--begin::Toolbar-->
-                                <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_import_simpanan">
-                                        Import Transaksi
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-toolbar">
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                     <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
                                         data-bs-target="#kt_modal_export_simpanan">
@@ -78,7 +69,7 @@
 
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                     <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_export_simpanan">
+                                        data-bs-target="#kt_modal_import_simpanan">
                                         <i class="bi bi-download fs-2"></i>Import
                                     </button>
                                 </div>
@@ -170,9 +161,17 @@
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTahun" class="form-select form-select-solid">
-                                                <option value="2025">2025</option>
-                                                <option value="2024">2024</option>
-                                                <option value="2023">2023</option>
+                                                @php
+                                                    // Fetch distinct years from the Transaksi model
+                                                    $years = \App\Models\Transaksi::selectRaw('YEAR(date_transaction) as year')
+                                                        ->distinct()
+                                                        ->orderBy('year', 'desc')
+                                                        ->pluck('year');
+                                                @endphp
+                                                
+                                                @foreach ($years as $year)
+                                                    <option value="{{ $year }}">{{ $year }}</option>
+                                                @endforeach
                                             </select>
                                             <!--end::Input-->
                                         </div>
@@ -232,9 +231,14 @@
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <select data-control="select2" data-placeholder="Select a Year" data-hide-search="true" name="FilterTahunImport" class="form-select form-select-solid">
-                                                <option value=2025>2025</option>
-                                                <option value=2024>2024</option>
-                                                <option value=2023>2023</option>
+                                                @php
+                                                    $currentYear = date('Y'); // Get the current year
+                                                    $startYear = 2018; // Define the starting year
+                                                @endphp
+                                                
+                                                @for ($year = $currentYear; $year >= $startYear; $year--)
+                                                    <option value="{{ $year }}">{{ $year }}</option>
+                                                @endfor
                                             </select>
                                             <!--end::Input-->
                                         </div>
@@ -254,11 +258,36 @@
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->
-                                            <label class="fs-5 fw-semibold form-label mb-5">Template Import : <a href="google.com" target="_blank">Link</a></label><br>
-                                            
-                                            <!--end::Label-->
+                                            <label class="fs-5 fw-semibold form-label mb-5">Template Import :</label>
+                                            <div class="d-flex align-items-center">
+                                                <!-- Year Selection Dropdown -->
+                                                <select id="yearSelect" class="form-select form-select-solid me-3">
+                                                    @php
+                                                        $currentYear = date('Y'); // Get the current year
+                                                        $startYear = 2018; // Define the starting year
+                                                    @endphp
+                                                    
+                                                    @for ($year = $currentYear; $year >= $startYear; $year--)
+                                                        <option value="{{ $year }}">{{ $year }}</option>
+                                                    @endfor
+                                                </select>
+
+                                                <!-- Link to download the template -->
+                                                <a id="templateLink" href="{{ route('simpanan.export-template', ['year' => $currentYear]) }}" target="_blank">Download Template</a>
+                                            </div>
                                         </div>
                                         <!--end::Input group-->
+
+                                        <!-- Script to update the link based on selected year -->
+                                        <script>
+                                            document.getElementById('yearSelect').addEventListener('change', function() {
+                                                var selectedYear = this.value;
+                                                var templateLink = document.getElementById('templateLink');
+                                                templateLink.href = '{{ route('simpanan.export-template', ['year' => '__year__']) }}'.replace('__year__', selectedYear);
+                                            });
+                                        </script>
+
+
 
                                         <!--begin::Actions-->
                                         <div class="text-center">
