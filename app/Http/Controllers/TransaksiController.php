@@ -19,6 +19,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 
 class TransaksiController extends Controller
 {
@@ -353,6 +354,49 @@ class TransaksiController extends Controller
                 foreach ($rows as $row) {
                     // Fetch the user based on 'No Anggota'
                     $user = User::where('num_member', $row['no_anggota'])->first();
+
+                    if (!$user) {
+                        $user = User::create([
+                            'num_member' => $row['no_anggota'],
+                            'name'       => $row['nama_user'],
+                            'role_id'    => 2,
+                            'status_active' => 1,
+                            'golongan_id' => 1,
+                            'username'   => $row['nama_user']."@".$row['no_anggota'],
+                            'password'   => Hash::make(12345678),
+                        ]);
+
+                        // Update or create Tabungan record
+                        $tabungan = Tabungan::updateOrCreate(
+                            ['user_id' => $user->id],
+                            [
+                                'simp_pokok'    => $row['simpanan_pokok'] ?? 0,
+                                'simp_sukarela' => $row['simpanan_sukarela'] ?? 0,
+                                'simp_wajib'    => $row['simpanan_wajib_s_d_desember_'.$this->tahun-1] ?? 0
+
+                            ]
+                        );
+    
+                        // Handle the monthly transactions
+                        foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $index => $month) {
+                            if ($row[strtolower($month)] !== '-') {
+                                if ($row[strtolower($month)] == null) {
+                                    continue;
+                                }
+                                Transaksi::updateOrCreate(
+                                    [
+                                        'user_id'          => $user->id,
+                                        'date_transaction' => Carbon::create($this->tahun, $index + 1, 1)->format('Y-m-d')
+                                    ],
+                                    [
+                                        'transaction_type' => 'Simpanan Wajib', // Define or fetch appropriate type
+                                        'description'      => 'Monthly transaction for '.$month,
+                                        'nominal'          => $row[strtolower($month)]
+                                    ]
+                                );
+                            }
+                        }
+                    }
     
                     if ($user) {
                         // Update or create Tabungan record
@@ -385,7 +429,7 @@ class TransaksiController extends Controller
                                 );
                             }
                         }
-                    }
+                    } 
                 }
             }
         }, $file);

@@ -125,6 +125,7 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Jumlah Simpanan Tahun Ini'
             ];
         }
+        return array_keys($firstRow);
     }
 
 }
