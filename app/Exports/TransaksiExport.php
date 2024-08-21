@@ -73,7 +73,7 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Nama User' => $user->name,
                 'Simpanan Pokok' => $simpananPokok,
                 'Simpanan Sukarela' => $simpananSukarela,
-                'Simpanan Wajib s/d Desember '.($this->tahun-1) => $totalSimpananWajib,
+                'Simpanan Wajib sampai Desember '.($this->tahun-1) => $totalSimpananWajib,
                 'Jan' => $monthlyTotals[1],
                 'Feb' => $monthlyTotals[2],
                 'Mar' => $monthlyTotals[3],
@@ -86,8 +86,8 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Oct' => $monthlyTotals[10],
                 'Nov' => $monthlyTotals[11],
                 'Dec' => $monthlyTotals[12],
-                'Simpanan Wajib Januari s/d Desember '.$this->tahun => $simpananWajibTahunIni,
-                'Simpanan Wajib s/d Desember '.$this->tahun => $totalSimpananWajib + $simpananWajibTahunIni,
+                'Simpanan Wajib Januari sampai Desember '.$this->tahun => $simpananWajibTahunIni,
+                'Simpanan Wajib sampai Desember '.$this->tahun => $totalSimpananWajib + $simpananWajibTahunIni,
                 'Setelah dikuranngi 20%' => ($totalSimpananWajib + $simpananWajibTahunIni) * 0.8,
                 'Jumlah Simpanan '.$this->tahun => $simpananPokok + $simpananSukarela + ($totalSimpananWajib + $simpananWajibTahunIni) * 0.8
             ];
@@ -119,8 +119,8 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Oct',
                 'Nov',
                 'Dec',
-                'Simpanan Wajib Januari s/d Desember Tahun Ini',
-                'Simpanan Wajib s/d Desember Tahun Ini',
+                'Simpanan Wajib Januari sampai Desember Tahun Ini',
+                'Simpanan Wajib sampai Desember Tahun Ini',
                 'Setelah dikuranngi 20%',
                 'Jumlah Simpanan Tahun Ini'
             ];

@@ -20,6 +20,8 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Golongan;
+
 
 class TransaksiController extends Controller
 {
@@ -125,7 +127,11 @@ class TransaksiController extends Controller
             "nominal" => $request->nominal,
         ]);
 
-        $tabungan = Tabungan::where("user_id", $request->user_id)->first();
+
+        $tabungan = Tabungan::where("user_id", $request->user_id)
+                            ->whereYear("tabungan_tahun", $request->date_transaction)
+                            ->first();
+
 
         if ($tabungan) {
             if ($request->transaction_type == "Simpanan Wajib") {
@@ -138,6 +144,7 @@ class TransaksiController extends Controller
         } else {
             $tabungan = Tabungan::create([
                 "user_id" => $request->user_id,
+                "simp_pokok" => User::find($request->user_id)->golongan->simp_pokok,
                 "simp_wajib" =>
                     $request->transaction_type == "Simpanan Wajib"
                         ? $request->nominal
@@ -146,6 +153,8 @@ class TransaksiController extends Controller
                     $request->transaction_type == "Simpanan Sukarela"
                         ? $request->nominal
                         : 0,
+                        
+                "tabungan_tahun" => Carbon::parse($request->date_transaction)->format("Y"),
             ]);
         }
 
@@ -385,35 +394,48 @@ class TransaksiController extends Controller
                             ) {
                                 continue;
                             }
+                            $generateUniqueUsername = function ($name, $num_member) {
+                                do {
+                                    $words = explode(" ", $name);
+                                    $firstName = strtolower($words[0]);
+                                    $username =
+                                        $firstName . str_pad($num_member, 3, "0", STR_PAD_LEFT);
+                                    $userExists = User::where("username", $username)->exists();
+                                } while ($userExists);
+                    
+                                return $username;
+                            };
+                            $username = $generateUniqueUsername(
+                                $row["nama_user"],
+                                $row["no_anggota"]
+                            );
                             $user = User::create([
                                 "num_member" => $row["no_anggota"],
                                 "name" => $row["nama_user"],
                                 "role_id" => 2,
                                 "status_active" => 1,
-                                "golongan_id" => 1,
-                                "username" =>
-                                    $row["nama_user"] .
-                                    "@" .
-                                    $row["no_anggota"],
-                                "password" => Hash::make(12345678),
+                                "golongan_id" => Golongan::where('simp_pokok', $row["simpanan_pokok"])->first()->id ?? 2,
+                                "username" =>$username,
+                                "password" => Hash::make($username),
                             ]);
 
-                            // Update or create Tabungan record
-                            $tabungan = Tabungan::updateOrCreate(
-                                ["user_id" => $user->id],
+                            // Update or create Tabungan record Tahun Lalu
+                            Tabungan::updateOrCreate(
+                                [   "user_id" => $user->id,
+                                    "tabungan_tahun" => $this->tahun-1,
+                                ],
                                 [
                                     "simp_pokok" => $row["simpanan_pokok"] ?? 0,
                                     "simp_sukarela" =>
                                         $row["simpanan_sukarela"] ?? 0,
                                     "simp_wajib" =>
                                         $row[
-                                            "simpanan_wajib_s_d_desember_" .
-                                                $this->tahun -
-                                                1
+                                            "simpanan_wajib_sampai_desember_" .
+                                                $this->tahun-1
                                         ] ?? 0,
                                 ]
                             );
-
+                            $totalSimpananTahunIni = 0;
                             // Handle the monthly transactions
                             foreach (
                                 [
@@ -455,27 +477,44 @@ class TransaksiController extends Controller
                                                 $row[strtolower($month)],
                                         ]
                                     );
+                                    $totalSimpananTahunIni += $row[strtolower($month)];
                                 }
                             }
+                            // Update or create Tabungan record Tahun ini
+                            Tabungan::updateOrCreate(
+                                [   "user_id" => $user->id,
+                                    "tabungan_tahun" => $this->tahun,
+                                ],
+                                [
+                                    "simp_pokok" => $row["simpanan_pokok"] ?? 0,
+                                    "simp_sukarela" =>
+                                        $row["simpanan_sukarela"] ?? 0,
+                                    "simp_wajib" =>$row["simpanan_wajib_sampai_desember_" .$this->tahun-1]+$totalSimpananTahunIni ?? 0,
+                                ]
+                            );
+
                         }
 
-                        if ($user) {
-                            // Update or create Tabungan record
-                            $tabungan = Tabungan::updateOrCreate(
-                                ["user_id" => $user->id],
+                        else {
+                            // Update or create Tabungan record Tahun Lalu
+                            Tabungan::updateOrCreate(
+                                [
+                                    "user_id" => $user->id,
+                                    "tabungan_tahun" => $this->tahun-1,
+                                ],
                                 [
                                     "simp_pokok" => $row["simpanan_pokok"] ?? 0,
                                     "simp_sukarela" =>
                                         $row["simpanan_sukarela"] ?? 0,
                                     "simp_wajib" =>
                                         $row[
-                                            "simpanan_wajib_s_d_desember_" .
+                                            "simpanan_wajib_sampai_desember_" .
                                                 $this->tahun -
                                                 1
                                         ] ?? 0,
                                 ]
                             );
-
+                            $totalSimpananTahunIni = 0;
                             // Handle the monthly transactions
                             foreach (
                                 [
@@ -517,8 +556,22 @@ class TransaksiController extends Controller
                                                 $row[strtolower($month)],
                                         ]
                                     );
+                                    $totalSimpananTahunIni += $row[strtolower($month)];
                                 }
                             }
+                            // Update or create Tabungan record Tahun ini
+                            Tabungan::updateOrCreate(
+                                [
+                                    "user_id" => $user->id,
+                                    "tabungan_tahun" => $this->tahun,
+                                ],
+                                [
+                                    "simp_pokok" => $row["simpanan_pokok"] ?? 0,
+                                    "simp_sukarela" =>
+                                        $row["simpanan_sukarela"] ?? 0,
+                                        "simp_wajib" =>$row["simpanan_wajib_sampai_desember_" .$this->tahun-1]+$totalSimpananTahunIni ?? 0,
+                                ]
+                            );
                         }
                     }
                 }
