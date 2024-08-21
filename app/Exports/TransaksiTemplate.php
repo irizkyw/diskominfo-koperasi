@@ -30,9 +30,9 @@ class TransaksiTemplate implements FromCollection, WithHeadings, ShouldAutoSize
             return [
                 'No Anggota' => $user->num_member,
                 'Nama User' => $user->name,
-                'Simpanan Pokok' => $user->savings->first()->simp_pokok,
-                'Simpanan Sukarela' => $user->savings->first()->simp_sukarela,
-                'Simpanan Wajib s/d Desember ' . ($this->tahun - 1) => $totalSimpananWajib,
+                'Simpanan Pokok' => $user->golongan->simp_pokok,
+                'Simpanan Sukarela' => $user->golongan->simp_sukarela,
+                'Simpanan Wajib sampai Desember ' . ($this->tahun - 1) => $totalSimpananWajib,
                 'Jan' => null,
                 'Feb' => null,
                 'Mar' => null,
@@ -45,8 +45,8 @@ class TransaksiTemplate implements FromCollection, WithHeadings, ShouldAutoSize
                 'Oct' => null,
                 'Nov' => null,
                 'Dec' => null,
-                'Simpanan Wajib Januari s/d Desember ' . $this->tahun => null,
-                'Simpanan Wajib s/d Desember ' . $this->tahun => null,
+                'Simpanan Wajib Januari sampai Desember ' . $this->tahun => null,
+                'Simpanan Wajib sampai Desember ' . $this->tahun => null,
                 'Setelah dikurangi 20%' => null,
                 'Jumlah Simpanan ' . $this->tahun => null,
             ];
@@ -60,7 +60,7 @@ class TransaksiTemplate implements FromCollection, WithHeadings, ShouldAutoSize
             'Nama User',
             'Simpanan Pokok',
             'Simpanan Sukarela',
-            'Simpanan Wajib s/d Desember ' . ($this->tahun - 1),
+            'Simpanan Wajib sampai Desember ' . ($this->tahun - 1),
             'Jan',
             'Feb',
             'Mar',
@@ -73,8 +73,8 @@ class TransaksiTemplate implements FromCollection, WithHeadings, ShouldAutoSize
             'Oct',
             'Nov',
             'Dec',
-            'Simpanan Wajib Januari s/d Desember ' . $this->tahun,
-            'Simpanan Wajib s/d Desember ' . $this->tahun,
+            'Simpanan Wajib Januari sampai Desember ' . $this->tahun,
+            'Simpanan Wajib sampai Desember ' . $this->tahun,
             'Setelah dikurangi 20%',
             'Jumlah Simpanan ' . $this->tahun
         ];
