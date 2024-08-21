@@ -51,38 +51,39 @@
         <!--begin::Page-->
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             <!--begin::Header-->
-            @if (Auth::check() && Auth::user()->role->name !== 'Member' && (request()->is('dashboard/*')||request()->is('dashboard') || request()->is('profile/*') || request()->is('profile')))
-                <div id="kt_app_header" class="app-header d-flex d-lg-none border-bottom">
-                    <!--begin::Header container-->
-                    <div class="app-container container-fluid d-flex flex-stack" id="kt_app_header_container">
-                        <!--begin::Sidebar toggle-->
-                        <button class="btn btn-icon btn-sm btn-active-color-primary ms-n2"
-                            id="kt_app_sidebar_mobile_toggle">
-                            <i class="ki-outline ki-abstract-14 fs-2"></i>
-                        </button>
-                        <!--end::Sidebar toggle-->
-                        <!--begin::Logo-->
-                        <a href="{{ route('dashboard') }}">
-                            <h1>KODIJA</h1>
-                        </a>
-                        <!--end::Logo-->
-                        <!--begin::Sidebar panel toggle-->
-                        <button class="btn btn-icon btn-sm btn-active-color-primary me-n2"
-                            id="kt_app_aside_mobile_toggle">
-                            <i class="ki-outline ki-menu fs-2"></i>
-                        </button>
-                        <!--end::Sidebar panel toggle-->
+            @if (Auth::check() || (request()->is('dashboard/*') || request()->is('dashboard') || request()->is('profile/*') || request()->is('profile')))
+                @if (Auth::user()->role->name !== 'Member')
+                    <div id="kt_app_header" class="app-header d-flex d-lg-none border-bottom">
+                        <!--begin::Header container-->
+                        <div class="app-container container-fluid d-flex flex-stack" id="kt_app_header_container">
+                            <!--begin::Sidebar toggle-->
+                            <button class="btn btn-icon btn-sm btn-active-color-primary ms-n2"
+                                id="kt_app_sidebar_mobile_toggle">
+                                <i class="ki-outline ki-abstract-14 fs-2"></i>
+                            </button>
+                            <!--end::Sidebar toggle-->
+                            <!--begin::Logo-->
+                            <a href="{{ route('dashboard') }}">
+                                <h1>KODIJA</h1>
+                            </a>
+                            <!--end::Logo-->
+                            <!--begin::Sidebar panel toggle-->
+                            <button class="btn btn-icon btn-sm btn-active-color-primary me-n2"
+                                id="kt_app_aside_mobile_toggle">
+                                <i class="ki-outline ki-menu fs-2"></i>
+                            </button>
+                            <!--end::Sidebar panel toggle-->
+                        </div>
+                        <!--end::Header container-->
                     </div>
-                    <!--end::Header container-->
-                </div>
+                @endif
             <!--end::Header-->
             <!--begin::Wrapper-->
             <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
-                <!--begin::Sidebar-->
                 @if (Auth::user()->role->name !== 'Member')
                     @include('layouts.includes.dashboard._sidebar')
-                    <!--end::Sidebar-->
                 @endif
+
                 <!--begin::Main-->
                 @yield('content')
                 <!--end:::Main-->

@@ -96,7 +96,7 @@ class DatabaseSeeder extends Seeder
                     "simp_pokok" => $golongan->simp_pokok,
                     "simp_sukarela" => 0,
                     "simp_wajib" => 0,
-                    "angsuran" => 0,
+                    "tabungan_tahun" => 0,
                 ]
             );
         }

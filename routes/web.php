@@ -159,7 +159,14 @@ Route::middleware(["auth", AdminMiddleware::class])
             TransaksiController::class,
             "exportSimpanan",
         ])->name("simpanan.export");
-
+        Route::post("/savings/import", [
+            TransaksiController::class,
+            "importSimpanan",
+        ])->name("simpanan.import");
+        Route::get("/savings/export-template", [
+            TransaksiController::class,
+            "exportTemplate",
+        ])->name("simpanan.export-template");
         Route::post("/savings/update/{id}", [
             TransaksiController::class,
             "updateSimpanan",
@@ -168,4 +175,13 @@ Route::middleware(["auth", AdminMiddleware::class])
             TransaksiController::class,
             "transaksiById",
         ])->name("simpanan.findById");
+        Route::get("/savings/table", [
+            TransaksiController::class,
+            "table_simpanan",
+        ])->name("simpanan.table");
+
+        Route::get("/load-tabel-simpananan", [
+            TransaksiController::class,
+            "loadTabelSimpananan",
+        ])->name("simpanan.loadTabelSimpananan");
     });
