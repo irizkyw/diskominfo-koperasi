@@ -729,7 +729,7 @@
             e.preventDefault();
 
             Swal.fire({
-                text: "Apakah Anda yakin ingin mengimport data? Data sekarang akan ditindih",
+                text: "Apakah Anda yakin ingin mengimport data? Data sekarang akan dihapus dan diganti dengan data yang diimport.",
                 icon: "warning",
                 showCancelButton: true,
                 buttonsStyling: false,
