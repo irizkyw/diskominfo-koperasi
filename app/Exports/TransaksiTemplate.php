@@ -1,6 +1,7 @@
 <?php
 namespace App\Exports;
 
+use App\Models\Tabungan;
 use App\Models\User;
 use App\Models\Transaksi;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -23,9 +24,9 @@ class TransaksiTemplate implements FromCollection, WithHeadings, ShouldAutoSize
 
         return $users->map(function ($user) {
             $previousYear = $this->tahun - 1;
-            $totalSimpananWajib = Transaksi::where('user_id', $user->id)
-                ->whereYear('date_transaction', $previousYear)
-                ->sum('nominal');
+            $totalSimpananWajib = Tabungan::where('user_id', $user->id)
+                ->where('tabungan_tahun', $previousYear)
+                ->sum('simp_wajib');
                 
             return [
                 'No Anggota' => $user->num_member,

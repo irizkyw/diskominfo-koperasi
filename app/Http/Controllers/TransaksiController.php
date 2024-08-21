@@ -20,6 +20,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Golongan;
 
 
 class TransaksiController extends Controller
@@ -413,16 +414,15 @@ class TransaksiController extends Controller
                                 "name" => $row["nama_user"],
                                 "role_id" => 2,
                                 "status_active" => 1,
-                                "golongan_id" => 1,
+                                "golongan_id" => Golongan::where('simp_pokok', $row["simpanan_pokok"])->first()->id ?? 2,
                                 "username" =>$username,
                                 "password" => Hash::make($username),
                             ]);
 
-                            // Update or create Tabungan record
-                            $tabungan = Tabungan::updateOrCreate(
+                            // Update or create Tabungan record Tahun Lalu
+                            Tabungan::updateOrCreate(
                                 [   "user_id" => $user->id,
-                                    "tabungan_tahun" => $this->tahun,
-                                    
+                                    "tabungan_tahun" => $this->tahun-1,
                                 ],
                                 [
                                     "simp_pokok" => $row["simpanan_pokok"] ?? 0,
@@ -431,12 +431,11 @@ class TransaksiController extends Controller
                                     "simp_wajib" =>
                                         $row[
                                             "simpanan_wajib_sampai_desember_" .
-                                                $this->tahun -
-                                                1
+                                                $this->tahun-1
                                         ] ?? 0,
                                 ]
                             );
-
+                            $totalSimpananTahunIni = 0;
                             // Handle the monthly transactions
                             foreach (
                                 [
@@ -478,13 +477,90 @@ class TransaksiController extends Controller
                                                 $row[strtolower($month)],
                                         ]
                                     );
+                                    $totalSimpananTahunIni += $row[strtolower($month)];
                                 }
                             }
+                            // Update or create Tabungan record Tahun ini
+                            Tabungan::updateOrCreate(
+                                [   "user_id" => $user->id,
+                                    "tabungan_tahun" => $this->tahun,
+                                ],
+                                [
+                                    "simp_pokok" => $row["simpanan_pokok"] ?? 0,
+                                    "simp_sukarela" =>
+                                        $row["simpanan_sukarela"] ?? 0,
+                                    "simp_wajib" =>$row["simpanan_wajib_sampai_desember_" .$this->tahun-1]+$totalSimpananTahunIni ?? 0,
+                                ]
+                            );
+
                         }
 
                         else {
-                            // Update or create Tabungan record
-                            $tabungan = Tabungan::updateOrCreate(
+                            // Update or create Tabungan record Tahun Lalu
+                            Tabungan::updateOrCreate(
+                                [
+                                    "user_id" => $user->id,
+                                    "tabungan_tahun" => $this->tahun-1,
+                                ],
+                                [
+                                    "simp_pokok" => $row["simpanan_pokok"] ?? 0,
+                                    "simp_sukarela" =>
+                                        $row["simpanan_sukarela"] ?? 0,
+                                    "simp_wajib" =>
+                                        $row[
+                                            "simpanan_wajib_sampai_desember_" .
+                                                $this->tahun -
+                                                1
+                                        ] ?? 0,
+                                ]
+                            );
+                            $totalSimpananTahunIni = 0;
+                            // Handle the monthly transactions
+                            foreach (
+                                [
+                                    "Jan",
+                                    "Feb",
+                                    "Mar",
+                                    "Apr",
+                                    "May",
+                                    "Jun",
+                                    "Jul",
+                                    "Aug",
+                                    "Sep",
+                                    "Oct",
+                                    "Nov",
+                                    "Dec",
+                                ]
+                                as $index => $month
+                            ) {
+                                if ($row[strtolower($month)] !== "-") {
+                                    if ($row[strtolower($month)] == null) {
+                                        continue;
+                                    }
+                                    Transaksi::updateOrCreate(
+                                        [
+                                            "user_id" => $user->id,
+                                            "date_transaction" => Carbon::create(
+                                                $this->tahun,
+                                                $index + 1,
+                                                1
+                                            )->format("Y-m-d"),
+                                        ],
+                                        [
+                                            "transaction_type" =>
+                                                "Simpanan Wajib", // Define or fetch appropriate type
+                                            "description" =>
+                                                "Monthly transaction for " .
+                                                $month,
+                                            "nominal" =>
+                                                $row[strtolower($month)],
+                                        ]
+                                    );
+                                    $totalSimpananTahunIni += $row[strtolower($month)];
+                                }
+                            }
+                            // Update or create Tabungan record Tahun ini
+                            Tabungan::updateOrCreate(
                                 [
                                     "user_id" => $user->id,
                                     "tabungan_tahun" => $this->tahun,
@@ -493,58 +569,9 @@ class TransaksiController extends Controller
                                     "simp_pokok" => $row["simpanan_pokok"] ?? 0,
                                     "simp_sukarela" =>
                                         $row["simpanan_sukarela"] ?? 0,
-                                    "simp_wajib" =>
-                                        $row[
-                                            "simpanan_wajib_sampai_desember_" .
-                                                $this->tahun -
-                                                1
-                                        ] ?? 0,
+                                        "simp_wajib" =>$row["simpanan_wajib_sampai_desember_" .$this->tahun-1]+$totalSimpananTahunIni ?? 0,
                                 ]
                             );
-
-                            // Handle the monthly transactions
-                            foreach (
-                                [
-                                    "Jan",
-                                    "Feb",
-                                    "Mar",
-                                    "Apr",
-                                    "May",
-                                    "Jun",
-                                    "Jul",
-                                    "Aug",
-                                    "Sep",
-                                    "Oct",
-                                    "Nov",
-                                    "Dec",
-                                ]
-                                as $index => $month
-                            ) {
-                                if ($row[strtolower($month)] !== "-") {
-                                    if ($row[strtolower($month)] == null) {
-                                        continue;
-                                    }
-                                    Transaksi::updateOrCreate(
-                                        [
-                                            "user_id" => $user->id,
-                                            "date_transaction" => Carbon::create(
-                                                $this->tahun,
-                                                $index + 1,
-                                                1
-                                            )->format("Y-m-d"),
-                                        ],
-                                        [
-                                            "transaction_type" =>
-                                                "Simpanan Wajib", // Define or fetch appropriate type
-                                            "description" =>
-                                                "Monthly transaction for " .
-                                                $month,
-                                            "nominal" =>
-                                                $row[strtolower($month)],
-                                        ]
-                                    );
-                                }
-                            }
                         }
                     }
                 }
