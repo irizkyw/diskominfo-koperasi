@@ -58,7 +58,7 @@
                         <!--end::Card header-->
 
                         <!--begin::Card body-->
-                        <div class="card-body" style="max-height: 65em;">
+                        <div class="card-body">
                             <div class="d-flex flex-column mb-4">
                                 <!-- Dropdown for year selection -->
                                 <select id="yearDropdown" class="form-select form-select-solid">
