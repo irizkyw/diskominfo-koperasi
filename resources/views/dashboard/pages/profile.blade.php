@@ -336,15 +336,6 @@
                                 <!--begin::Tab panel-->
                                 <div id="data_simpanan" class="card-body p-0 tab-pane fade" role="tabpanel"
                                     aria-labelledby="data_simpanan_tab">
-                                    <!--begin::Card header-->
-                                    <div class="card-header border-0">
-                                        <div class="card-title">
-                                            <div class="d-flex align-items-center position-relative my-1">
-                                                <h5 class="text-gray">Data History Simpanan</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--end::Card header-->
                                     <!--begin::Card body-->
                                     <div class="card-body pt-0">
                                         <!--begin::Table-->
@@ -353,6 +344,8 @@
                                             <thead>
                                                 <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="min-w-75px">Tahun</th>
+                                                    <th class="min-w-75px">S.Pokok</th>
+                                                    <th class="min-w-75px">S.Sukarela</th>
                                                     <th class="min-w-125px">Januari</th>
                                                     <th class="min-w-125px">Februari</th>
                                                     <th class="min-w-125px">Maret</th>
@@ -392,14 +385,18 @@
                                             <div class="mb-10">
                                                 <div class="d-flex flex-wrap">
                                                     <div class="col-md-6">
-                                                        <label for="nomor_anggota" class="required form-label">Nomor Anggota</label>
-                                                        <input type="text" class="form-control form-control-solid me-3" name="nomor_anggota"
-                                                               placeholder="Nomor Anggota" value="{{ Auth::user()->num_member }}" disabled />
+                                                        <label for="nomor_anggota" class="required form-label">Nomor
+                                                            Anggota</label>
+                                                        <input type="text" class="form-control form-control-solid me-3"
+                                                            name="nomor_anggota" placeholder="Nomor Anggota"
+                                                            value="{{ Auth::user()->num_member }}" disabled />
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="golongan" class="required form-label">Golongan</label>
-                                                        <input type="text" class="form-control form-control-solid ms-3" name="golongan"
-                                                               placeholder="Golongan" value="{{ Auth::user()->golongan->nama_golongan }}" required />
+                                                        <input type="text" class="form-control form-control-solid ms-3"
+                                                            name="golongan" placeholder="Golongan"
+                                                            value="{{ Auth::user()->golongan->nama_golongan }}"
+                                                            required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -504,6 +501,15 @@
                         data: 'year'
                     },
                     {
+                        name: 'simp_pokok',
+                        data: 'simp_pokok'
+                    },
+                    {
+                        name: 'simp_sukarela',
+                        data: 'simp_sukarela'
+                    },
+
+                    {
                         name: 'january',
                         data: 'january'
                     },
@@ -552,12 +558,13 @@
                         data: 'december'
                     },
                     {
-                        name: 'total',
-                        data: 'total'
+                        name: 'total_tabungan',
+                        data: 'total_tabungan'
                     }
                 ]
             });
         });
+
 
         $(document).on("click", '.password-update-button', function(e) {
             e.preventDefault();

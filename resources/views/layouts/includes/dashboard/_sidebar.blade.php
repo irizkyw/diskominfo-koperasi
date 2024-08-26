@@ -78,20 +78,51 @@
                     </div>
                     <!--end:Menu sub-->
                 </div>
+
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion show">
+                    <!--begin:Menu link-->
+                    <span class="menu-link">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-category fs-2"></i>
+                        </span>
+                        <span class="menu-title">Data Simpanan</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <!--begin:Menu link-->
+                                <a class="menu-link" href="{{ route('simpanan.index') }}">
+                                    <span class="menu-icon">
+                                        <i class="ki-outline ki-folder fs-2"></i> <!-- Ganti dengan ikon ki-folder -->
+                                    </span>
+                                    <span class="menu-title">Data Simpanan</span>
+                                </a>
+
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link" href="{{ route('simpanan.table') }}">
+                                        <span class="menu-icon">
+                                            <i class="fa fa-table fs-2"></i>
+                                        </span>
+                                        <span class="menu-title">Tabel Simpanan</span>
+                                    </a>
+                                    <!--end:Menu link-->
+                                </div>
+
+                                <!--end:Menu link-->
+                            </div>
+                        </div>
+                        <!--end:Menu item-->
+                    </div>
+                    <!--end:Menu sub-->
+                </div>
                 <!--end:Menu item-->
                 <div class="separator separator-gray-300 separator-dashed my-3"></div>
                 <!--end:Menu item-->
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                    <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('simpanan.index') }}">
-                        <span class="menu-icon">
-                            <i class="ki-outline ki-folder fs-2"></i> <!-- Ganti dengan ikon ki-folder -->
-                        </span>
-                        <span class="menu-title">Data Simpanan</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <a class="menu-link" href="{{ route('event.index') }}">
@@ -102,18 +133,6 @@
                     </a>
                     <!--end:Menu link-->
                 </div>
-
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                    <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('simpanan.table') }}">
-                        <span class="menu-icon">
-                            <i class="ki-outline ki-notification-on fs-2"></i>
-                        </span>
-                        <span class="menu-title">Tabel Simpanan</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-
             </div>
             <!--end::Primary menu-->
         </div>

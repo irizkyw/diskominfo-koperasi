@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
+
 class ProfileController extends Controller
 {
     public function __construct()
@@ -34,57 +36,85 @@ class ProfileController extends Controller
         })->only(["index", "monthly"]);
     }
 
-    public function index(Request $request)
-    {
-        $user = $request->user();
-        $userId = $request->input("user_id", $user->id);
+public function index(Request $request)
+{
+    $user = $request->user();
+    $userId = $request->input("user_id", $user->id);
 
-        $User = User::with(["role", "golongan", "transaksi"])->find($userId);
+    $User = User::with(["role", "golongan", "transaksi"])->find($userId);
 
-        if (!$User) {
-            abort(404, "User not found");
-        }
-
-        $Role = $User->role;
-        $Golongan = $User->golongan;
-
-        $LogTransaksi = $User
-            ->transaksi()
-            ->orderBy("created_at", "desc")
-            ->get();
-
-        $tabungan = Tabungan::where("user_id", $User->id)->first();
-
-        $SimpananWajib = $tabungan->simp_wajib ?? 0;
-        $SimpananWajib80 = $SimpananWajib * 0.8;
-
-        $SimpananPokok = $tabungan->simp_pokok ?? 0;
-        $SimpananSukarela = $tabungan->simp_sukarela ?? 0;
-        $SimpananAkhir = $SimpananWajib80 + $SimpananPokok + $SimpananSukarela;
-
-        return view(
-            "dashboard.pages.profile",
-            compact(
-                "User",
-                "Role",
-                "Golongan",
-                "LogTransaksi",
-                "SimpananWajib",
-                "SimpananPokok",
-                "SimpananSukarela",
-                "SimpananAkhir"
-            )
-        );
+    if (!$User) {
+        abort(404, "User not found");
     }
+
+    $Role = $User->role;
+    $Golongan = $User->golongan;
+
+    $latestTabungan = Tabungan::where("user_id", $User->id)
+        ->orderBy("created_at", "desc")
+        ->first();
+
+    $year = Carbon::now()->year;
+    $previousYear = $year - 1;
+
+    $monthlyTotals = array_fill(1, 12, 0);
+    $simpananSukarela = $latestTabungan->simp_sukarela ?? 0;
+    $simpananWajibTahunIni = 0;
+
+    foreach ($User->transaksi as $transaction) {
+        $date = Carbon::parse($transaction->date_transaction);
+        $transactionYear = $date->year;
+        $month = $date->format('n');
+
+        if ($transactionYear == $year) {
+            $monthlyTotals[$month] += $transaction->nominal;
+            $simpananWajibTahunIni += $transaction->nominal;
+            if ($transaction->transaction_type == 'Simpanan Sukarela') {
+                $simpananSukarela += $transaction->nominal;
+            }
+        }
+    }
+    $LogTransaksi = $User
+                ->transaksi()
+                ->orderBy("created_at", "desc")
+                ->get();
+
+    $totalTabunganSimpananWajib = Tabungan::where('user_id', $User->id)
+        ->where('tabungan_tahun', '<=', $year)
+        ->sum('simp_wajib');
+
+    $simpananPokok = $latestTabungan->simp_pokok ?? 0;
+    $SimpananAkhir = $totalTabunganSimpananWajib + $simpananPokok + $simpananSukarela;
+
+
+    return view(
+        "dashboard.pages.profile",
+        compact(
+            "User",
+            "Role",
+            "Golongan",
+            "SimpananAkhir",
+            "LogTransaksi"
+        )
+    );
+}
+
+
 
     public function monthly(Request $request)
     {
         $userId = (int) $request->input("user_id", $request->user()->id);
+
+        // Retrieve user savings data
+        $savings = User::find($userId)->savings->first();
+        $simpananPokok = $savings->simp_pokok ?? 0;
+
+        // Retrieve all relevant transactions
         $rawData = DB::table("transaksi")
             ->select(
-                "user_id",
                 DB::raw("YEAR(date_transaction) as year"),
                 DB::raw("MONTH(date_transaction) as month"),
+                DB::raw("transaction_type"),
                 DB::raw("SUM(nominal) as total_nominal")
             )
             ->where("user_id", $userId)
@@ -96,116 +126,99 @@ class ProfileController extends Controller
             ->groupBy(
                 DB::raw("YEAR(date_transaction)"),
                 DB::raw("MONTH(date_transaction)"),
-                "user_id"
+                "transaction_type"
             )
             ->get();
 
+        // Retrieve all relevant years from the tabungan table
+        $years = Tabungan::where('user_id', $userId)
+            ->select(DB::raw('DISTINCT(tabungan_tahun) as year'))
+            ->pluck('year')
+            ->toArray();
+
+        $firstYear = min($years); // Earliest year in tabungan
+        $lastYear = max($years); // Latest year in tabungan
+
+        // Initialize an array to hold the data for all years within the range
         $pivotedData = [];
+        for ($year = $firstYear; $year <= $lastYear; $year++) {
+            $pivotedData[$year] = array_fill(1, 12, 0); // Fill months 1-12 with 0
+            $pivotedData[$year]["total"] = 0;
+            $pivotedData[$year]["simpanan_sukarela"] = 0; // Initialize simpanan sukarela for each year
+        }
+
+        // Populate the data with transactions
         foreach ($rawData as $entry) {
             $year = $entry->year;
             $month = $entry->month;
-            $total_nominal = $entry->total_nominal;
+            $transactionType = $entry->transaction_type;
+            $totalNominal = $entry->total_nominal;
 
-            if (!isset($pivotedData[$year])) {
-                $pivotedData[$year] = array_fill(1, 12, 0); // Fill months 1-12 with 0
-                $pivotedData[$year]["total"] = 0;
+            // Add monthly contributions
+            $pivotedData[$year][$month] += $totalNominal;
+            $pivotedData[$year]["total"] += $totalNominal;
+
+            // Aggregate Simpanan Sukarela for the specific year
+            if ($transactionType == 'Simpanan Sukarela') {
+                $pivotedData[$year]["simpanan_sukarela"] += $totalNominal;
             }
-
-            $pivotedData[$year][$month] = $total_nominal;
-            $pivotedData[$year]["total"] += $total_nominal;
         }
 
+        // Prepare the final data
         $data = [];
         foreach ($pivotedData as $year => $months) {
-            $row = [
-                "year" => $year,
-                "january" => $months[1],
-                "february" => $months[2],
-                "march" => $months[3],
-                "april" => $months[4],
-                "may" => $months[5],
-                "june" => $months[6],
-                "july" => $months[7],
-                "august" => $months[8],
-                "september" => $months[9],
-                "october" => $months[10],
-                "november" => $months[11],
-                "december" => $months[12],
-                "total" => $months["total"],
-            ];
-            $data[] = $row;
+            // Check if there is any transaction data for this year
+            if ($months["total"] > 0 || $months["simpanan_sukarela"] > 0) {
+                $previousYear = $year - 1;
+
+                // Retrieve total savings for the year from the tabungan table
+                $totalTabunganSimpananWajib = Tabungan::where('user_id', $userId)
+                    ->where('tabungan_tahun', '<=', $year)
+                    ->sum('simp_wajib');
+
+                $simpananWajibTahunIni = $months["total"];
+                $jumlahSimpananAfterReduction = ($totalTabunganSimpananWajib + $simpananWajibTahunIni) * 0.8;
+                $totalTabungan = $totalTabunganSimpananWajib + $simpananPokok + $months["simpanan_sukarela"];
+
+                $row = [
+                    'simp_pokok' => $this->formatCurrency($simpananPokok),
+                    'simp_sukarela' => $this->formatCurrency($months["simpanan_sukarela"]),
+                    'year' => $year,
+                    'tabungan_' . $previousYear => $this->formatCurrency($totalTabunganSimpananWajib),
+                    'tabungan_' . $year => $this->formatCurrency($totalTabunganSimpananWajib),
+                    'jumlahSimpanan_AfterReduction' => $this->formatCurrency($jumlahSimpananAfterReduction),
+                    'total_simpanan_currentYear' => $this->formatCurrency($simpananWajibTahunIni),
+                    'total_tabungan' => $this->formatCurrency($totalTabungan),
+                    'january' => $this->formatCurrency($months[1]),
+                    'february' => $this->formatCurrency($months[2]),
+                    'march' => $this->formatCurrency($months[3]),
+                    'april' => $this->formatCurrency($months[4]),
+                    'may' => $this->formatCurrency($months[5]),
+                    'june' => $this->formatCurrency($months[6]),
+                    'july' => $this->formatCurrency($months[7]),
+                    'august' => $this->formatCurrency($months[8]),
+                    'september' => $this->formatCurrency($months[9]),
+                    'october' => $this->formatCurrency($months[10]),
+                    'november' => $this->formatCurrency($months[11]),
+                    'december' => $this->formatCurrency($months[12]),
+                ];
+
+                $data[] = $row;
+            }
         }
 
         return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn("year", function ($row) {
-                return $row["year"];
-            })
-            ->addColumn("january", function ($row) {
-                return $row["january"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["january"], 0, ",", ".");
-            })
-            ->addColumn("february", function ($row) {
-                return $row["february"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["february"], 0, ",", ".");
-            })
-            ->addColumn("march", function ($row) {
-                return $row["march"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["march"], 0, ",", ".");
-            })
-            ->addColumn("april", function ($row) {
-                return $row["april"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["april"], 0, ",", ".");
-            })
-            ->addColumn("may", function ($row) {
-                return $row["may"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["may"], 0, ",", ".");
-            })
-            ->addColumn("june", function ($row) {
-                return $row["june"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["june"], 0, ",", ".");
-            })
-            ->addColumn("july", function ($row) {
-                return $row["july"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["july"], 0, ",", ".");
-            })
-            ->addColumn("august", function ($row) {
-                return $row["august"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["august"], 0, ",", ".");
-            })
-            ->addColumn("september", function ($row) {
-                return $row["september"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["september"], 0, ",", ".");
-            })
-            ->addColumn("october", function ($row) {
-                return $row["october"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["october"], 0, ",", ".");
-            })
-            ->addColumn("november", function ($row) {
-                return $row["november"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["november"], 0, ",", ".");
-            })
-            ->addColumn("december", function ($row) {
-                return $row["december"] == 0
-                    ? "-"
-                    : "Rp" . number_format($row["december"], 0, ",", ".");
-            })
-            ->addColumn("total", function ($row) {
-                return "Rp" . number_format($row["total"], 0, ",", ".");
-            })
             ->make(true);
     }
+
+
+    protected function formatCurrency($value)
+    {
+        return $value == 0 ? '-' : "Rp" . number_format($value, 0, ",", ".");
+    }
+
+
 
     public function updatePassword(Request $request)
     {
