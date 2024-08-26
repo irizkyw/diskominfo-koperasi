@@ -201,7 +201,7 @@
                                     id="kt_modal_edit_golongan_form" data-kt-redirect="{{ route('golongan.index') }}">
                                     @csrf
                                     <div class="modal-header" id="kt_modal_edit_golongan_header">
-                                        <h2 class="fw-bold">Merubah Data Golongan</h2>
+                                        <h2 class="fw-bold">Mengubah Data Golongan</h2>
                                         <div id="kt_modal_edit_golongan_close"
                                             class="btn btn-icon btn-sm btn-active-icon-primary">
                                             <i class="ki-outline ki-cross fs-1"></i>

@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaksi::class);
     }
+
+    public function hiddenEvents()
+    {
+        return $this->belongsToMany(Event::class, 'event_user')->withTimestamps();
+    }
 }

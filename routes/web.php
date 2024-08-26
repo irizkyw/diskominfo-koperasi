@@ -13,6 +13,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\GolonganController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EventController;
 
 use App\Http\Middleware\AdminMiddleware;
 
@@ -184,4 +185,34 @@ Route::middleware(["auth", AdminMiddleware::class])
             TransaksiController::class,
             "loadTabelSimpananan",
         ])->name("simpanan.loadTabelSimpananan");
+
+        Route::get("/event", [
+            EventController::class, 
+            "index"
+        ])->name("event.index");
+
+        Route::get("/event/datatable", [
+            EventController::class, 
+            "datatable"
+        ])->name("event.datatable");
+
+        Route::post("/event/create", [
+            EventController::class, 
+            "store"
+        ])->name("event.create");
+
+        Route::post("/event/{id}/update", [
+            EventController::class, 
+            "update"    
+        ])->name("event.update");
+
+        Route::delete("/event/delete/{id}", [
+            EventController::class, 
+            "destroy"
+        ])->name("event.destroy");
+
+        Route::get("/event/find/{id}", [
+            EventController::class, 
+            "findById"
+        ])->name("event.findById");
     });

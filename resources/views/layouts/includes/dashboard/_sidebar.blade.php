@@ -94,11 +94,11 @@
 
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('simpanan.index') }}">
+                    <a class="menu-link" href="{{ route('event.index') }}">
                         <span class="menu-icon">
                             <i class="ki-outline ki-notification-on fs-2"></i>
                         </span>
-                        <span class="menu-title">Boardcast Events</span>
+                        <span class="menu-title">Broadcast Events</span>
                     </a>
                     <!--end:Menu link-->
                 </div>
