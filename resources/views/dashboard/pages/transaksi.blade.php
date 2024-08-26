@@ -62,13 +62,6 @@
                             <div class="card-toolbar">
                                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                     <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
-                                        data-bs-target="#kt_modal_export_simpanan">
-                                        <i class="ki-outline ki-exit-up fs-2"></i>Export
-                                    </button>
-                                </div>
-
-                                <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
                                         data-bs-target="#kt_modal_import_simpanan">
                                         <i class="bi bi-download fs-2"></i>Import
                                     </button>
@@ -160,15 +153,19 @@
                                             <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Tahun:</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
-                                            <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true" name="filterTahun" class="form-select form-select-solid">
+                                            <select data-control="select2" data-placeholder="Select a filter"
+                                                data-hide-search="true" name="filterTahun"
+                                                class="form-select form-select-solid">
                                                 @php
                                                     // Fetch distinct years from the Transaksi model
-                                                    $years = \App\Models\Transaksi::selectRaw('YEAR(date_transaction) as year')
+                                                    $years = \App\Models\Transaksi::selectRaw(
+                                                        'YEAR(date_transaction) as year',
+                                                    )
                                                         ->distinct()
                                                         ->orderBy('year', 'desc')
                                                         ->pluck('year');
                                                 @endphp
-                                                
+
                                                 @foreach ($years as $year)
                                                     <option value="{{ $year }}">{{ $year }}</option>
                                                 @endforeach
@@ -179,13 +176,16 @@
 
                                         <!--begin::Actions-->
                                         <div class="text-center">
-                                            <button type="reset" id="kt_customers_export_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">
+                                            <button type="reset" id="kt_customers_export_cancel"
+                                                class="btn btn-light me-3" data-bs-dismiss="modal">
                                                 Buang
                                             </button>
-                                            <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
+                                            <button type="submit" id="kt_customers_export_submit"
+                                                class="btn btn-primary">
                                                 <span class="indicator-label">Submit</span>
                                                 <span class="indicator-progress">Please wait...
-                                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                                    <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                             </button>
                                         </div>
                                         <!--end::Actions-->
@@ -200,8 +200,8 @@
                     </div>
                     <!--end::Modal - Adjust Balance-->
 
-                     <!--begin::Modal - Adjust Balance-->
-                     <div class="modal fade" id="kt_modal_import_simpanan" tabindex="-1" aria-hidden="true">
+                    <!--begin::Modal - Adjust Balance-->
+                    <div class="modal fade" id="kt_modal_import_simpanan" tabindex="-1" aria-hidden="true">
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog modal-lg">
                             <!--begin::Modal content-->
@@ -212,7 +212,8 @@
                                     <h2 class="fw-bold">Import Anggota</h2>
                                     <!--end::Modal title-->
                                     <!--begin::Close-->
-                                    <div id="kt_customers_import_close" class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
+                                    <div id="kt_customers_import_close"
+                                        class="btn btn-icon btn-sm btn-active-icon-primary" data-bs-dismiss="modal">
                                         <i class="ki-outline ki-cross fs-1"></i>
                                     </div>
                                     <!--end::Close-->
@@ -221,21 +222,26 @@
                                 <!--begin::Modal body-->
                                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                     <!--begin::Form-->
-                                    <form id="kt_customers_import_form" class="form" action="{{ route('simpanan.import') }}" method="POST" enctype="multipart/form-data">
+                                    <form id="kt_customers_import_form" class="form"
+                                        action="{{ route('simpanan.import') }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
 
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->
-                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Tahun Data Import:</label>
+                                            <label class="fs-5 fw-semibold form-label mb-5">Pilih Tahun Data
+                                                Import:</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
-                                            <select data-control="select2" data-placeholder="Select a Year" data-hide-search="true" name="FilterTahunImport" class="form-select form-select-solid">
+                                            <select data-control="select2" data-placeholder="Select a Year"
+                                                data-hide-search="true" name="FilterTahunImport"
+                                                class="form-select form-select-solid">
                                                 @php
                                                     $currentYear = date('Y'); // Get the current year
                                                     $startYear = 2018; // Define the starting year
                                                 @endphp
-                                                
+
                                                 @for ($year = $currentYear; $year >= $startYear; $year--)
                                                     <option value="{{ $year }}">{{ $year }}</option>
                                                 @endfor
@@ -243,8 +249,8 @@
                                             <!--end::Input-->
                                         </div>
                                         <!--end::Input group-->
-                                        
-                                         <!--begin::Input group-->
+
+                                        <!--begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->
                                             <label class="fs-5 fw-semibold form-label mb-5">Pilih File Import:</label>
@@ -254,7 +260,7 @@
                                             <!--end::Input-->
                                         </div>
                                         <!--end::Input group-->
-                                            
+
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-10">
                                             <!--begin::Label-->
@@ -266,14 +272,16 @@
                                                         $currentYear = date('Y'); // Get the current year
                                                         $startYear = 2018; // Define the starting year
                                                     @endphp
-                                                    
+
                                                     @for ($year = $currentYear; $year >= $startYear; $year--)
                                                         <option value="{{ $year }}">{{ $year }}</option>
                                                     @endfor
                                                 </select>
 
                                                 <!-- Link to download the template -->
-                                                <a id="templateLink" href="{{ route('simpanan.export-template', ['year' => $currentYear]) }}" target="_blank">Download Template</a>
+                                                <a id="templateLink"
+                                                    href="{{ route('simpanan.export-template', ['year' => $currentYear]) }}"
+                                                    target="_blank">Download Template</a>
                                             </div>
                                         </div>
                                         <!--end::Input group-->
@@ -283,7 +291,8 @@
                                             document.getElementById('yearSelect').addEventListener('change', function() {
                                                 var selectedYear = this.value;
                                                 var templateLink = document.getElementById('templateLink');
-                                                templateLink.href = '{{ route('simpanan.export-template', ['year' => '__year__']) }}'.replace('__year__', selectedYear);
+                                                templateLink.href = '{{ route('simpanan.export-template', ['year' => '__year__']) }}'.replace(
+                                                    '__year__', selectedYear);
                                             });
                                         </script>
 
@@ -291,13 +300,16 @@
 
                                         <!--begin::Actions-->
                                         <div class="text-center">
-                                            <button type="reset" id="kt_customers_import_cancel" class="btn btn-light me-3" data-bs-dismiss="modal">
+                                            <button type="reset" id="kt_customers_import_cancel"
+                                                class="btn btn-light me-3" data-bs-dismiss="modal">
                                                 Buang
                                             </button>
-                                            <button type="submit" id="kt_customers_import_submit" class="btn btn-primary">
+                                            <button type="submit" id="kt_customers_import_submit"
+                                                class="btn btn-primary">
                                                 <span class="indicator-label">Submit</span>
                                                 <span class="indicator-progress">Please wait...
-                                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                                    <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                             </button>
                                         </div>
                                         <!--end::Actions-->
@@ -358,7 +370,8 @@
                                                     class="form-select form-select-solid fw-bold">
                                                     <option value="">Pilih Anggota</option>
                                                     @foreach ($users as $data)
-                                                            <option value="{{ $data->id }}">{{ $data->name }} ( {{ $data->golongan->nama_golongan }} )</option>
+                                                        <option value="{{ $data->id }}">{{ $data->name }} (
+                                                            {{ $data->golongan->nama_golongan }} )</option>
                                                     @endforeach
                                                 </select>
 
@@ -692,11 +705,6 @@
                 }
             });
         })
-
-        $(document).on("click", '.transaksi-export', function(e) {
-            e.preventDefault();
-            $('#kt_modal_export_simpanan').modal('show');
-        });
 
         $(document).on("submit", '#kt_customers_export_form', function(e) {
             e.preventDefault();

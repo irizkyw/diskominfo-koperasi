@@ -36,70 +36,66 @@ class ProfileController extends Controller
         })->only(["index", "monthly"]);
     }
 
-public function index(Request $request)
-{
-    $user = $request->user();
-    $userId = $request->input("user_id", $user->id);
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $userId = $request->input("user_id", $user->id);
 
-    $User = User::with(["role", "golongan", "transaksi"])->find($userId);
+        $User = User::with(["role", "golongan", "transaksi"])->find($userId);
 
-    if (!$User) {
-        abort(404, "User not found");
-    }
+        if (!$User) {
+            abort(404, "User not found");
+        }
 
-    $Role = $User->role;
-    $Golongan = $User->golongan;
+        $Role = $User->role;
+        $Golongan = $User->golongan;
 
-    $latestTabungan = Tabungan::where("user_id", $User->id)
-        ->orderBy("created_at", "desc")
-        ->first();
+        $LogTransaksi = $User
+                    ->transaksi()
+                    ->orderBy("created_at", "desc")
+                    ->get();
 
-    $year = Carbon::now()->year;
-    $previousYear = $year - 1;
+        $latestTabungan = Tabungan::where("user_id", $User->id)
+            ->orderBy("tabungan_tahun", "desc")
+            ->first();
 
-    $monthlyTotals = array_fill(1, 12, 0);
-    $simpananSukarela = $latestTabungan->simp_sukarela ?? 0;
-    $simpananWajibTahunIni = 0;
+        $year = Carbon::now()->year;
+        $previousYear = $year - 1;
 
-    foreach ($User->transaksi as $transaction) {
-        $date = Carbon::parse($transaction->date_transaction);
-        $transactionYear = $date->year;
-        $month = $date->format('n');
+        $monthlyTotals = array_fill(1, 12, 0);
+        $simpananSukarela = $latestTabungan->simp_sukarela ?? 0;
+        $simpananWajibTahunIni = 0;
 
-        if ($transactionYear == $year) {
-            $monthlyTotals[$month] += $transaction->nominal;
-            $simpananWajibTahunIni += $transaction->nominal;
-            if ($transaction->transaction_type == 'Simpanan Sukarela') {
-                $simpananSukarela += $transaction->nominal;
+        foreach ($User->transaksi as $transaction) {
+            $date = Carbon::parse($transaction->date_transaction);
+            $transactionYear = $date->year;
+            $month = $date->format('n');
+
+            if ($transactionYear == $year) {
+                $monthlyTotals[$month] += $transaction->nominal;
+                $simpananWajibTahunIni += $transaction->nominal;
+                if ($transaction->transaction_type == 'Simpanan Sukarela') {
+                    $simpananSukarela += $transaction->nominal;
+                }
             }
         }
+
+        $latestTabunganSimpananWajib = $latestTabungan->simp_wajib ?? 0;
+
+        $simpananPokok = $latestTabungan->simp_pokok ?? 0;
+        $SimpananAkhir = $latestTabunganSimpananWajib + $simpananPokok + $simpananSukarela;
+
+        return view(
+            "dashboard.pages.profile",
+            compact(
+                "User",
+                "Role",
+                "Golongan",
+                "SimpananAkhir",
+                "LogTransaksi"
+            )
+        );
     }
-    $LogTransaksi = $User
-                ->transaksi()
-                ->orderBy("created_at", "desc")
-                ->get();
-
-    $totalTabunganSimpananWajib = Tabungan::where('user_id', $User->id)
-        ->where('tabungan_tahun', '<=', $year)
-        ->sum('simp_wajib');
-
-    $simpananPokok = $latestTabungan->simp_pokok ?? 0;
-    $SimpananAkhir = $totalTabunganSimpananWajib + $simpananPokok + $simpananSukarela;
-
-
-    return view(
-        "dashboard.pages.profile",
-        compact(
-            "User",
-            "Role",
-            "Golongan",
-            "SimpananAkhir",
-            "LogTransaksi"
-        )
-    );
-}
-
-
 
     public function monthly(Request $request)
     {
@@ -130,50 +126,42 @@ public function index(Request $request)
             )
             ->get();
 
-        // Retrieve all relevant years from the tabungan table
         $years = Tabungan::where('user_id', $userId)
             ->select(DB::raw('DISTINCT(tabungan_tahun) as year'))
             ->pluck('year')
             ->toArray();
 
-        $firstYear = min($years); // Earliest year in tabungan
-        $lastYear = max($years); // Latest year in tabungan
+        $firstYear = min($years);
+        $lastYear = max($years);
 
-        // Initialize an array to hold the data for all years within the range
         $pivotedData = [];
         for ($year = $firstYear; $year <= $lastYear; $year++) {
-            $pivotedData[$year] = array_fill(1, 12, 0); // Fill months 1-12 with 0
+            $pivotedData[$year] = array_fill(1, 12, 0);
             $pivotedData[$year]["total"] = 0;
-            $pivotedData[$year]["simpanan_sukarela"] = 0; // Initialize simpanan sukarela for each year
+            $pivotedData[$year]["simpanan_sukarela"] = 0;
         }
 
-        // Populate the data with transactions
         foreach ($rawData as $entry) {
             $year = $entry->year;
             $month = $entry->month;
             $transactionType = $entry->transaction_type;
             $totalNominal = $entry->total_nominal;
 
-            // Add monthly contributions
             $pivotedData[$year][$month] += $totalNominal;
             $pivotedData[$year]["total"] += $totalNominal;
 
-            // Aggregate Simpanan Sukarela for the specific year
             if ($transactionType == 'Simpanan Sukarela') {
                 $pivotedData[$year]["simpanan_sukarela"] += $totalNominal;
             }
         }
 
-        // Prepare the final data
         $data = [];
         foreach ($pivotedData as $year => $months) {
-            // Check if there is any transaction data for this year
             if ($months["total"] > 0 || $months["simpanan_sukarela"] > 0) {
                 $previousYear = $year - 1;
 
-                // Retrieve total savings for the year from the tabungan table
                 $totalTabunganSimpananWajib = Tabungan::where('user_id', $userId)
-                    ->where('tabungan_tahun', '<=', $year)
+                    ->where('tabungan_tahun', $year)
                     ->sum('simp_wajib');
 
                 $simpananWajibTahunIni = $months["total"];
@@ -211,7 +199,6 @@ public function index(Request $request)
             ->addIndexColumn()
             ->make(true);
     }
-
 
     protected function formatCurrency($value)
     {
