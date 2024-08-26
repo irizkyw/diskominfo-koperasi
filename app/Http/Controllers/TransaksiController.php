@@ -348,7 +348,7 @@ class TransaksiController extends Controller
 
         $format = $request->format;
 
-        $filename = "transactions_" . date("YmdHis") . "." . $format;
+        $filename = "Template_Transaksi_" . date("YmdHis") . "_" . $request->filterTahun .  "." . $format;
 
         // Ekspor data sesuai format yang dipilih
         return Excel::download(
