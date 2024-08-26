@@ -8,6 +8,8 @@ use App\Models\Role;
 use App\Models\Golongan;
 use App\Models\Transaksi;
 use App\Models\Tabungan;
+use App\Models\Event;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -46,6 +48,12 @@ class ProfileController extends Controller
         if (!$User) {
             abort(404, "User not found");
         }
+
+        $soonThreshold = Carbon::now()->addWeek();
+        $event = Event::where('tanggal_event', '>=', Carbon::now())
+                      ->where('tanggal_event', '<=', $soonThreshold)
+                      ->orderBy('tanggal_event')
+                      ->first();
 
         $Role = $User->role;
         $Golongan = $User->golongan;
@@ -92,7 +100,8 @@ class ProfileController extends Controller
                 "Role",
                 "Golongan",
                 "SimpananAkhir",
-                "LogTransaksi"
+                "LogTransaksi",
+                "event"
             )
         );
     }

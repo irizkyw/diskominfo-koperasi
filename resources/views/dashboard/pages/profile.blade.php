@@ -12,6 +12,20 @@
             <div id="kt_app_content" class="app-content flex-column-fluid">
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-xxl" {!! Auth::user()->role->name !== 'Administrator' ? 'style="padding: 0px!important;"' : '' !!}>
+                    @if ($event)
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <h4 class="alert-heading">Pengumuman!</h4>
+                            <p>
+                                <br>
+                                Agenda: {{ $event->nama_event }} <br> <br>
+                                Deskripsi Agenda: <br>
+                                {{ $event->deskripsi_event }}
+                            </p>
+                            <hr>
+                            <p class="mb-0">Dilaksanakan sebentar lagi pada tanggal:
+                                {{ $event->tanggal_event->format('d-m-Y') }}</p>
+                        </div>
+                    @endif
                     <!--begin::Navbar-->
                     <div class="card mb-6">
                         <div class="card-body pt-9 pb-0">
