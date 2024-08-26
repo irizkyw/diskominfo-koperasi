@@ -42,7 +42,7 @@
                             <div class="card-title">
                                 <div class="d-flex align-items-center position-relative my-1">
                                     <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
-                                    <input type="text" data-kt-customer-table-filter="search"
+                                    <input type="text" data-kt-table-filter="search"
                                         class="form-control form-control-solid w-250px ps-13" placeholder="Pencarian" />
                                 </div>
                             </div>
@@ -135,13 +135,6 @@
                                 <label class="fs-5 fw-semibold form-label mb-5">Pilih Filter Tahun:</label>
                                 <select data-control="select2" data-placeholder="Select a filter" data-hide-search="true"
                                     name="filterTahun" class="form-select form-select-solid">
-                                    @php
-                                        $years = \App\Models\Transaksi::selectRaw('YEAR(date_transaction) as year')
-                                            ->distinct()
-                                            ->orderBy('year', 'desc')
-                                            ->pluck('year');
-                                    @endphp
-
                                     @foreach ($years as $year)
                                         <option value="{{ $year }}">{{ $year }}</option>
                                     @endforeach
@@ -163,23 +156,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="kt_app_footer" class="app-footer">
-            <!--begin::Footer container-->
-            <div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3">
-                <!--begin::Copyright-->
-                <div class="text-gray-900 order-2 order-md-1">
-                    <span class="text-muted fw-semibold me-1">2024&copy;</span>
-                    <a href="https://github.com/IRWAPAW-Group" target="_blank"
-                        class="text-gray-800 text-hover-primary">IRWAPAW
-                        🐾</a>
-                </div>
-                <!--end::Copyright-->
-                <!--begin::Menu-->
-
-                <!--end::Menu-->
-            </div>
-            <!--end::Footer container-->
         </div>
         <!--end::Modal - Export Simpanan-->
     </div>
@@ -207,72 +183,96 @@
                     url: "{{ route('simpanan.loadTabelSimpananan') }}",
                     type: "GET",
                     data: function(d) {
-                        d.year = $('#yearDropdown').val(); // Use selected year from dropdown
+                        d.year = $('#yearDropdown').val();
+                        d.search = $('input[data-kt-table-filter="search"]').val();
                     }
                 },
                 columns: [{
-                        data: 'id'
+                        data: 'id',
+                        name: 'id'
                     },
                     {
-                        data: 'anggota'
+                        data: 'anggota',
+                        name: 'anggota'
                     },
                     {
-                        data: 'simpanan_pokok'
+                        data: 'simpanan_pokok',
+                        name: 'simpanan_pokok'
                     },
                     {
-                        data: 'simpanan_sukarela'
+                        data: 'simpanan_sukarela',
+                        name: 'simpanan_sukarela'
                     },
                     {
-                        data: 'tahun'
+                        data: 'tahun',
+                        name: 'tahun'
                     },
                     {
-                        data: 'januari'
+                        data: 'januari',
+                        name: 'januari'
                     },
                     {
-                        data: 'februari'
+                        data: 'februari',
+                        name: 'februari'
                     },
                     {
-                        data: 'maret'
+                        data: 'maret',
+                        name: 'maret'
                     },
                     {
-                        data: 'april'
+                        data: 'april',
+                        name: 'april'
                     },
                     {
-                        data: 'mei'
+                        data: 'mei',
+                        name: 'mei'
                     },
                     {
-                        data: 'juni'
+                        data: 'juni',
+                        name: 'juni'
                     },
                     {
-                        data: 'juli'
+                        data: 'juli',
+                        name: 'juli'
                     },
                     {
-                        data: 'agustus'
+                        data: 'agustus',
+                        name: 'agustus'
                     },
                     {
-                        data: 'september'
+                        data: 'september',
+                        name: 'september'
                     },
                     {
-                        data: 'oktober'
+                        data: 'oktober',
+                        name: 'oktober'
                     },
                     {
-                        data: 'november'
+                        data: 'november',
+                        name: 'november'
                     },
                     {
-                        data: 'desember'
+                        data: 'desember',
+                        name: 'desember'
                     },
                     {
-                        data: 'total_simpanan_currentYear'
+                        data: 'total_simpanan_currentYear',
+                        name: 'total_simpanan_currentYear'
                     },
                     {
-                        data: 'total_tabungan'
+                        data: 'total_tabungan',
+                        name: 'total_tabungan'
                     }
-                ]
-            });
+                ],
+                initComplete: function() {
+                    $('input[data-kt-table-filter="search"]').on('keyup', function() {
+                        table.search(this.value).draw();
+                    });
 
-            // Change event for year dropdown
-            $('#yearDropdown').change(function() {
-                table.ajax.reload(); // Reload table data based on selected year
+                    $('#yearDropdown').on('change', function() {
+                        table.ajax.reload();
+                    });
+                }
             });
         });
     </script>

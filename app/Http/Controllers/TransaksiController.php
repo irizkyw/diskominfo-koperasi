@@ -636,106 +636,103 @@ class TransaksiController extends Controller
         return view("dashboard.pages.table_simpanan", compact("years"));
     }
 
-    public function loadTabelSimpananan(Request $request)
-    {
-        $year = $request->input("year", Carbon::now()->year);
-        $previousYear = $year - 1;
+public function loadTabelSimpananan(Request $request)
+{
+    $year = $request->input("year", Carbon::now()->year);
+    $previousYear = $year - 1;
 
-        $perPage = $request->input('length', 10);
-        $page = $request->input('start', 0) / $perPage + 1;
-        $searchValue = $request->input('search')['value'] ?? '';
+    $perPage = $request->input('length', 10);
+    $page = $request->input('start', 0) / $perPage + 1;
+    $searchValue = $request->input('search') ?? '';
+    $query = User::with(["transactions", "savings", "golongan"])
+    ->whereHas('role', function ($query) {
+        $query->where('name', '!=', 'Administrator');
+    });
 
-        $query = User::with(["transactions", "savings", "golongan"])
-            ->whereHas('role', function ($query) {
-                $query->where('name', '!=', 'Administrator');
-            });
-
-        if (!empty($searchValue)) {
-            $query->where(function($query) use ($searchValue) {
-                $query->where('name', 'like', '%' . $searchValue . '%')
-                    ->orWhere('num_member', 'like', '%' . $searchValue . '%');
-            });
-        }
-
-        $recordsTotal = $query->count();
-        $recordsFiltered = $query->count();
-
-        $users = $query->skip(($page - 1) * $perPage)->take($perPage)->get();
-
-        $data = $users->map(function ($user) use ($year, $previousYear) {
-            $monthlyTotals = array_fill(1, 12, 0);
-            $simpananSukarela = $savings->simp_sukarela ?? 0;
-            $simpananWajibTahunIni = 0;
-            foreach ($user->transactions as $transaction) {
-                $date = Carbon::parse($transaction->date_transaction);
-                $transactionYear = $date->year;
-                $month = $date->format('n');
-
-                if ($transactionYear == $year) {
-                    $monthlyTotals[$month] += $transaction->nominal;
-                    $simpananWajibTahunIni += $transaction->nominal;
-                    if($transaction->transaction_type == 'Simpanan Sukarela'){
-                        $simpananSukarela += $transaction->nominal;
-                    }
-                }
-            }
-
-            $totalTabunganSimpananWajib = Tabungan::where('user_id', $user->id)
-                ->where('tabungan_tahun', '<=', $year)
-                ->sum('simp_wajib');
-
-            $savings = $user->savings->first();
-            $simpananPokok = $savings->simp_pokok ?? 0;
-
-            $total_tabungan = $totalTabunganSimpananWajib + $simpananPokok + $simpananSukarela;
-
-            foreach ($monthlyTotals as $key => $value) {
-                $monthlyTotals[$key] = $this->formatCurrency($value ?: '-');
-            }
-
-            return [
-                'id' => $user->num_member,
-                'anggota' => '<a class="fw-semibold text-gray-600" href="' . route('profile', ['user_id' => $user->id]) . '">' . $user->name . '</a>',
-                'simpanan_pokok' => $this->formatCurrency($simpananPokok),
-                'simpanan_sukarela' => $this->formatCurrency($simpananSukarela),
-                'januari' => $monthlyTotals[1],
-                'februari' => $monthlyTotals[2],
-                'maret' => $monthlyTotals[3],
-                'april' => $monthlyTotals[4],
-                'mei' => $monthlyTotals[5],
-                'juni' => $monthlyTotals[6],
-                'juli' => $monthlyTotals[7],
-                'agustus' => $monthlyTotals[8],
-                'september' => $monthlyTotals[9],
-                'oktober' => $monthlyTotals[10],
-                'november' => $monthlyTotals[11],
-                'desember' => $monthlyTotals[12],
-                'tahun' => $year,
-                'tabungan_' . $previousYear => $this->formatCurrency($totalTabunganSimpananWajib),
-                'tabungan_' . $year => $this->formatCurrency($totalTabunganSimpananWajib),
-                'jumlahSimpanan_AfterReduction' => $this->formatCurrency(($totalTabunganSimpananWajib + $simpananWajibTahunIni) * 0.8),
-                'total_simpanan_currentYear' => $this->formatCurrency($simpananWajibTahunIni),
-                'total_tabungan' => $this->formatCurrency($total_tabungan),
-            ];
+    if (!empty($searchValue)) {
+        $query->where(function($query) use ($searchValue) {
+            $query->where('name', 'like', '%' . $searchValue . '%')
+                ->orWhere('num_member', 'like', '%' . $searchValue . '%');
         });
-
-        return response()->json([
-            "draw" => intval($request->input('draw')),
-            "recordsTotal" => $recordsTotal,
-            "recordsFiltered" => $recordsFiltered,
-            "data" => $data,
-            "pagination" => [
-                "total_tabungan" => $recordsTotal,
-                "per_page" => $perPage,
-                "current_page" => $page,
-                "last_page" => ceil($recordsTotal / $perPage),
-                "from" => ($page - 1) * $perPage + 1,
-                "to" => min($page * $perPage, $recordsTotal),
-            ],
-        ]);
     }
 
+    $recordsTotal = $query->count();
+    $users = $query->skip(($page - 1) * $perPage)->take($perPage)->get();
+    $recordsFiltered = $query->count();
 
+    $data = $users->map(function ($user) use ($year, $previousYear) {
+        $monthlyTotals = array_fill(1, 12, 0);
+        $savings = $user->savings->first();
+        $simpananSukarela = $savings->simp_sukarela ?? 0;
+        $simpananWajibTahunIni = 0;
+
+        foreach ($user->transactions as $transaction) {
+            $date = Carbon::parse($transaction->date_transaction);
+            $transactionYear = $date->year;
+            $month = $date->format('n');
+
+            if ($transactionYear == $year) {
+                $monthlyTotals[$month] += $transaction->nominal;
+                $simpananWajibTahunIni += $transaction->nominal;
+                if ($transaction->transaction_type == 'Simpanan Sukarela') {
+                    $simpananSukarela += $transaction->nominal;
+                }
+            }
+        }
+
+        $totalTabunganSimpananWajib = Tabungan::where('user_id', $user->id)
+            ->where('tabungan_tahun', '<=', $year)
+            ->sum('simp_wajib');
+
+        $simpananPokok = $savings->simp_pokok ?? 0;
+
+        $total_tabungan = $totalTabunganSimpananWajib + $simpananPokok + $simpananSukarela;
+
+        foreach ($monthlyTotals as $key => $value) {
+            $monthlyTotals[$key] = $this->formatCurrency($value ?: '-');
+        }
+
+        return [
+            'id' => $user->num_member,
+            'anggota' => '<a class="fw-semibold text-gray-600" href="' . route('profile', ['user_id' => $user->id]) . '">' . $user->name . '</a>',
+            'simpanan_pokok' => $this->formatCurrency($simpananPokok),
+            'simpanan_sukarela' => $this->formatCurrency($simpananSukarela),
+            'januari' => $monthlyTotals[1],
+            'februari' => $monthlyTotals[2],
+            'maret' => $monthlyTotals[3],
+            'april' => $monthlyTotals[4],
+            'mei' => $monthlyTotals[5],
+            'juni' => $monthlyTotals[6],
+            'juli' => $monthlyTotals[7],
+            'agustus' => $monthlyTotals[8],
+            'september' => $monthlyTotals[9],
+            'oktober' => $monthlyTotals[10],
+            'november' => $monthlyTotals[11],
+            'desember' => $monthlyTotals[12],
+            'tahun' => $year,
+            'tabungan_' . $previousYear => $this->formatCurrency($totalTabunganSimpananWajib),
+            'tabungan_' . $year => $this->formatCurrency($totalTabunganSimpananWajib),
+            'jumlahSimpanan_AfterReduction' => $this->formatCurrency(($totalTabunganSimpananWajib + $simpananWajibTahunIni) * 0.8),
+            'total_simpanan_currentYear' => $this->formatCurrency($simpananWajibTahunIni),
+            'total_tabungan' => $this->formatCurrency($total_tabungan),
+        ];
+    });
+
+    return response()->json([
+        "draw" => intval($request->input('draw')),
+        "recordsTotal" => $recordsTotal,
+        "recordsFiltered" => $recordsFiltered,
+        "data" => $data,
+        "pagination" => [
+            "total_tabungan" => $recordsTotal,
+            "per_page" => $perPage,
+            "current_page" => $page,
+            "last_page" => ceil($recordsTotal / $perPage),
+            "from" => ($page - 1) * $perPage + 1,
+            "to" => min($page * $perPage, $recordsTotal),
+        ],
+    ]);
+}
 
 
     private function formatCurrency($value)
