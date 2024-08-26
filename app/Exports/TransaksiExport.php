@@ -61,9 +61,9 @@ class TransaksiExport implements FromCollection, WithHeadings, ShouldAutoSize
             };
 
             $previousYear = $this->tahun - 1;
-            $totalSimpananWajib = Transaksi::where('user_id', $user->id)
-                ->whereYear('date_transaction', $previousYear)
-                ->sum('nominal');
+            $totalSimpananWajib = Tabungan::where('user_id', $user->id)
+                ->where('tabungan_tahun', $previousYear)
+                ->sum('simp_wajib');
                 
             $simpananPokok = $user->savings->first()->simp_pokok;
             $simpananSukarela = $user->savings->first()->simp_sukarela;
