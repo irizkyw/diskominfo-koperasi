@@ -305,7 +305,7 @@ class TransaksiController extends Controller
     {
         $tahun = $request->query("year", date("Y")); // Get the year from the query parameter or default to the current year
 
-        $filename = "transactions_" . date("YmdHis") . ".xlsx";
+        $filename = "Transaksi_Template_Data_" . $tahun . "_" . date("YmdHis")  . ".xlsx";
 
         // Export data for the selected year
         return Excel::download(new TransaksiTemplate($tahun), $filename);
@@ -348,7 +348,7 @@ class TransaksiController extends Controller
 
         $format = $request->format;
 
-        $filename = "transactions_" . date("YmdHis") . "." . $format;
+        $filename = "Transaksi_Export_Data_" . $request->filterTahun . "_" . date("YmdHis")  .   "." . $format;
 
         // Ekspor data sesuai format yang dipilih
         return Excel::download(
