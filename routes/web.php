@@ -191,6 +191,11 @@ Route::middleware(["auth", AdminMiddleware::class])
             "index"
         ])->name("event.index");
 
+        Route::get("/event/data", [
+            EventController::class, 
+            "getEventsData"
+        ])->name("event.data");
+
         Route::get("/event/datatable", [
             EventController::class, 
             "datatable"

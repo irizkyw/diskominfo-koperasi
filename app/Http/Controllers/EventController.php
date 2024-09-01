@@ -15,6 +15,13 @@ class EventController extends Controller
         return view("dashboard.pages.event", compact("events"));
     }
 
+    public function getEventsData()
+    {
+        $events = Event::select(['id', 'nama_event', 'deskripsi_event', 'tanggal_event'])->get();
+        return response()->json($events);
+    }
+
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -58,7 +65,7 @@ class EventController extends Controller
         try {
             $event = Event::findOrFail($id);
             $event->delete();
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Event deleted successfully.'
@@ -70,7 +77,7 @@ class EventController extends Controller
             ], 500);
         }
     }
-    
+
     public function datatable()
     {
         $query = Event::select(['id', 'nama_event', 'deskripsi_event', 'tanggal_event'])->get();
