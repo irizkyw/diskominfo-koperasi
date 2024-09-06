@@ -42,6 +42,10 @@ Route::middleware(["auth"])->group(function () {
         ProfileController::class,
         "updatePassword",
     ])->name("profile.updatePassword");
+    Route::get("/profile/event", [
+        EventController::class, 
+        "getEventsData"
+    ])->name("profile.event");
     Route::get("/logout", [AuthController::class, "logout"])->name("logout");
 });
 

@@ -106,20 +106,28 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex my-4">
-                                                <!--begin::Menu-->
-                                                <div class="me-0">
-                                                    @if (!Auth::user()->isAdmin())
-                                                        <a href="{{ route('logout') }}"
-                                                            class="btn btn-icon btn-color-gray-500 btn-active-color-primary me-3">
-                                                            <i class="ki-outline ki-exit-right fs-2"></i>
-                                                        </a>
-                                                    @endif
-                                                    <button
-                                                        class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
-                                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                                        <i class="ki-solid ki-dots-horizontal fs-2x"></i>
-                                                    </button>
+                                            <div class="my-4">
+                                            <div class="d-flex align-items-center">
+                                                <!--begin::Logout-->
+                                                @if (!Auth::user()->isAdmin())
+                                                <a href="{{ route('logout') }}" class="btn btn-icon btn-color-gray-500 btn-active-color-primary me-3">
+                                                    <i class="ki-outline ki-exit-right fs-2"></i>
+                                                </a>
+                                                @endif
+                                                <!--end::Logout-->
+
+                                                <!--Notification-->
+                                                <div class="btn btn-icon btn-light btn-color-gray-500 btn-active-color-primary w-40px h-40px d-flex align-items-center justify-content-center me-3"
+                                                    id="event_viewer_toggle">
+                                                    <i class="ki-outline ki-notification-on fs-2"></i>
+                                                </div>
+                                                <!--End Notification-->
+
+                                                <!--begin::Button menu 3-->
+                                                <button class="btn btn-icon btn-bg-light btn-active-color-primary w-40px h-40px d-flex align-items-center justify-content-center"
+                                                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                    <i class="ki-solid ki-dots-horizontal fs-2x"></i>
+                                                </button>
                                                     <!--begin::Menu 3-->
                                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
                                                         data-kt-menu="true">
@@ -202,6 +210,7 @@
                                                     </div>
                                                     <!--end::Menu 3-->
                                                 </div>
+                                                
                                                 <!--end::Menu-->
                                             </div>
                                         </div>
@@ -510,6 +519,31 @@
         <!--end::Footer-->
     </div>
 
+    <div id="event_viewer" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="activities"
+        data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'500px', 'lg': '500px'}"
+        data-kt-drawer-direction="end" data-kt-drawer-toggle="#event_viewer_toggle"
+        data-kt-drawer-close="#event_viewer_close">
+        <div class="card shadow-none border-0 rounded-0">
+            <div class="card-header" id="event_viewer_header">
+                <h3 class="card-title fw-bold text-gray-900">EVENT</h3>
+                <div class="card-toolbar">
+                    <button type="button" class="btn btn-sm btn-icon btn-active-light-primary me-n5"
+                        id="event_viewer_close">
+                        <i class="ki-outline ki-cross fs-1"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body position-relative" id="event_viewer_body">
+                <div id="event_viewer_scroll" class="position-relative scroll-y me-n5 pe-5" data-kt-scroll="true"
+                    data-kt-scroll-height="auto" data-kt-scroll-wrappers="#event_viewer_body"
+                    data-kt-scroll-dependencies="#event_viewer_header, #event_viewer_footer"
+                    data-kt-scroll-offset="5px">
+                    <div class="timeline timeline-border-dashed"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('scripts')
     <script src="{{ asset('assets/js/custom/pages/user-profile/general.js') }}"></script>
@@ -675,5 +709,45 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('#event_viewer_toggle').on('click', function() {
+                $.ajax({
+                    url: '{{ route("profile.event") }}',
+                    type: 'GET',
+                    success: function(data) {
+                        var timelineContainer = $('#event_viewer .timeline');
+                        timelineContainer.empty(); // Clear existing content
+
+                        // Sort the data by date in ascending order
+                        data.sort(function(a, b) {
+                            return new Date(a.tanggal_event) - new Date(b.tanggal_event);
+                        });
+
+                        data.forEach(function(event) {
+                            var timelineItem = `
+                                <div class="timeline-item">
+                                    <div class="timeline-line"></div>
+                                    <div class="timeline-icon">
+                                        <i class="ki-outline ki-notification-on fs-2"></i>
+                                    </div>
+                                    <div class="timeline-content mb-10 mt-n1">
+                                        <div class="pe-3 mb-5">
+                                            <div class="fs-5 fw-semibold mb-2 text-white">${event.nama_event}</div>
+                                            <div class="d-flex align-items-center mt-1 fs-6">
+                                                <div class="text-muted me-2 fs-7 text-white">${event.deskripsi_event}</div>
+                                            </div>
+                                            <div class="d-flex align-items-center mt-1 fs-6">
+                                                <div class="text-muted me-2 fs-7 text-white">Dilaksanakan pada ${new Date(event.tanggal_event).toLocaleDateString()}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            timelineContainer.append(timelineItem);
+                        });
+                    }
+                });
+            });
+        });
     </script>
 @stop
