@@ -519,30 +519,44 @@
         <!--end::Footer-->
     </div>
 
-    <div id="event_viewer" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="activities"
-        data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'500px', 'lg': '500px'}"
-        data-kt-drawer-direction="end" data-kt-drawer-toggle="#event_viewer_toggle"
-        data-kt-drawer-close="#event_viewer_close">
-        <div class="card shadow-none border-0 rounded-0">
-            <div class="card-header" id="event_viewer_header">
-                <h3 class="card-title fw-bold text-gray-900">EVENT</h3>
-                <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-active-light-primary me-n5"
-                        id="event_viewer_close">
-                        <i class="ki-outline ki-cross fs-1"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body position-relative" id="event_viewer_body">
-                <div id="event_viewer_scroll" class="position-relative scroll-y me-n5 pe-5" data-kt-scroll="true"
-                    data-kt-scroll-height="auto" data-kt-scroll-wrappers="#event_viewer_body"
-                    data-kt-scroll-dependencies="#event_viewer_header, #event_viewer_footer"
-                    data-kt-scroll-offset="5px">
-                    <div class="timeline timeline-border-dashed"></div>
-                </div>
+<div id="event_viewer" class="bg-body" data-kt-drawer="true" data-kt-drawer-name="event_viewer"
+    data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'500px', 'lg': '500px'}"
+    data-kt-drawer-direction="end" data-kt-drawer-toggle="#event_viewer_toggle"
+    data-kt-drawer-close="#event_viewer_close" style="width: 500px;"> <!-- Set a fixed width -->
+    
+    <div class="card shadow-none border-0 rounded-0" style="width: 100%;"> <!-- Ensure card takes full width -->
+        <!--begin::Header-->
+        <div class="card-header py-5" id="event_viewer_header" style="width: 100%;"> <!-- Ensure header spans full width -->
+            <h3 class="card-title fw-bold text-gray-900">AGENDA</h3>
+            <div class="card-toolbar">
+                <button type="button" class="btn btn-sm btn-icon btn-active-light-primary me-n5"
+                    id="event_viewer_close">
+                    <i class="ki-outline ki-cross fs-1"></i>
+                </button>
             </div>
         </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body position-relative" id="event_viewer_body">
+            <!--begin::Content-->
+            <div id="event_viewer_scroll" class="position-relative scroll-y me-n5 pe-5" data-kt-scroll="true"
+                data-kt-scroll-height="auto" data-kt-scroll-wrappers="#event_viewer_body"
+                data-kt-scroll-dependencies="#event_viewer_header, #event_viewer_footer"
+                data-kt-scroll-offset="5px">
+                <!--begin::Timeline items-->
+                <div class="timeline timeline-border-dashed">
+                    <!--begin::Timeline item-->
+                    <!-- Add your timeline items here -->
+                    <!--end::Timeline item-->
+                </div>
+                <!--end::Timeline items-->
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Body-->
     </div>
+</div>
+
 
 @endsection
 @section('scripts')
