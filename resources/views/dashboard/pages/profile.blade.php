@@ -38,8 +38,8 @@
                             </h4>
                             <p>
                                 <br>
-                                Agenda: {{ $event->nama_event }} <br> <br>
-                                Deskripsi Agenda: <br>
+                                Acara: {{ $event->nama_event }} <br> <br>
+                                Deskripsi Acara: <br>
                                 {{ $event->deskripsi_event }}
                             </p>
                             <hr>
