@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->unsignedInteger("simp_pokok");
             $table->unsignedInteger("simp_sukarela")->default(0);
             $table->unsignedInteger("simp_wajib")->default(0);
-            $table->unsignedInteger("tabungan_tahun");
+            $table->unsignedInteger("tabungan_tahun")->default(0);
             $table->timestamps();
         });
     }

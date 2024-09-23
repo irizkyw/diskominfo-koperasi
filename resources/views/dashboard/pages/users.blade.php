@@ -81,12 +81,12 @@
                                         <!--end::Select2-->
                                     </div>
                                     <!--end::Filter-->
-                                    <!--begin::Export-->
-                                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
+                                    <!-- begin::Export-->
+                                    <!-- <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal"
                                         data-bs-target="#users_export">
                                         <i class="ki-outline ki-exit-up fs-2"></i>Export
-                                    </button>
-                                    <!--end::Export-->
+                                    </button> -->
+                                    <!--end::Export -->
                                     <!--begin::Add customer-->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#kt_modal_add_users">

@@ -195,17 +195,17 @@
 
                                                         <!--end::Menu item-->
                                                         <!--begin::Heading-->
-                                                        <div class="menu-item px-3">
+                                                        <!-- <div class="menu-item px-3">
                                                             <div
                                                                 class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
                                                                 Downloads
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                         <!--end::Heading-->
                                                         <!--begin::Menu item-->
-                                                        <div class="menu-item px-3 my-1">
+                                                        <!-- <div class="menu-item px-3 my-1">
                                                             <a href="#" class="menu-link px-3">Laporan Simpanan</a>
-                                                        </div>
+                                                        </div> -->
                                                         <!--end::Menu item-->
                                                     </div>
                                                     <!--end::Menu 3-->

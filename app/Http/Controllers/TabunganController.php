@@ -25,12 +25,12 @@ class TabunganController extends Controller
                 404
             );
         }
-
         $tabungan = Tabungan::create([
             "user_id" => $request->user_id,
             "simp_pokok" => $golongan->simp_pokok,
             "simp_sukarela" => $request->simp_sukarela ?? 0,
             "simp_wajib" => $request->simp_wajib ?? 0,
+            "tabungan_tahunan" => 0,
         ]);
 
         if (!$tabungan) {

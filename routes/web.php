@@ -18,7 +18,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Middleware\AdminMiddleware;
 
 Route::get("/", function () {
-    return view("landing.home");
+    return redirect()->route("login");
 })->name("landing.home");
 
 Route::get("/authentication/sign-in", [

@@ -52,7 +52,7 @@
 									</div>
 									<div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
 										<div></div>
-										<a href="https://web.whatsapp.com" class="link-primary">Lupa Password ?</a>
+										<!-- <a href="https://web.whatsapp.com" class="link-primary">Lupa Password ?</a> -->
 									</div>
 									<div class="d-grid mb-10">
 										<button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
@@ -61,8 +61,8 @@
 											<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
 										</button>
 									</div>
-									<div class="text-gray-500 text-center fw-semibold fs-6">Ingin menjadi Anggota?
-									<a href="https://web.whatsapp.com/" class="link-primary">Daftar</a></div>
+									<!-- <div class="text-gray-500 text-center fw-semibold fs-6">Ingin menjadi Anggota?
+									<a href="https://web.whatsapp.com/" class="link-primary">Daftar</a></div> -->
 								</form>
 							</div>
                                 <div class="d-flex justify-content-end">
