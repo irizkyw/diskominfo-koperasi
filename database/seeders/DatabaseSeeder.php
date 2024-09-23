@@ -33,9 +33,24 @@ class DatabaseSeeder extends Seeder
         // Define golongans
         $golongans = [
             [
-                "nama_golongan" => "PNS",
-                "desc" => "PNS",
+                "nama_golongan" => "Golongan 1",
+                "desc" => "Golongan 1",
                 "simp_pokok" => 150000,
+            ],
+            [
+                "nama_golongan" => "Golongan 2",
+                "desc" => "Golongan 2",
+                "simp_pokok" => 100000,
+            ],
+            [
+                "nama_golongan" => "Golongan 3",
+                "desc" => "Golongan 3",
+                "simp_pokok" => 75000,
+            ],
+            [
+                "nama_golongan" => "Non-PNS",
+                "desc" => "Golongan 4",
+                "simp_pokok" => 500000,
             ],
         ];
 
