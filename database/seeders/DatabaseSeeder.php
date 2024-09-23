@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Define roles
-        $roles = [["name" => "Administrator", "desc" => "Administrator"]];
+        $roles = [
+            ["name" => "Administrator", "desc" => "Administrator"],
+            ["name" => "Member", "desc" => "Member"],
+        ];
 
         // Create roles
         foreach ($roles as $role) {
