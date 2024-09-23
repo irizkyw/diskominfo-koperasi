@@ -527,7 +527,7 @@
     <div class="card shadow-none border-0 rounded-0" style="width: 100%;"> <!-- Ensure card takes full width -->
         <!--begin::Header-->
         <div class="card-header py-5" id="event_viewer_header" style="width: 100%;"> <!-- Ensure header spans full width -->
-            <h3 class="card-title fw-bold text-gray-900">AGENDA</h3>
+            <h3 class="card-title fw-bold text-gray-900">ACARA</h3>
             <div class="card-toolbar">
                 <button type="button" class="btn btn-sm btn-icon btn-active-light-primary me-n5"
                     id="event_viewer_close">
@@ -747,7 +747,7 @@
                                     </div>
                                     <div class="timeline-content mb-10 mt-n1">
                                         <div class="pe-3 mb-5">
-                                            <div class="fs-5 fw-semibold mb-2 text-white">${event.nama_event}</div>
+                                            <div class="fs-5 fw-semibold mb-2 text-gray-900">${event.nama_event}</div>
                                             <div class="d-flex align-items-center mt-1 fs-6">
                                                 <div class="text-muted me-2 fs-7 text-white">${event.deskripsi_event}</div>
                                             </div>
