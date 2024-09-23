@@ -392,6 +392,7 @@ class TransaksiController extends Controller
 
     public function importSimpanan(Request $request)
     {
+        ini_set("max_execution_time", -1);
         // Validate the uploaded file
         $request->validate([
             "file" => "required|file|mimes:xlsx,csv",
