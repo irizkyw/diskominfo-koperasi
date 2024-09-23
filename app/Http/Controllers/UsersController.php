@@ -246,7 +246,6 @@ class UsersController extends Controller
     public function updateUser(Request $request, $id)
     {
         $user = User::where("num_member", $id)->first();
-
         if (!$user) {
             return response()->json(["message" => "User not found"], 404);
         }
@@ -263,7 +262,11 @@ class UsersController extends Controller
             $data["password"] = Hash::make($request->password);
         }
 
-        $user->update($data);
+        // Perform the update, but don't expect $user to contain the model
+        User::where("num_member", $id)->update($data);
+
+        // Fetch the user after the update to get the updated model instance
+        $user = User::where("num_member", $id)->first();
 
         $tabungan = Tabungan::where("user_id", $user->id)->first();
 

@@ -423,8 +423,7 @@
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                <form class="form" action="{{ route('users.update', ':id') }}"
-                                    id="kt_modal_edit_users_form" data-kt-redirect="{{ route('users.index') }}">
+                                <form class="form" action="{{ route('users.update', ':id') }}" id="kt_modal_edit_users_form" data-kt-redirect="{{ route('users.index') }}">
                                     @csrf
                                     <!--begin::Modal header-->
                                     <div class="modal-header" id="kt_modal_edit_users_header">
@@ -454,9 +453,7 @@
                                                 <label class="required fs-6 fw-semibold mb-2">Nomor anggota</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    placeholder="Nomor Anggota" name="num_member" id="num_member"
-                                                    disabled />
+                                                <input type="text" class="form-control form-control-solid" placeholder="Nomor Anggota" name="num_member" id="num_member" />
                                                 <!--end::Input-->
                                             </div>
                                             <!-- endL::input group -->

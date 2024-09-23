@@ -155,10 +155,18 @@ class ProfileController extends Controller
             $month = $entry->month;
             $transactionType = $entry->transaction_type;
             $totalNominal = $entry->total_nominal;
-
+        
+            // Check if year exists in pivotedData, if not initialize it
+            if (!isset($pivotedData[$year])) {
+                $pivotedData[$year] = array_fill(1, 12, 0);
+                $pivotedData[$year]["total"] = 0;
+                $pivotedData[$year]["simpanan_sukarela"] = 0;
+            }
+        
+            // Proceed with adding nominal
             $pivotedData[$year][$month] += $totalNominal;
             $pivotedData[$year]["total"] += $totalNominal;
-
+        
             if ($transactionType == 'Simpanan Sukarela') {
                 $pivotedData[$year]["simpanan_sukarela"] += $totalNominal;
             }
