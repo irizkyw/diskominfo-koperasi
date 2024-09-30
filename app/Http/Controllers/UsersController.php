@@ -165,21 +165,22 @@ class UsersController extends Controller
                 422
             );
         }
+
+        // Generate a unique username
         $generateUniqueUsername = function ($name, $num_member) {
             do {
                 $words = explode(" ", $name);
                 $firstName = strtolower($words[0]);
-                $username =
-                    $firstName . str_pad($num_member, 3, "0", STR_PAD_LEFT);
+                $username = $firstName . str_pad($num_member, 3, "0", STR_PAD_LEFT);
                 $userExists = User::where("username", $username)->exists();
             } while ($userExists);
 
             return $username;
         };
-        $username = $generateUniqueUsername(
-            $request->name,
-            $request->num_member
-        );
+
+        $username = $generateUniqueUsername($request->name, $request->num_member);
+
+        // Create the new user
         $user = User::create([
             "name" => $request->name,
             "num_member" => $request->num_member,
@@ -189,49 +190,57 @@ class UsersController extends Controller
             "status_active" => true,
             "golongan_id" => $request->group,
         ]);
+
         if ($user) {
-            $tabunganController = new TabunganController();
-            $transaksiController = new TransaksiController();
+            // Get the current year
+            $currentYear = Carbon::now()->format("Y");
 
-            $requestTabungan = new Request([
-                "user_id" => $user->id,
-                "simp_sukarela" => $request->voluntary_savings,
-                "simp_wajib" => $request->mandatory_savings,
-                "group" => $request->group,
-            ]);
+            // Check if Tabungan already exists for the current year
+            $tabungan = Tabungan::where('user_id', $user->id)
+                ->where('tabungan_tahun', $currentYear)
+                ->first();
 
-            $tabunganController->createTabungan($requestTabungan);
+            if (!$tabungan) {
+                // If Tabungan for the current year doesn't exist, create one
+                $tabungan = Tabungan::create([
+                    'user_id' => $user->id,
+                    'simp_sukarela' => $request->voluntary_savings ?? 0,
+                    'simp_wajib' => $request->mandatory_savings ?? 0,
+                    'simp_pokok' => 0,  // Adjust this if needed
+                    'tabungan_tahun' => $currentYear,
+                ]);
+            }
 
+            // If there's voluntary savings, create a transaction for it
             if ($request->voluntary_savings != 0) {
                 $requestSimpanan = new Request([
                     "user_id" => $user->id,
                     "transaction_type" => "Simpanan Sukarela",
-                    "desc" =>
-                        "Pendaftaran anggota baru dengan membayar Simpanan Sukarela untuk bulan " .
-                        Carbon::now()->format("F") .
-                        ".",
+                    "desc" => "Pendaftaran anggota baru dengan membayar Simpanan Sukarela untuk bulan " . Carbon::now()->format("F") . ".",
                     "nominal" => $request->voluntary_savings,
                     "date_transaction" => now()->format("Y-m-d"),
                 ]);
 
+                $transaksiController = new TransaksiController();
                 $transaksiController->createSimpanan($requestSimpanan);
             }
 
+            // If there's mandatory savings, create a transaction for it
             if ($request->mandatory_savings != 0) {
                 $requestSimpanan = new Request([
                     "user_id" => $user->id,
                     "transaction_type" => "Simpanan Pokok",
-                    "desc" =>
-                        "Pendaftaran anggota baru dengan membayar Simpanan Pokok untuk bulan " .
-                        Carbon::now()->format("F") .
-                        ".",
+                    "desc" => "Pendaftaran anggota baru dengan membayar Simpanan Pokok untuk bulan " . Carbon::now()->format("F") . ".",
                     "nominal" => $request->mandatory_savings,
                     "date_transaction" => now()->format("Y-m-d"),
                 ]);
 
+                $transaksiController = new TransaksiController();
                 $transaksiController->createSimpanan($requestSimpanan);
             }
         }
+
+        // Load the user's role and return response
         $user = $user->load("role");
 
         return response()->json(
@@ -242,6 +251,8 @@ class UsersController extends Controller
             200
         );
     }
+
+
 
     public function updateUser(Request $request, $id)
     {
