@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             [
                 "nama_golongan" => "Non-PNS",
                 "desc" => "Golongan 4",
-                "simp_pokok" => 500000,
+                "simp_pokok" => 50000,
             ],
         ];
 

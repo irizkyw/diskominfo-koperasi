@@ -115,7 +115,7 @@
                                                 </a>
                                                 @endif
                                                 <!--end::Logout-->
-
+                                                @if (Auth::user()->id === $User->id || (Auth::user()->role->name !== 'Administrator' && $User->role->name !== 'Member'))
                                                 <!--Notification-->
                                                 <div class="btn btn-icon btn-light btn-color-gray-500 btn-active-color-primary w-40px h-40px d-flex align-items-center justify-content-center me-3"
                                                     id="event_viewer_toggle">
@@ -124,14 +124,15 @@
                                                 <!--End Notification-->
 
                                                 <!--begin::Button menu 3-->
+                                                @if (Auth::user()->role->name !== 'Administrator')
                                                 <button class="btn btn-icon btn-bg-light btn-active-color-primary w-40px h-40px d-flex align-items-center justify-content-center"
                                                     data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                     <i class="ki-solid ki-dots-horizontal fs-2x"></i>
                                                 </button>
-                                                    <!--begin::Menu 3-->
-                                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
+
+                                                <!--begin::Menu 3-->
+                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
                                                         data-kt-menu="true">
-                                                        @if (Auth::user()->role->name !== 'Administrator')
                                                             <div class="menu-item px-3">
                                                                 <div
                                                                     class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
@@ -191,7 +192,6 @@
                                                                 </div>
                                                                 <!--end::Menu-->
                                                             </div>
-                                                        @endif
 
                                                         <!--end::Menu item-->
                                                         <!--begin::Heading-->
@@ -207,10 +207,12 @@
                                                             <a href="#" class="menu-link px-3">Laporan Simpanan</a>
                                                         </div> -->
                                                         <!--end::Menu item-->
-                                                    </div>
+                                                </div>
+                                                    @endif
+
                                                     <!--end::Menu 3-->
                                                 </div>
-
+                                                @endif
                                                 <!--end::Menu-->
                                             </div>
                                         </div>

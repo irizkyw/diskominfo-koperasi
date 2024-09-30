@@ -796,7 +796,7 @@
                 icon: "warning",
                 showCancelButton: true,
                 buttonsStyling: false,
-                confirmButtonText: "Ya, Hapus!",
+                confirmButtonText: "Ya, Nonaktifkan!",
                 cancelButtonText: "Tidak",
                 customClass: {
                     confirmButton: "btn fw-bold btn-danger",
