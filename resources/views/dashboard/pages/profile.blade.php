@@ -210,7 +210,7 @@
                                                     </div>
                                                     <!--end::Menu 3-->
                                                 </div>
-                                                
+
                                                 <!--end::Menu-->
                                             </div>
                                         </div>
@@ -422,64 +422,35 @@
                                     aria-labelledby="settings_tab">
                                     <!--begin::Timeline-->
                                     <div class="timeline timeline-border-dashed">
-                                        <form id="password-update-form" action="{{ route('profile.updatePassword') }}"
-                                            method="POST">
+                                        <form id="profile-update-form" action="{{ route('profile.updateProfile') }}" method="POST">
                                             @csrf
-
-                                            <!-- 1 row ada 2 text input -->
-                                            <div class="mb-10">
-                                                <div class="d-flex flex-wrap">
-                                                    <div class="col-md-6">
-                                                        <label for="nomor_anggota" class="required form-label">Nomor
-                                                            Anggota</label>
-                                                        <input type="text" class="form-control form-control-solid me-3"
-                                                            name="nomor_anggota" placeholder="Nomor Anggota"
-                                                            value="{{ Auth::user()->num_member }}" disabled />
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="golongan" class="required form-label">Golongan</label>
-                                                        <input type="text" class="form-control form-control-solid ms-3"
-                                                            name="golongan" placeholder="Golongan"
-                                                            value="{{ Auth::user()->golongan->nama_golongan }}"
-                                                            required />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-
                                             <div class="mb-10">
                                                 <label for="username" class="required form-label">Username</label>
-                                                <input type="text" class="form-control form-control-solid"
-                                                    name="username" placeholder="Username"
+                                                <input type="text" class="form-control form-control-solid" name="username" placeholder="Username"
                                                     value="{{ Auth::user()->username }}" required />
                                             </div>
 
                                             <div class="mb-10">
-                                                <label for="old_password" class="required form-label">Password
-                                                    Lama</label>
-                                                <input type="password" class="form-control form-control-solid"
-                                                    name="old_password" placeholder="Password lama" required />
+                                                <label for="old_password" class="required form-label">Password Lama (Dibutuhkan untuk konfirmasi)</label>
+                                                <input type="password" class="form-control form-control-solid" name="old_password" placeholder="Password lama" required />
                                             </div>
 
                                             <div class="mb-10">
-                                                <label for="password" class="required form-label">Password Baru</label>
-                                                <input type="password" class="form-control form-control-solid"
-                                                    name="password" placeholder="Password baru" required />
+                                                <label for="password" class="form-label">Password Baru (Opsional)</label>
+                                                <input type="password" class="form-control form-control-solid" name="password" placeholder="Password baru" />
                                             </div>
 
                                             <div class="mb-10">
-                                                <label for="password_confirmation" class="required form-label">Konfirmasi
-                                                    Password Baru</label>
-                                                <input type="password" class="form-control form-control-solid"
-                                                    name="password_confirmation" placeholder="Konfirmasi password baru"
-                                                    required />
+                                                <label for="password_confirmation" class="form-label">Konfirmasi Password Baru (Opsional)</label>
+                                                <input type="password" class="form-control form-control-solid" name="password_confirmation"
+                                                       placeholder="Konfirmasi password baru" />
                                             </div>
 
-                                            <button type="button" class="btn btn-sm btn-primary password-update-button">
+                                            <button type="button" class="btn btn-sm btn-primary profile-update-button">
                                                 Simpan
                                             </button>
                                         </form>
+
                                     </div>
                                     <!--end::Timeline-->
                                 </div>
@@ -523,7 +494,7 @@
     data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'500px', 'lg': '500px'}"
     data-kt-drawer-direction="end" data-kt-drawer-toggle="#event_viewer_toggle"
     data-kt-drawer-close="#event_viewer_close" style="width: 500px;"> <!-- Set a fixed width -->
-    
+
     <div class="card shadow-none border-0 rounded-0" style="width: 100%;"> <!-- Ensure card takes full width -->
         <!--begin::Header-->
         <div class="card-header py-5" id="event_viewer_header" style="width: 100%;"> <!-- Ensure header spans full width -->
@@ -650,11 +621,11 @@
         });
 
 
-        $(document).on("click", '.password-update-button', function(e) {
+        $(document).on("click", '.profile-update-button', function(e) {
             e.preventDefault();
 
             Swal.fire({
-                text: "Apakah Anda yakin ingin mengubah password?",
+                text: "Apakah Anda yakin ingin mengubah data profil?",
                 icon: "warning",
                 showCancelButton: true,
                 buttonsStyling: false,
@@ -666,7 +637,7 @@
                 },
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#password-update-form').submit();
+                    $('#profile-update-form').submit();
                 }
             });
         });
@@ -731,9 +702,8 @@
                     type: 'GET',
                     success: function(data) {
                         var timelineContainer = $('#event_viewer .timeline');
-                        timelineContainer.empty(); // Clear existing content
+                        timelineContainer.empty();
 
-                        // Sort the data by date in ascending order
                         data.sort(function(a, b) {
                             return new Date(a.tanggal_event) - new Date(b.tanggal_event);
                         });

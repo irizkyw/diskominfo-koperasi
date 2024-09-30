@@ -50,18 +50,18 @@ class ProfileController extends Controller
         }
 
         $soonThreshold = Carbon::now()->addWeek();
-        $event = Event::where('tanggal_event', '>=', Carbon::now())
-                      ->where('tanggal_event', '<=', $soonThreshold)
-                      ->orderBy('tanggal_event')
-                      ->first();
+        $event = Event::where("tanggal_event", ">=", Carbon::now())
+            ->where("tanggal_event", "<=", $soonThreshold)
+            ->orderBy("tanggal_event")
+            ->first();
 
         $Role = $User->role;
         $Golongan = $User->golongan;
 
         $LogTransaksi = $User
-                    ->transaksi()
-                    ->orderBy("created_at", "desc")
-                    ->get();
+            ->transaksi()
+            ->orderBy("created_at", "desc")
+            ->get();
 
         $latestTabungan = Tabungan::where("user_id", $User->id)
             ->orderBy("tabungan_tahun", "desc")
@@ -77,12 +77,12 @@ class ProfileController extends Controller
         foreach ($User->transaksi as $transaction) {
             $date = Carbon::parse($transaction->date_transaction);
             $transactionYear = $date->year;
-            $month = $date->format('n');
+            $month = $date->format("n");
 
             if ($transactionYear == $year) {
                 $monthlyTotals[$month] += $transaction->nominal;
                 $simpananWajibTahunIni += $transaction->nominal;
-                if ($transaction->transaction_type == 'Simpanan Sukarela') {
+                if ($transaction->transaction_type == "Simpanan Sukarela") {
                     $simpananSukarela += $transaction->nominal;
                 }
             }
@@ -91,7 +91,8 @@ class ProfileController extends Controller
         $latestTabunganSimpananWajib = $latestTabungan->simp_wajib ?? 0;
 
         $simpananPokok = $latestTabungan->simp_pokok ?? 0;
-        $SimpananAkhir = $latestTabunganSimpananWajib + $simpananPokok + $simpananSukarela;
+        $SimpananAkhir =
+            $latestTabunganSimpananWajib + $simpananPokok + $simpananSukarela;
 
         return view(
             "dashboard.pages.profile",
@@ -135,9 +136,9 @@ class ProfileController extends Controller
             )
             ->get();
 
-        $years = Tabungan::where('user_id', $userId)
-            ->select(DB::raw('DISTINCT(tabungan_tahun) as year'))
-            ->pluck('year')
+        $years = Tabungan::where("user_id", $userId)
+            ->select(DB::raw("DISTINCT(tabungan_tahun) as year"))
+            ->pluck("year")
             ->toArray();
 
         $firstYear = min($years);
@@ -155,19 +156,19 @@ class ProfileController extends Controller
             $month = $entry->month;
             $transactionType = $entry->transaction_type;
             $totalNominal = $entry->total_nominal;
-        
+
             // Check if year exists in pivotedData, if not initialize it
             if (!isset($pivotedData[$year])) {
                 $pivotedData[$year] = array_fill(1, 12, 0);
                 $pivotedData[$year]["total"] = 0;
                 $pivotedData[$year]["simpanan_sukarela"] = 0;
             }
-        
+
             // Proceed with adding nominal
             $pivotedData[$year][$month] += $totalNominal;
             $pivotedData[$year]["total"] += $totalNominal;
-        
-            if ($transactionType == 'Simpanan Sukarela') {
+
+            if ($transactionType == "Simpanan Sukarela") {
                 $pivotedData[$year]["simpanan_sukarela"] += $totalNominal;
             }
         }
@@ -177,68 +178,100 @@ class ProfileController extends Controller
             if ($months["total"] > 0 || $months["simpanan_sukarela"] > 0) {
                 $previousYear = $year - 1;
 
-                $totalTabunganSimpananWajib = Tabungan::where('user_id', $userId)
-                    ->where('tabungan_tahun', $year)
-                    ->sum('simp_wajib');
+                $totalTabunganSimpananWajib = Tabungan::where(
+                    "user_id",
+                    $userId
+                )
+                    ->where("tabungan_tahun", $year)
+                    ->sum("simp_wajib");
 
                 $simpananWajibTahunIni = $months["total"];
-                $jumlahSimpananAfterReduction = ($totalTabunganSimpananWajib + $simpananWajibTahunIni) * 0.8;
-                $totalTabungan = $totalTabunganSimpananWajib + $simpananPokok + $months["simpanan_sukarela"];
+                $jumlahSimpananAfterReduction =
+                    ($totalTabunganSimpananWajib + $simpananWajibTahunIni) *
+                    0.8;
+                $totalTabungan =
+                    $totalTabunganSimpananWajib +
+                    $simpananPokok +
+                    $months["simpanan_sukarela"];
 
                 $row = [
-                    'simp_pokok' => $this->formatCurrency($simpananPokok),
-                    'simp_sukarela' => $this->formatCurrency($months["simpanan_sukarela"]),
-                    'year' => $year,
-                    'tabungan_' . $previousYear => $this->formatCurrency($totalTabunganSimpananWajib),
-                    'tabungan_' . $year => $this->formatCurrency($totalTabunganSimpananWajib),
-                    'jumlahSimpanan_AfterReduction' => $this->formatCurrency($jumlahSimpananAfterReduction),
-                    'total_simpanan_currentYear' => $this->formatCurrency($simpananWajibTahunIni),
-                    'total_tabungan' => $this->formatCurrency($totalTabungan),
-                    'january' => $this->formatCurrency($months[1]),
-                    'february' => $this->formatCurrency($months[2]),
-                    'march' => $this->formatCurrency($months[3]),
-                    'april' => $this->formatCurrency($months[4]),
-                    'may' => $this->formatCurrency($months[5]),
-                    'june' => $this->formatCurrency($months[6]),
-                    'july' => $this->formatCurrency($months[7]),
-                    'august' => $this->formatCurrency($months[8]),
-                    'september' => $this->formatCurrency($months[9]),
-                    'october' => $this->formatCurrency($months[10]),
-                    'november' => $this->formatCurrency($months[11]),
-                    'december' => $this->formatCurrency($months[12]),
+                    "simp_pokok" => $this->formatCurrency($simpananPokok),
+                    "simp_sukarela" => $this->formatCurrency(
+                        $months["simpanan_sukarela"]
+                    ),
+                    "year" => $year,
+                    "tabungan_" . $previousYear => $this->formatCurrency(
+                        $totalTabunganSimpananWajib
+                    ),
+                    "tabungan_" . $year => $this->formatCurrency(
+                        $totalTabunganSimpananWajib
+                    ),
+                    "jumlahSimpanan_AfterReduction" => $this->formatCurrency(
+                        $jumlahSimpananAfterReduction
+                    ),
+                    "total_simpanan_currentYear" => $this->formatCurrency(
+                        $simpananWajibTahunIni
+                    ),
+                    "total_tabungan" => $this->formatCurrency($totalTabungan),
+                    "january" => $this->formatCurrency($months[1]),
+                    "february" => $this->formatCurrency($months[2]),
+                    "march" => $this->formatCurrency($months[3]),
+                    "april" => $this->formatCurrency($months[4]),
+                    "may" => $this->formatCurrency($months[5]),
+                    "june" => $this->formatCurrency($months[6]),
+                    "july" => $this->formatCurrency($months[7]),
+                    "august" => $this->formatCurrency($months[8]),
+                    "september" => $this->formatCurrency($months[9]),
+                    "october" => $this->formatCurrency($months[10]),
+                    "november" => $this->formatCurrency($months[11]),
+                    "december" => $this->formatCurrency($months[12]),
                 ];
 
                 $data[] = $row;
             }
         }
 
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->make(true);
+        return DataTables::of($data)->addIndexColumn()->make(true);
     }
 
     protected function formatCurrency($value)
     {
-        return $value == 0 ? '-' : "Rp" . number_format($value, 0, ",", ".");
+        return $value == 0 ? "-" : "Rp" . number_format($value, 0, ",", ".");
     }
 
-
-
-    public function updatePassword(Request $request)
+    public function updateProfile(Request $request)
     {
-        $request->validate([
-            "password" => "required|string|min:4|confirmed",
-        ]);
+        $request->validate(
+            [
+                "username" =>
+                    "required|string|max:255|unique:users,username," .
+                    Auth::id(),
+                "old_password" => "required|string",
+                "password" => "nullable|string|min:4|confirmed",
+            ],
+            [
+                "username.unique" => "Username telah dipakai oleh orang lain.",
+            ]
+        );
 
         $user = Auth::user();
 
-        if (Hash::check($request->old_password, $user->password)) {
-            $user->password = Hash::make($request->password);
-            $user->save();
+        if (!Hash::check($request->old_password, $user->password)) {
             return redirect()
                 ->back()
-                ->with("success", "Password berhasil direset");
+                ->with("error", "Password lama tidak sesuai");
         }
-        return redirect()->back()->with("error", "Password lama tidak sesuai");
+
+        $user->username = $request->username;
+
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return redirect()
+            ->back()
+            ->with("success", "Profil berhasil diperbarui");
     }
 }

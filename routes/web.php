@@ -38,13 +38,13 @@ Route::middleware(["auth"])->group(function () {
         ProfileController::class,
         "monthly",
     ])->name("profile.datatable");
-    Route::post("/profile/updatePassword", [
+    Route::post("/profile/updateProfile", [
         ProfileController::class,
-        "updatePassword",
-    ])->name("profile.updatePassword");
+        "updateProfile",
+    ])->name("profile.updateProfile");
     Route::get("/profile/event", [
-        EventController::class, 
-        "getEventsData"
+        EventController::class,
+        "getEventsData",
     ])->name("profile.event");
     Route::get("/logout", [AuthController::class, "logout"])->name("logout");
 });
@@ -190,38 +190,36 @@ Route::middleware(["auth", AdminMiddleware::class])
             "loadTabelSimpananan",
         ])->name("simpanan.loadTabelSimpananan");
 
-        Route::get("/event", [
-            EventController::class, 
-            "index"
-        ])->name("event.index");
+        Route::get("/event", [EventController::class, "index"])->name(
+            "event.index"
+        );
 
         Route::get("/event/data", [
-            EventController::class, 
-            "getEventsData"
+            EventController::class,
+            "getEventsData",
         ])->name("event.data");
 
         Route::get("/event/datatable", [
-            EventController::class, 
-            "datatable"
+            EventController::class,
+            "datatable",
         ])->name("event.datatable");
 
-        Route::post("/event/create", [
-            EventController::class, 
-            "store"
-        ])->name("event.create");
+        Route::post("/event/create", [EventController::class, "store"])->name(
+            "event.create"
+        );
 
         Route::post("/event/{id}/update", [
-            EventController::class, 
-            "update"    
+            EventController::class,
+            "update",
         ])->name("event.update");
 
         Route::delete("/event/delete/{id}", [
-            EventController::class, 
-            "destroy"
+            EventController::class,
+            "destroy",
         ])->name("event.destroy");
 
         Route::get("/event/find/{id}", [
-            EventController::class, 
-            "findById"
+            EventController::class,
+            "findById",
         ])->name("event.findById");
     });
