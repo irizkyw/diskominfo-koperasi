@@ -9,6 +9,7 @@ class AuthController extends Controller
 {
     public function showLoginForm()
     {
+        $title = "Koperasi Diskominfo Jawabarat - Sign in";
         if (Auth::check()) {
             if (Auth::user()->role->name === "Member") {
                 return redirect()->intended("/profile");
@@ -16,7 +17,7 @@ class AuthController extends Controller
                 return redirect()->intended("/dashboard");
             }
         }
-        return view("landing.sign_in");
+        return view("landing.sign_in", compact('title'));
     }
 
     public function login(Request $request)
