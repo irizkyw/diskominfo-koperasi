@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Metronic - The World's #1 Selling Tailwind CSS & Bootstrap Admin Template by KeenThemes</title>
+    <title>{{ $title }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     @yield('styles')
@@ -22,11 +22,11 @@
     data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-toolbar-enabled="true"
     class="app-default">
 
-	<div class="page-loader">
-		<span class="spinner-border text-primary" role="status">
-			<span class="visually-hidden">Loading...</span>
-		</span>
-	</div>
+    <div class="page-loader">
+        <span class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </span>
+    </div>
 
     <script>
         var defaultThemeMode = "light";
@@ -51,7 +51,11 @@
         <!--begin::Page-->
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
             <!--begin::Header-->
-            @if (Auth::check() || (request()->is('dashboard/*') || request()->is('dashboard') || request()->is('profile/*') || request()->is('profile')))
+            @if (Auth::check() ||
+                    (request()->is('dashboard/*') ||
+                        request()->is('dashboard') ||
+                        request()->is('profile/*') ||
+                        request()->is('profile')))
                 @if (Auth::user()->role->name !== 'Member')
                     <div id="kt_app_header" class="app-header d-flex d-lg-none border-bottom">
                         <!--begin::Header container-->
@@ -77,17 +81,17 @@
                         <!--end::Header container-->
                     </div>
                 @endif
-            <!--end::Header-->
-            <!--begin::Wrapper-->
-            <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
-                @if (Auth::user()->role->name !== 'Member')
-                    @include('layouts.includes.dashboard._sidebar')
-                @endif
+                <!--end::Header-->
+                <!--begin::Wrapper-->
+                <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
+                    @if (Auth::user()->role->name !== 'Member')
+                        @include('layouts.includes.dashboard._sidebar')
+                    @endif
 
-                <!--begin::Main-->
-                @yield('content')
-                <!--end:::Main-->
-            </div>
+                    <!--begin::Main-->
+                    @yield('content')
+                    <!--end:::Main-->
+                </div>
             @else
                 @yield('root')
             @endif

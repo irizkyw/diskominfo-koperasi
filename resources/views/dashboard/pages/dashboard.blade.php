@@ -45,20 +45,21 @@
                     <!--begin::Row-->
                     <div class="row gy-5 gx-xl-10">
                         <!--begin::Col-->
-                        <div class="col-sm-6 col-xl-4 mb-xl-10">
+                        <div class="col-sm-6 col-xl-6 mb-xl-10">
                             <!--begin::Card widget 2-->
                             <div class="card h-lg-100">
                                 <!--begin::Body-->
                                 <div class="card-body d-flex justify-content-between align-items-start flex-column">
                                     <!--begin::Icon-->
                                     <div class="m-0">
-                                        <i class="ki-outline ki-compass fs-2hx text-gray-600"></i>
+                                        <i class="ki-outline ki-user fs-2hx text-gray-600"></i>
                                     </div>
                                     <!--end::Icon-->
                                     <!--begin::Section-->
                                     <div class="d-flex flex-column my-7">
                                         <!--begin::Number-->
-                                        <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">327</span>
+                                        <span
+                                            class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">{{ $activeMembersCount }}</span>
                                         <!--end::Number-->
                                         <!--begin::Follower-->
                                         <div class="m-0">
@@ -67,10 +68,6 @@
                                         <!--end::Follower-->
                                     </div>
                                     <!--end::Section-->
-                                    <!--begin::Badge-->
-                                    <span class="badge badge-light-success fs-base">
-                                        <i class="ki-outline ki-arrow-up fs-5 text-success ms-n1"></i>2.1%</span>
-                                    <!--end::Badge-->
                                 </div>
                                 <!--end::Body-->
                             </div>
@@ -78,20 +75,20 @@
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
-                        <div class="col-sm-6 col-xl-4 mb-xl-10">
+                        <div class="col-sm-6 col-xl-6 mb-xl-10">
                             <!--begin::Card widget 2-->
                             <div class="card h-lg-100">
                                 <!--begin::Body-->
                                 <div class="card-body d-flex justify-content-between align-items-start flex-column">
                                     <!--begin::Icon-->
                                     <div class="m-0">
-                                        <i class="ki-outline ki-chart-simple fs-2hx text-gray-600"></i>
+                                        <i class="ki-outline ki-folder fs-2hx text-gray-600"></i>
                                     </div>
                                     <!--end::Icon-->
                                     <!--begin::Section-->
                                     <div class="d-flex flex-column my-7">
                                         <!--begin::Number-->
-                                        <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">27,5M</span>
+                                        <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2">{{ $golonganData }}</span>
                                         <!--end::Number-->
                                         <!--begin::Follower-->
                                         <div class="m-0">
@@ -100,10 +97,6 @@
                                         <!--end::Follower-->
                                     </div>
                                     <!--end::Section-->
-                                    <!--begin::Badge-->
-                                    <span class="badge badge-light-success fs-base">
-                                        <i class="ki-outline ki-arrow-up fs-5 text-success ms-n1"></i>2.1%</span>
-                                    <!--end::Badge-->
                                 </div>
                                 <!--end::Body-->
                             </div>
@@ -111,7 +104,7 @@
                         </div>
                         <!--end::Col-->
                         <!--begin::Col-->
-                        <div class="col-sm-6 col-xl-4 mb-xl-10">
+                        {{-- <div class="col-sm-6 col-xl-4 mb-xl-10">
                             <!--begin::Card widget 2-->
                             <div class="card h-lg-100">
                                 <!--begin::Body-->
@@ -128,25 +121,50 @@
                                         <!--end::Number-->
                                         <!--begin::Follower-->
                                         <div class="m-0">
-                                            <span class="fw-semibold fs-6 text-gray-500">Total Simpanan</span>
+                                            <span class="fw-semibold fs-6 text-gray-500">Total Simpanan
+                                                {{ \Carbon\Carbon::now()->year }}</span>
                                         </div>
                                         <!--end::Follower-->
                                     </div>
                                     <!--end::Section-->
-                                    <!--begin::Badge-->
-                                    <span class="badge badge-light-success fs-base">
-                                        <i class="ki-outline ki-arrow-up fs-5 text-success ms-n1"></i>2.1%</span>
-                                    <!--end::Badge-->
                                 </div>
                                 <!--end::Body-->
                             </div>
                             <!--end::Card widget 2-->
-                        </div>
+                        </div> --}}
                         <!--end::Col-->
                     </div>
                     <!--end::Row-->
+
+                    <div class="d-flex flex-lg-row-fluid">
+                        <!--begin::Content-->
+                        <div class="d-flex flex-column flex-center pb-0 pb-lg-10 p-10 w-100">
+                            <!--begin::Image-->
+                            <img class="theme-light-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20"
+                                src="{{ asset('assets/media/illustrations/dozzy-1/13.png') }}" alt="" />
+                            <img class="theme-dark-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20"
+                                src="{{ asset('assets/media/illustrations/dozzy-1/13-dark.png') }}" alt="" />
+                            <!--end::Image-->
+                            <!--begin::Title-->
+                            <h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">SELAMAT DATANG DI DASHBOARD KODIJA
+                                <br> (Koperasi Diskominfo Jawa Barat)
+                            </h1>
+                            <!--end::Title-->
+                            <!--begin::Text-->
+                            <div class="text-gray-600 fs-base text-center fw-semibold">
+                                Selamat datang di dashboard KODIJA, platform ini menyediakan berbagai fitur untuk memudahkan
+                                Anda dalam mengelola layanan koperasi, termasuk Dashboard Utama, Kelola Anggota, Kelola
+                                Posisi, Kelola Golongan, Data Simpanan, Tabel Simpanan, dan Broadcast Events, yang semuanya
+                                bertujuan untuk meningkatkan efisiensi dan transparansi pengelolaan koperasi.
+                            </div>
+
+                            <!--end::Text-->
+                        </div>
+                        <!--end::Content-->
+                    </div>
+
                     <!--begin::Row-->
-                    <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+                    {{-- <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                         <!--begin::Col-->
                         <div class="col-xl-12 mb-xl-10">
                             <!--begin::Chart widget 38-->
@@ -154,81 +172,14 @@
                                 <!--begin::Header-->
                                 <div class="card-header py-5">
                                     <!--begin::Title-->
-                                    <h3 class="card-title fw-bold text-gray-800">Monthly Targets</h3>
+                                    <h3 class="card-title fw-bold text-gray-800">Simpanan Tahunan</h3>
                                     <!--end::Title-->
-                                    <!--begin::Toolbar-->
-                                    <div class="card-toolbar">
-                                        <!--begin::Daterangepicker(defined in src/js/layout/app.js)-->
-                                        <div data-kt-daterangepicker="true" data-kt-daterangepicker-opens="left"
-                                            class="btn btn-sm btn-light d-flex align-items-center px-4">
-                                            <!--begin::Display range-->
-                                            <div class="text-gray-600 fw-bold">Loading date range...</div>
-                                            <!--end::Display range-->
-                                            <i class="ki-outline ki-calendar-8 text-gray-500 lh-0 fs-2 ms-2 me-0"></i>
-                                        </div>
-                                        <!--end::Daterangepicker-->
-                                    </div>
-                                    <!--end::Toolbar-->
                                 </div>
                                 <!--end::Header-->
                                 <!--begin::Card body-->
                                 <div class="card-body d-flex justify-content-between flex-column pb-0 px-0 pt-1">
-                                    <!--begin::Items-->
-                                    <div class="d-flex flex-wrap d-grid gap-5 px-9 mb-5">
-                                        <!--begin::Item-->
-                                        <div class="me-md-2">
-                                            <!--begin::Statistics-->
-                                            <div class="d-flex mb-2">
-                                                <span class="fs-4 fw-semibold text-gray-500 me-1">$</span>
-                                                <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">12,706</span>
-                                            </div>
-                                            <!--end::Statistics-->
-                                            <!--begin::Description-->
-                                            <span class="fs-6 fw-semibold text-gray-500">Targets for April</span>
-                                            <!--end::Description-->
-                                        </div>
-                                        <!--end::Item-->
-                                        <!--begin::Item-->
-                                        <div
-                                            class="border-start-dashed border-end-dashed border-start border-end border-gray-300 px-5 ps-md-10 pe-md-7 me-md-5">
-                                            <!--begin::Statistics-->
-                                            <div class="d-flex mb-2">
-                                                <span class="fs-4 fw-semibold text-gray-500 me-1">$</span>
-                                                <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">8,035</span>
-                                            </div>
-                                            <!--end::Statistics-->
-                                            <!--begin::Description-->
-                                            <span class="fs-6 fw-semibold text-gray-500">Actual for April</span>
-                                            <!--end::Description-->
-                                        </div>
-                                        <!--end::Item-->
-                                        <!--begin::Item-->
-                                        <div class="m-0">
-                                            <!--begin::Statistics-->
-                                            <div class="d-flex align-items-center mb-2">
-                                                <!--begin::Currency-->
-                                                <span class="fs-4 fw-semibold text-gray-500 align-self-start me-1">$</span>
-                                                <!--end::Currency-->
-                                                <!--begin::Value-->
-                                                <span class="fs-2hx fw-bold text-gray-800 me-2 lh-1 ls-n2">4,684</span>
-                                                <!--end::Value-->
-                                                <!--begin::Label-->
-                                                <span class="badge badge-light-success fs-base">
-                                                    <i
-                                                        class="ki-outline ki-black-up fs-7 text-success ms-n1"></i>4.5%</span>
-                                                <!--end::Label-->
-                                            </div>
-                                            <!--end::Statistics-->
-                                            <!--begin::Description-->
-                                            <span class="fs-6 fw-semibold text-gray-500">GAP</span>
-                                            <!--end::Description-->
-                                        </div>
-                                        <!--end::Item-->
-                                    </div>
-                                    <!--end::Items-->
-                                    <!--begin::Chart-->
                                     <div id="kt_charts_widget_20" class="min-h-auto ps-4 pe-6"
-                                        data-kt-chart-info="Revenue" style="height: 300px"></div>
+                                        data-kt-chart-info="Total Simpanan" style="height: 300px"></div>
                                     <!--end::Chart-->
                                 </div>
                                 <!--end::Card body-->
@@ -236,7 +187,7 @@
                             <!--end::Chart widget 38-->
                         </div>
                         <!--end::Col-->
-                    </div>
+                    </div> --}}
                     <!--end::Row-->
                 </div>
                 <!--end::Content container-->
@@ -269,24 +220,170 @@
 @section('scripts')
     <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script src="{{ asset('assets/plugins/custom/vis-timeline/vis-timeline.bundle.js') }}"></script>
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
     <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/create-campaign.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/new-address.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
-    <!--end::Custom Javascript-->
-    <!--end::Javascript-->
+
+    <script>
+        var KTChartsWidget20 = function() {
+            var e = {
+                    self: null,
+                    rendered: !1
+                },
+                t = function(e) {
+                    var t = document.getElementById("kt_charts_widget_20");
+                    if (t) {
+                        var a = parseInt(KTUtil.css(t, "height")),
+                            l = KTUtil.getCssVariableValue("--bs-gray-500"),
+                            r = KTUtil.getCssVariableValue("--bs-border-dashed-color"),
+                            o = KTUtil.getCssVariableValue("--bs-danger"),
+                            i = KTUtil.getCssVariableValue("--bs-danger"),
+                            s = {
+                                series: [{
+                                    name: t.getAttribute("data-kt-chart-info"),
+                                    data: [34.5, 34.5, 35, 35, 35.5, 35.5, 35, 35, 35.5, 35.5, 35, 35, 34.5,
+                                        34.5, 35, 35, 35.4, 35.4, 35
+                                    ]
+                                }],
+                                chart: {
+                                    fontFamily: "inherit",
+                                    type: "area",
+                                    height: a,
+                                    toolbar: {
+                                        show: 1
+                                    }
+                                },
+                                plotOptions: {},
+                                legend: {
+                                    show: !1
+                                },
+                                dataLabels: {
+                                    enabled: !1
+                                },
+                                fill: {
+                                    type: "gradient",
+                                    gradient: {
+                                        shadeIntensity: 1,
+                                        opacityFrom: .4,
+                                        opacityTo: 0,
+                                        stops: [0, 80, 100]
+                                    }
+                                },
+                                stroke: {
+                                    curve: "smooth",
+                                    show: !0,
+                                    width: 3,
+                                    colors: [o]
+                                },
+                                xaxis: {
+                                    categories: ["", "Apr 02", "Apr 03", "Apr 04", "Apr 05", "Apr 06", "Apr 07",
+                                        "Apr 08", "Apr 09", "Apr 10", "Apr 11", "Apr 12", "Apr 13", "Apr 14",
+                                        "Apr 17", "Apr 18", "Apr 19", "Apr 21", ""
+                                    ],
+                                    axisBorder: {
+                                        show: !1
+                                    },
+                                    axisTicks: {
+                                        show: !1
+                                    },
+                                    tickAmount: 6,
+                                    labels: {
+                                        rotate: 0,
+                                        rotateAlways: !0,
+                                        style: {
+                                            colors: l,
+                                            fontSize: "12px"
+                                        }
+                                    },
+                                    crosshairs: {
+                                        position: "front",
+                                        stroke: {
+                                            color: o,
+                                            width: 1,
+                                            dashArray: 3
+                                        }
+                                    },
+                                    tooltip: {
+                                        enabled: !0,
+                                        formatter: void 0,
+                                        offsetY: 0,
+                                        style: {
+                                            fontSize: "12px"
+                                        }
+                                    }
+                                },
+                                yaxis: {
+                                    max: 36.3,
+                                    min: 33,
+                                    tickAmount: 6,
+                                    labels: {
+                                        style: {
+                                            colors: l,
+                                            fontSize: "12px"
+                                        },
+                                        formatter: function(e) {
+                                            return "$" + parseInt(10 * e)
+                                        }
+                                    }
+                                },
+                                states: {
+                                    normal: {
+                                        filter: {
+                                            type: "none",
+                                            value: 0
+                                        }
+                                    },
+                                    hover: {
+                                        filter: {
+                                            type: "none",
+                                            value: 0
+                                        }
+                                    },
+                                    active: {
+                                        allowMultipleDataPointsSelection: !1,
+                                        filter: {
+                                            type: "none",
+                                            value: 0
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    style: {
+                                        fontSize: "12px"
+                                    },
+                                    y: {
+                                        formatter: function(e) {
+                                            return "$" + parseInt(10 * e)
+                                        }
+                                    }
+                                },
+                                colors: [i],
+                                grid: {
+                                    borderColor: r,
+                                    strokeDashArray: 4,
+                                    yaxis: {
+                                        lines: {
+                                            show: !0
+                                        }
+                                    }
+                                },
+                                markers: {
+                                    strokeColor: o,
+                                    strokeWidth: 3
+                                }
+                            };
+                        e.self = new ApexCharts(t, s), setTimeout((function() {
+                            e.self.render(), e.rendered = !0
+                        }), 200)
+                    }
+                };
+            return {
+                init: function() {
+                    t(e), KTThemeMode.on("kt.thememode.change", (function() {
+                        e.rendered && e.self.destroy(), t(e)
+                    }))
+                }
+            }
+        }();
+    </script>
 @stop

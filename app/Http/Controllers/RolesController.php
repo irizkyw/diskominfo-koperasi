@@ -11,7 +11,8 @@ class RolesController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return view('dashboard.pages.roles', compact('roles'));
+        $title = "Dashboard - Posisi Roles";
+        return view('dashboard.pages.roles', compact('roles', 'title'));
     }
 
     public function datatable()

@@ -12,7 +12,9 @@ class GolonganController extends Controller
     public function index()
     {
         $golongans = Golongan::all();
-        return view('dashboard.pages.golongan', compact('golongans'));
+        $title = "Dashboard - Golongan";
+
+        return view('dashboard.pages.golongan', compact('golongans','title'));
     }
 
     public function datatable()

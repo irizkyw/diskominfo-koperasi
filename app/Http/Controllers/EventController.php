@@ -12,7 +12,8 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::orderBy("created_at", "desc")->get();
-        return view("dashboard.pages.event", compact("events"));
+        $title = "Dashboard - Events";
+        return view("dashboard.pages.event", compact("events", 'title'));
     }
 
     public function getEventsData()

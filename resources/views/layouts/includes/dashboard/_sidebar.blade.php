@@ -11,11 +11,7 @@
         <!--begin::Notifications-->
         <div class="ms-2">
             <!--begin::Menu- wrapper-->
-            <div class="btn btn-icon btn-circle btn-light btn-color-gray-500 btn-active-color-primary w-40px h-40px"
-                data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
-                data-kt-menu-placement="bottom-end" id="kt_activities_toggle">
-                <i class="ki-outline ki-notification-on fs-2"></i>
-            </div>
+            <div class="btn btn-icon btn-circle btn-light btn-color-gray-500 btn-active-color-primary w-40px h-40px" id="event_viewer_toggle"> <i class="ki-outline ki-notification-on fs-2"></i> </div>
             <!--end::Menu wrapper-->
         </div>
         <!--end::Notifications-->

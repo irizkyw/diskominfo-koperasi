@@ -11,7 +11,8 @@ class TabunganController extends Controller
 {
     public function index()
     {
-        return view("tabungan.index");
+        $title = "Dashboard - Tabungan Anggota";
+        return view("tabungan.index", compact('title'));
     }
 
     public function createTabungan(Request $request)

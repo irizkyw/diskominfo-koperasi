@@ -30,9 +30,11 @@ class TransaksiController extends Controller
         $users = User::all();
         $roles = Role::all();
 
+        $title = "Dashboard - Data Simpanan";
+
         return view(
             "dashboard.pages.transaksi",
-            compact("transaksi", "users", "roles")
+            compact("transaksi", "users", "roles", 'title')
         );
     }
 
@@ -601,7 +603,7 @@ class TransaksiController extends Controller
     {
         $users = User::with("transactions")->get();
         $years = [];
-
+        $title = 'Dashboard - Tabel Simpanan';
         foreach ($users as $user) {
             foreach ($user->transactions as $transaction) {
                 $date = Carbon::parse($transaction->date_transaction);
@@ -614,7 +616,7 @@ class TransaksiController extends Controller
         $years = array_unique($years);
         sort($years, SORT_NUMERIC);
 
-        return view("dashboard.pages.table_simpanan", compact("years"));
+        return view("dashboard.pages.table_simpanan", compact("years",'title'));
     }
 
     public function loadTabelSimpananan(Request $request)

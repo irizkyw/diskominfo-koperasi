@@ -23,6 +23,8 @@ class UsersController extends Controller
 {
     public function index()
     {
+        $title = "Dashboard - Kelola Anggota";
+
         $users = User::orderBy("status_active", "desc")
             ->orderBy("created_at", "desc")
             ->get();
@@ -32,7 +34,7 @@ class UsersController extends Controller
 
         return view(
             "dashboard.pages.users",
-            compact("users", "roles", "golongan")
+            compact("users", "roles", "golongan" , 'title')
         );
     }
 
@@ -171,14 +173,18 @@ class UsersController extends Controller
             do {
                 $words = explode(" ", $name);
                 $firstName = strtolower($words[0]);
-                $username = $firstName . str_pad($num_member, 3, "0", STR_PAD_LEFT);
+                $username =
+                    $firstName . str_pad($num_member, 3, "0", STR_PAD_LEFT);
                 $userExists = User::where("username", $username)->exists();
             } while ($userExists);
 
             return $username;
         };
 
-        $username = $generateUniqueUsername($request->name, $request->num_member);
+        $username = $generateUniqueUsername(
+            $request->name,
+            $request->num_member
+        );
 
         // Create the new user
         $user = User::create([
@@ -192,31 +198,30 @@ class UsersController extends Controller
         ]);
 
         if ($user) {
-            // Get the current year
             $currentYear = Carbon::now()->format("Y");
 
-            // Check if Tabungan already exists for the current year
-            $tabungan = Tabungan::where('user_id', $user->id)
-                ->where('tabungan_tahun', $currentYear)
+            $tabungan = Tabungan::where("user_id", $user->id)
+                ->where("tabungan_tahun", $currentYear)
                 ->first();
 
             if (!$tabungan) {
-                // If Tabungan for the current year doesn't exist, create one
                 $tabungan = Tabungan::create([
-                    'user_id' => $user->id,
-                    'simp_sukarela' => $request->voluntary_savings ?? 0,
-                    'simp_wajib' => $request->mandatory_savings ?? 0,
-                    'simp_pokok' => 0,  // Adjust this if needed
-                    'tabungan_tahun' => $currentYear,
+                    "user_id" => $user->id,
+                    "simp_sukarela" => $request->voluntary_savings ?? 0,
+                    "simp_wajib" => $request->mandatory_savings ?? 0,
+                    "simp_pokok" => 0,
+                    "tabungan_tahun" => $currentYear,
                 ]);
             }
 
-            // If there's voluntary savings, create a transaction for it
             if ($request->voluntary_savings != 0) {
                 $requestSimpanan = new Request([
                     "user_id" => $user->id,
                     "transaction_type" => "Simpanan Sukarela",
-                    "desc" => "Pendaftaran anggota baru dengan membayar Simpanan Sukarela untuk bulan " . Carbon::now()->format("F") . ".",
+                    "desc" =>
+                        "Pendaftaran anggota baru dengan membayar Simpanan Sukarela untuk bulan " .
+                        Carbon::now()->format("F") .
+                        ".",
                     "nominal" => $request->voluntary_savings,
                     "date_transaction" => now()->format("Y-m-d"),
                 ]);
@@ -225,12 +230,14 @@ class UsersController extends Controller
                 $transaksiController->createSimpanan($requestSimpanan);
             }
 
-            // If there's mandatory savings, create a transaction for it
             if ($request->mandatory_savings != 0) {
                 $requestSimpanan = new Request([
                     "user_id" => $user->id,
                     "transaction_type" => "Simpanan Pokok",
-                    "desc" => "Pendaftaran anggota baru dengan membayar Simpanan Pokok untuk bulan " . Carbon::now()->format("F") . ".",
+                    "desc" =>
+                        "Pendaftaran anggota baru dengan membayar Simpanan Pokok untuk bulan " .
+                        Carbon::now()->format("F") .
+                        ".",
                     "nominal" => $request->mandatory_savings,
                     "date_transaction" => now()->format("Y-m-d"),
                 ]);
@@ -240,7 +247,6 @@ class UsersController extends Controller
             }
         }
 
-        // Load the user's role and return response
         $user = $user->load("role");
 
         return response()->json(
@@ -251,8 +257,6 @@ class UsersController extends Controller
             200
         );
     }
-
-
 
     public function updateUser(Request $request, $id)
     {
@@ -273,10 +277,8 @@ class UsersController extends Controller
             $data["password"] = Hash::make($request->password);
         }
 
-        // Perform the update, but don't expect $user to contain the model
         User::where("num_member", $id)->update($data);
 
-        // Fetch the user after the update to get the updated model instance
         $user = User::where("num_member", $id)->first();
 
         $tabungan = Tabungan::where("user_id", $user->id)->first();

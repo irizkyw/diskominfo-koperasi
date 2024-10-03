@@ -40,6 +40,8 @@ class ProfileController extends Controller
 
     public function index(Request $request)
     {
+        $title = "Dashboard - Profile";
+
         $user = $request->user();
         $userId = $request->input("user_id", $user->id);
 
@@ -102,7 +104,8 @@ class ProfileController extends Controller
                 "Golongan",
                 "SimpananAkhir",
                 "LogTransaksi",
-                "event"
+                "event",
+                "title"
             )
         );
     }
